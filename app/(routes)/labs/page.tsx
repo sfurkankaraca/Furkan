@@ -5,15 +5,23 @@ import { Button } from "@/components/ui/button";
 export const metadata = { title: "Labs | noqta" };
 
 export default function LabsPage() {
-  const whatsappHref = `https://wa.me/905417997973?text=${encodeURIComponent("Merhaba, Labs / atölyeler hakkında bilgi almak istiyorum.")}`;
+  const whatsappHref = `https://wa.me/905417997973?text=${encodeURIComponent("Hi, I’d like to learn more about Labs / workshops.")}`;
   return (
-    <Section title="Labs" description="Deneyler, mikro atölyeler ve paylaşım seansları.">
-      <ul className="grid gap-2 list-disc pl-5 text-white/85">
-        <li>Loop odaklı ses deneyleri</li>
-        <li>DJ workflow paylaşımları</li>
-        <li>Mikro üretim alıştırmaları</li>
-        <li>Açık oturum ve dinleme</li>
-      </ul>
+    <Section title="Labs" description="tiny experiments, micro workshops, shared practice.">
+      <div className="grid gap-6">
+        <div>
+          <h3 className="text-white text-lg font-medium">mixlab — djing live</h3>
+          <p className="text-white/75 mt-1">beatmatching, phrasing, transitions, small stage setup.</p>
+        </div>
+        <div>
+          <h3 className="text-white text-lg font-medium">production lab — electronic music</h3>
+          <p className="text-white/75 mt-1">workflow, arrangement, minimal sound palette, finishing.</p>
+        </div>
+        <div>
+          <h3 className="text-white text-lg font-medium">sound design lab — synth & mixing basics</h3>
+          <p className="text-white/75 mt-1">subtractive/oscillators, filters/envelopes, gain staging, EQ.</p>
+        </div>
+      </div>
       <div className="mt-6 flex flex-wrap gap-3">
         <Button asChild className="rounded-xl">
           <Link href={whatsappHref} target="_blank" rel="noopener noreferrer">WhatsApp</Link>

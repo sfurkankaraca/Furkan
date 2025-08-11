@@ -28,7 +28,6 @@ export default function Navbar() {
     { href: "/events", label: "Events" },
     { href: "/collective", label: "Collective" },
     { href: "/labs", label: "Labs" },
-    { href: "/noqta", label: "noqta?" },
     { href: "/contact", label: "Contact" },
   ];
 
