@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata = { title: "Labs | noqta" };
 
 export default function LabsPage() {
-  const whatsappHref = `https://wa.me/00000000000?text=${encodeURIComponent("Merhaba, Labs / atölyeler hakkında bilgi almak istiyorum.")}`;
+  const whatsappHref = `https://wa.me/905417997973?text=${encodeURIComponent("Merhaba, Labs / atölyeler hakkında bilgi almak istiyorum.")}`;
   return (
     <Section title="Labs" description="Deneyler, mikro atölyeler ve paylaşım seansları.">
       <ul className="grid gap-2 list-disc pl-5 text-white/85">
