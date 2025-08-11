@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# noqta web
 
-## Getting Started
+Minimalist, modern ve responsive web sitesi. Next.js 14+ (App Router), TypeScript, Tailwind CSS v4, shadcn/ui ve Framer Motion.
 
-First, run the development server:
+## Kurulum
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+corepack enable
+corepack prepare pnpm@latest --activate
+pnpm i
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Komutlar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `pnpm dev`: Geliştirme sunucusu
+- `pnpm build`: Production build
+- `pnpm start`: Production server
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Çevre Değişkenleri
 
-## Learn More
+- `RESEND_API_KEY`: İletişim formu için e‑posta gönderimi (opsiyonel; yoksa console.log yapılır)
+- `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`: Plausible domain (opsiyonel)
 
-To learn more about Next.js, take a look at the following resources:
+## Yapı
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `app/`: App Router sayfaları
+- `components/`: UI bileşenleri
+- `data/events.json`: Etkinlik verisi
+- `lib/i18n`: Basit sözlük ve `useI18n` hook
+- `lib/mail/send.ts`: E‑posta gönderim fonksiyonu (Resend)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notlar
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Tema dark-first (#000 arka plan, #fff foreground)
+- Köşeler `rounded-2xl`, grid tabanlı yerleşim
+- Görseller `next/image` ile optimize edilir
+- JSON‑LD: Organization (global) ve Event listesi (events sayfası)
