@@ -8,8 +8,8 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 py-16 md:py-24 grid md:grid-cols-2 items-center gap-10">
           <div>
-            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">biz noqta’yız.</h1>
-            <p className="mt-4 text-lg text-white/70 max-w-prose">döngülerde kaybolanlar için ses kolektifi.</p>
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">noqta.</h1>
+            <p className="mt-4 text-lg text-white/70 max-w-prose">loop’ta kaybol; birlikte buluşalım.</p>
             <div className="mt-8 flex gap-3">
               <Button asChild className="rounded-xl">
                 <Link href="/events">Etkinlikler</Link>
@@ -27,7 +27,7 @@ export default function Home() {
 
       <section>
         <div className="container mx-auto max-w-7xl px-4">
-          <p className="text-white/70">loop’larda dolananlara alan açıyoruz. sessizlik ile ritim arasında nefes alan minimal deneyimler kuruyoruz.</p>
+          <p className="text-white/70">ses, ritim ve sakinlik. beraber deneriz; beraber duyarız.</p>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {[
               { href: "/events", title: "Events", desc: "Yaklaşan etkinlikler" },
