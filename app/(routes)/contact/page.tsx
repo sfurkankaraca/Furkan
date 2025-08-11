@@ -5,7 +5,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata = { title: "İletişim | noqta" };
 
 export default function ContactPage() {
-  async function action(_prev: any, formData: FormData) {
+  async function action(_prev: unknown, formData: FormData) {
     "use server";
     const name = String(formData.get("name") || "");
     const email = String(formData.get("email") || "");
@@ -15,7 +15,8 @@ export default function ContactPage() {
       const result = await sendContactMail({ name, email, subject, message });
       if (!result.ok) return { ok: false, error: "E‑posta gönderilemedi" } as const;
       return { ok: true } as const;
-    } catch (e: any) {
+    } catch (error: unknown) {
+      console.error("[contact] send error", error);
       return { ok: false, error: "Sunucu hatası" } as const;
     }
   }
