@@ -27,8 +27,8 @@ export default function Navbar() {
   const links = [
     { href: "/events", label: "Events" },
     { href: "/collective", label: "Collective" },
-    { href: "/academy", label: "Academy" },
-    { href: "/b2b", label: "B2B" },
+    { href: "/labs", label: "Labs" },
+    { href: "/noqta", label: "noqta?" },
     { href: "/contact", label: "Contact" },
   ];
 
@@ -55,7 +55,7 @@ export default function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
           <Button asChild size="sm" className="ml-2 rounded-xl">
-            <Link href="/contact">Bize yaz</Link>
+            <Link href="/join">Kaybol</Link>
           </Button>
           <Button variant="ghost" size="sm" className="ml-1 rounded-xl text-white/70 hover:text-white" aria-label="Switch language" onClick={toggle}>
             {locale.toUpperCase()}
@@ -89,8 +89,8 @@ export default function Navbar() {
                 ))}
                 <div className="flex items-center gap-2 mt-2">
                   <Button asChild className="rounded-xl">
-                    <Link href="/contact" onClick={() => setOpen(false)}>
-                      Bize yaz
+                    <Link href="/join" onClick={() => setOpen(false)}>
+                      Kaybol
                     </Link>
                   </Button>
                   <Button variant="ghost" size="sm" className="rounded-xl text-white/70 hover:text-white" onClick={() => { toggle(); setOpen(false); }}>

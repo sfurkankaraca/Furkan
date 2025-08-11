@@ -15,7 +15,7 @@ export default function Home() {
                 <Link href="/events">Etkinlikler</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-xl">
-                <Link href="/contact">Bize yaz</Link>
+                <Link href="/join">Kaybol</Link>
               </Button>
             </div>
           </div>
@@ -32,7 +32,7 @@ export default function Home() {
             {[
               { href: "/events", title: "Events", desc: "Yaklaşan etkinlikler" },
               { href: "/collective", title: "Collective", desc: "Manifesto ve yaklaşım" },
-              { href: "/academy", title: "Academy", desc: "Eğitimler ve müfredat" },
+              { href: "/labs", title: "Labs", desc: "Deneyler & atölyeler" },
             ].map((c) => (
               <Link
                 key={c.href}
