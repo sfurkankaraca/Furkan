@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export const metadata = { title: "Admin — Yeni Etkinlik | noqta" };
 
 export default function AdminNewEventPage() {
-  async function action(_prev: unknown, formData: FormData) {
+  async function action(formData: FormData) {
     "use server";
     const title = String(formData.get("title") || "");
     const date = String(formData.get("date") || "");

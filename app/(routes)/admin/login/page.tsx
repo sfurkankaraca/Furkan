@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export const metadata = { title: "Admin Giriş | noqta" };
 
 export default function AdminLoginPage({ searchParams }: { searchParams: { next?: string } }) {
-  async function action(_prev: unknown, formData: FormData) {
+  async function action(formData: FormData) {
     "use server";
     const password = String(formData.get("password") || "");
     const next = String(formData.get("next") || "/admin");
