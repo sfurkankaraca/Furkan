@@ -6,7 +6,7 @@ export default function Section({
   children,
 }: {
   title: string;
-  description?: string;
+  description?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -15,10 +15,14 @@ export default function Section({
         <div className="mb-6">
           <h2 className="text-2xl md:text-3xl font-semibold text-white">{title}</h2>
           {description ? (
-            <p className="mt-2 text-white/60 max-w-2xl">{description}</p>
+            typeof description === "string" ? (
+              <p className="mt-2 text-white/60 max-w-2xl">{description}</p>
+            ) : (
+              <div className="mt-2 text-white/60 max-w-2xl space-y-3">{description}</div>
+            )
           ) : null}
         </div>
-        <div className="rounded-2xl border border-white/10 p-4 md:p-6 bg-white/5">
+        <div className="rounded-2xl border border-white/10 p-4 md:p-6 bg-white/5 relative isolate">
           {children}
         </div>
       </div>
