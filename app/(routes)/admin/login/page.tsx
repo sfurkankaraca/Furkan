@@ -7,9 +7,9 @@ export const metadata = { title: "Admin Giriş | noqta" };
 export default function AdminLoginPage({ searchParams }: { searchParams: { next?: string; e?: string } }) {
   async function action(formData: FormData) {
     "use server";
-    const password = String(formData.get("password") || "");
+    const password = String(formData.get("password") || "").trim();
     const next = String(formData.get("next") || "/admin");
-    const expected = process.env.ADMIN_PASSWORD || "noqta";
+    const expected = String(process.env.ADMIN_PASSWORD || "noqta").trim();
     if (password !== expected) {
       redirect("/admin/login?e=1");
     }
