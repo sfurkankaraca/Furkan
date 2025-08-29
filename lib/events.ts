@@ -9,7 +9,6 @@ export type AdminEvent = {
   venue?: string;
   ctaUrl?: string;
   image?: string;
-  description?: string;
 };
 
 const eventsFile = path.join(process.cwd(), "data", "events.json");

@@ -10,7 +10,6 @@ export type EventItem = {
   venue?: string;
   ctaUrl?: string;
   image?: string;
-  description?: string;
 };
 
 export default function EventCard({ event }: { event: EventItem }) {
@@ -34,9 +33,6 @@ export default function EventCard({ event }: { event: EventItem }) {
       <div className="p-4">
         <h3 className="text-lg font-medium text-white">{event.title}</h3>
         <p className="text-white/60 text-sm mt-1">{event.city}{event.venue ? ` · ${event.venue}` : ""}</p>
-        {event.description ? (
-          <p className="text-white/70 text-sm mt-2 line-clamp-2">{event.description}</p>
-        ) : null}
         <div className="mt-3 flex items-center gap-2">
           {event.ctaUrl ? (
             <Button asChild size="sm" className="rounded-xl">
