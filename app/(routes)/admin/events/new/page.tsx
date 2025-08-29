@@ -48,6 +48,9 @@ export default function AdminNewEventPage() {
     const ctaUrl = ctaUrlRaw || "/events/apply";
 
     const id = `${slugify(title)}-${date.slice(0, 10)}`;
+    // Image URL comes from client-side UploadWidget (Vercel Blob)
+    const uploadedImagePath: string | undefined = image || undefined;
+
     const next = await readEvents();
     const event: AdminEvent = {
       id,
@@ -56,20 +59,20 @@ export default function AdminNewEventPage() {
       city,
       venue: venue || undefined,
       ctaUrl,
-      image: image || undefined,
+      image: uploadedImagePath,
       photos: photos.length ? photos : undefined,
       playlists: playlists.length ? playlists : undefined,
     };
     next.unshift(event);
     await writeEvents(next);
 
-    await sendAdminEventMail({ title, date, city, venue: venue || undefined, ctaUrl, image: image || undefined, note: "Yeni etkinlik eklendi" });
+    await sendAdminEventMail({ title, date, city, venue: venue || undefined, ctaUrl, image: uploadedImagePath, note: "Yeni etkinlik eklendi" });
 
     redirect("/admin/events");
   }
 
   return (
-    <form action={action} className="grid gap-4 max-w-xl">
+    <form action={action} className="grid gap-4 max-w-xl" encType="multipart/form-data">
       <div className="grid gap-2">
         <label htmlFor="title" className="text-sm text-white/80">Başlık *</label>
         <input id="title" name="title" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="Etkinlik adı" />
@@ -96,8 +99,9 @@ export default function AdminNewEventPage() {
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="image" className="text-sm text-white/80">Kapak Görseli URL</label>
-        <input id="image" name="image" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" placeholder="/events/....webp" />
+        <span className="text-sm text-white/80">Kapak Görseli</span>
+        {/* URL alanını gizli tut, sadece yükle butonu göster */}
+        <input id="image" name="image" type="hidden" />
         <UploadWidget targetInputId="image" />
       </div>
 
