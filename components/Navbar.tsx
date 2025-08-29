@@ -29,6 +29,7 @@ export default function Navbar() {
     { href: "/collective", label: "Collective" },
     { href: "/labs", label: "Labs" },
     { href: "/contact", label: "Contact" },
+    { href: "/login", label: "Giriş" },
   ];
 
   return (

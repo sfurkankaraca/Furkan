@@ -17,7 +17,10 @@ export default async function AdminEventsList() {
               <th className="px-3 py-2">Başlık</th>
               <th className="px-3 py-2">Tarih</th>
               <th className="px-3 py-2">Şehir</th>
-              <th className="px-3 py-2">CTA</th>
+              <th className="px-3 py-2">Foto</th>
+              <th className="px-3 py-2">Spotify</th>
+              <th className="px-3 py-2">Detay</th>
+              <th className="px-3 py-2">Düzenle</th>
             </tr>
           </thead>
           <tbody>
@@ -26,8 +29,13 @@ export default async function AdminEventsList() {
                 <td className="px-3 py-2">{e.title}</td>
                 <td className="px-3 py-2">{new Date(e.date).toLocaleString()}</td>
                 <td className="px-3 py-2">{e.city}</td>
+                <td className="px-3 py-2">{e.photos?.length || 0}</td>
+                <td className="px-3 py-2">{e.spotifyEmbeds?.length || 0}</td>
                 <td className="px-3 py-2">
-                  {e.ctaUrl ? <a className="underline" href={e.ctaUrl} target="_blank">link</a> : <span className="text-white/40">—</span>}
+                  <a className="underline" href={`/events/${e.id}`} target="_blank">görüntüle</a>
+                </td>
+                <td className="px-3 py-2">
+                  <a className="underline" href={`/admin/events/${e.id}/edit`}>düzenle</a>
                 </td>
               </tr>
             ))}

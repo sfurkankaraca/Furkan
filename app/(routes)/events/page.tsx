@@ -15,6 +15,14 @@ export const metadata = {
 
 export default async function EventsPage() {
   const events = await getEvents();
+  const now = Date.now();
+  const upcoming = events
+    .filter((e) => new Date(e.date).getTime() >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const past = events
+    .filter((e) => new Date(e.date).getTime() < now)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -28,10 +36,10 @@ export default async function EventsPage() {
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         location: {
           "@type": "Place",
-          name: e.venue || e.city,
+          name: (e as any).venue || e.city,
           address: e.city,
         },
-        url: e.ctaUrl || "https://noqta.ai/events",
+        url: (e as any).ctaUrl || "https://noqta.ai/events",
         image: e.image ? [e.image] : undefined,
       },
     })),
@@ -39,12 +47,24 @@ export default async function EventsPage() {
 
   return (
     <>
-      <Section title="Etkinlikler" description="Yaklaşan etkinlikler ve geçmişten seçkiler.">
-        {events.length === 0 ? (
-          <p className="text-white/60">Henüz etkinlik yok.</p>
+      <Section title="Yaklaşan Etkinlikler" description="Sıradaki buluşmalar.">
+        {upcoming.length === 0 ? (
+          <p className="text-white/60">Yaklaşan etkinlik yok.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {events.map((e) => (
+            {upcoming.map((e) => (
+              <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        )}
+      </Section>
+
+      <Section title="Geçmiş Etkinlikler" description="Arşivden seçkiler.">
+        {past.length === 0 ? (
+          <p className="text-white/60">Henüz geçmiş etkinlik yok.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {past.map((e) => (
               <EventCard key={e.id} event={e} />
             ))}
           </div>

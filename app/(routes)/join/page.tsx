@@ -1,5 +1,6 @@
 import { sendContactMail } from "@/lib/mail/send";
 import Section from "@/components/Section";
+import { addMember } from "@/lib/admin/store";
 
 export const metadata = { title: "Kaybol | noqta" };
 
@@ -10,14 +11,27 @@ export default function JoinPage() {
     const email = String(formData.get("email") || "");
     const note = String(formData.get("note") || "");
     const gender = String(formData.get("gender") || "");
-    const age = String(formData.get("age") || "");
+    const age = Number(formData.get("age") || 0) || undefined;
     const city = String(formData.get("city") || "");
     const phone = String(formData.get("phone") || "");
     const instagram = String(formData.get("instagram") || "");
     const hasCar = String(formData.get("hasCar") || "no");
     const tastes = String(formData.get("tastes") || "");
 
-    const message = `Gender: ${gender}\nAge: ${age}\nCity: ${city}\nPhone: ${phone}\nInstagram: ${instagram}\nHasCar: ${hasCar}\nTastes: ${tastes}\n\n${note}`;
+    await addMember({
+      name,
+      email,
+      city: city || undefined,
+      phone: phone || undefined,
+      instagram: instagram || undefined,
+      gender: gender || undefined,
+      age,
+      hasCar: hasCar === "yes",
+      tastes: tastes || undefined,
+      note: note || undefined,
+    });
+
+    const message = `Gender: ${gender}\nAge: ${age ?? ""}\nCity: ${city}\nPhone: ${phone}\nInstagram: ${instagram}\nHasCar: ${hasCar}\nTastes: ${tastes}\n\n${note}`;
     await sendContactMail({ name, email, subject: "Membership", message });
   }
 

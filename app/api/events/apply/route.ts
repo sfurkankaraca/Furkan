@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendEventApplicationMail, type EventApplicationPayload } from "@/lib/mail/send";
+import { addApplication } from "@/lib/admin/store";
 
 export async function POST(req: Request) {
   try {
@@ -45,6 +46,25 @@ export async function POST(req: Request) {
       consentInstructions: Boolean(body.consentInstructions),
       referrer: body.referrer ? String(body.referrer) : undefined,
     };
+
+    // Store'a yaz
+    await addApplication({
+      eventId: payload.eventId,
+      eventTitle: payload.eventTitle,
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      birthDate: payload.birthDate,
+      city: payload.city,
+      mainReason: payload.mainReason,
+      musicGenres: payload.musicGenres,
+      djExcitement: payload.djExcitement,
+      hasCar: payload.hasCar,
+      instagram: payload.instagram,
+      consentLocation: payload.consentLocation,
+      consentInstructions: payload.consentInstructions,
+      referrer: payload.referrer,
+    });
 
     const res = await sendEventApplicationMail(payload);
     return NextResponse.json(res);

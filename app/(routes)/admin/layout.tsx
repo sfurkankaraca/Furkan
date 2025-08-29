@@ -7,6 +7,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <a href="/admin" className="hover:text-white">Dashboard</a>
           <a href="/admin/events" className="hover:text-white">Etkinlikler</a>
           <a href="/admin/events/new" className="hover:text-white">Yeni Etkinlik</a>
+          <a href="/admin/members" className="hover:text-white">Üyeler</a>
+          <a href="/admin/forms" className="hover:text-white">Formlar</a>
           <a href="/admin/logout" className="hover:text-white">Çıkış</a>
         </nav>
       </div>

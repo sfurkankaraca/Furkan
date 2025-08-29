@@ -1,6 +1,19 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+export type PhotoItem = {
+  url: string;
+  title?: string;
+  description?: string;
+};
+
+export type PlaylistItem = {
+  djName: string;
+  description?: string;
+  avatarUrl?: string;
+  spotifyEmbedUrl: string; // iframe src ya da playlist URL
+};
+
 export type AdminEvent = {
   id: string;
   title: string;
@@ -9,6 +22,9 @@ export type AdminEvent = {
   venue?: string;
   ctaUrl?: string;
   image?: string;
+  photos?: PhotoItem[]; // organizasyonun eklediği fotoğraflar
+  memberPhotos?: PhotoItem[]; // üyelerin eklediği fotoğraflar
+  playlists?: PlaylistItem[]; // DJ playlistleri
 };
 
 const eventsFile = path.join(process.cwd(), "data", "events.json");

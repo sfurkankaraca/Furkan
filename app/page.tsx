@@ -22,7 +22,7 @@ export default async function Home() {
             <p className="mt-4 text-lg text-white/70 max-w-prose">lost in loops. together, we listen.</p>
             <div className="mt-8 flex gap-3">
               <Button asChild className="rounded-xl">
-                <Link href="/events">Events</Link>
+                <Link href="/login">Giriş</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-xl">
                 <Link href="/join">Kaybol</Link>

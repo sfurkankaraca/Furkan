@@ -1,17 +1,16 @@
-import { readEvents, writeEvents, slugify, type AdminEvent, type PhotoItem, type PlaylistItem } from "@/lib/events";
-import { sendAdminEventMail } from "@/lib/mail/send";
-import { redirect } from "next/navigation";
+import { readEvents, writeEvents, type PhotoItem, type PlaylistItem } from "@/lib/events";
+import { notFound, redirect } from "next/navigation";
 import PhotoListEditor from "@/components/PhotoListEditor";
 import PlaylistListEditor from "@/components/PlaylistListEditor";
 import UploadWidget from "@/components/UploadWidget";
 
-export const metadata = { title: "Admin — Yeni Etkinlik | noqta" };
+export const metadata = { title: "Admin — Etkinlik Düzenle | noqta" };
 
 function parseNestedList<T extends Record<string, unknown>>(formData: FormData, prefix: string): T[] {
   const map = new Map<number, T>();
   for (const [key, value] of formData.entries()) {
     if (!key.startsWith(prefix + "[")) continue;
-    const idxStart = prefix.length + 1; // after prefix[
+    const idxStart = prefix.length + 1;
     const idxEnd = key.indexOf("]", idxStart);
     if (idxEnd === -1) continue;
     const idx = Number(key.slice(idxStart, idxEnd));
@@ -28,87 +27,80 @@ function parseNestedList<T extends Record<string, unknown>>(formData: FormData, 
     .map(([, v]) => v);
 }
 
-export default function AdminNewEventPage() {
-  async function action(_prev: unknown, formData: FormData) {
+export default async function AdminEditEvent({ params }: { params: { id: string } }) {
+  const events = await readEvents();
+  const event = events.find((e) => e.id === params.id);
+  if (!event) return notFound();
+
+  async function action(formData: FormData) {
     "use server";
     const title = String(formData.get("title") || "");
     const date = String(formData.get("date") || "");
     const city = String(formData.get("city") || "");
     const venue = String(formData.get("venue") || "");
-    const ctaUrlRaw = String(formData.get("ctaUrl") || "");
+    const ctaUrl = String(formData.get("ctaUrl") || "");
     const image = String(formData.get("image") || "");
-
-    if (!title || !date || !city) {
-      return { ok: false, error: "Zorunlu alanları doldurun" } as const;
-    }
 
     const photos = parseNestedList<PhotoItem>(formData, "photos").filter((p) => p.url);
     const playlists = parseNestedList<PlaylistItem>(formData, "playlists").filter((p) => p.spotifyEmbedUrl && p.djName);
 
-    const ctaUrl = ctaUrlRaw || "/events/apply";
-
-    const id = `${slugify(title)}-${date.slice(0, 10)}`;
-    const next = await readEvents();
-    const event: AdminEvent = {
-      id,
-      title,
-      date: new Date(date).toISOString(),
-      city,
+    const next = events.map((e) => e.id === event.id ? {
+      ...e,
+      title: title || e.title,
+      date: date ? new Date(date).toISOString() : e.date,
+      city: city || e.city,
       venue: venue || undefined,
-      ctaUrl,
+      ctaUrl: ctaUrl || undefined,
       image: image || undefined,
       photos: photos.length ? photos : undefined,
       playlists: playlists.length ? playlists : undefined,
-    };
-    next.unshift(event);
+    } : e);
+
     await writeEvents(next);
-
-    await sendAdminEventMail({ title, date, city, venue: venue || undefined, ctaUrl, image: image || undefined, note: "Yeni etkinlik eklendi" });
-
     redirect("/admin/events");
   }
 
   return (
     <form action={action} className="grid gap-4 max-w-xl">
       <div className="grid gap-2">
-        <label htmlFor="title" className="text-sm text-white/80">Başlık *</label>
-        <input id="title" name="title" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="Etkinlik adı" />
+        <label htmlFor="title" className="text-sm text-white/80">Başlık</label>
+        <input id="title" name="title" defaultValue={event.title} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" />
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="date" className="text-sm text-white/80">Tarih *</label>
-        <input id="date" name="date" type="datetime-local" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
+        <label htmlFor="date" className="text-sm text-white/80">Tarih</label>
+        <input id="date" name="date" type="datetime-local" defaultValue={event.date.slice(0,16)} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="city" className="text-sm text-white/80">Şehir *</label>
-        <input id="city" name="city" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" placeholder="Şehir" />
+        <label htmlFor="city" className="text-sm text-white/80">Şehir</label>
+        <input id="city" name="city" defaultValue={event.city} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
       </div>
 
       <div className="grid gap-2">
         <label htmlFor="venue" className="text-sm text-white/80">Mekan</label>
-        <input id="venue" name="venue" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" placeholder="Mekan" />
+        <input id="venue" name="venue" defaultValue={event.venue} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
       </div>
 
       <div className="grid gap-2">
         <label htmlFor="ctaUrl" className="text-sm text-white/80">CTA URL</label>
-        <input id="ctaUrl" name="ctaUrl" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" placeholder="https://... (boş bırakılırsa /events/apply)" />
+        <input id="ctaUrl" name="ctaUrl" defaultValue={event.ctaUrl} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
       </div>
 
       <div className="grid gap-2">
         <label htmlFor="image" className="text-sm text-white/80">Kapak Görseli URL</label>
-        <input id="image" name="image" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" placeholder="/events/....webp" />
+        <input id="image" name="image" defaultValue={event.image} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
         <UploadWidget targetInputId="image" />
       </div>
 
       <div className="grid gap-2">
         <div className="text-sm text-white/80">Fotoğraflar</div>
-        <PhotoListEditor name="photos" max={20} />
+        <PhotoListEditor name="photos" initial={event.photos} max={20} />
       </div>
 
       <div className="grid gap-2">
         <div className="text-sm text-white/80">DJ Playlistleri</div>
-        <PlaylistListEditor name="playlists" max={20} />
+        <PlaylistListEditor name="playlists" initial={event.playlists} max={20} />
       </div>
 
       <button type="submit" className="rounded-xl bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90">Kaydet</button>
