@@ -1,4 +1,5 @@
 import { sendContactMail } from "@/lib/mail/send";
+import { readMembers, writeMembers, memberIdFromEmail } from "@/lib/members";
 import Section from "@/components/Section";
 
 export const metadata = { title: "Kaybol | noqta" };
@@ -19,6 +20,34 @@ export default function JoinPage() {
 
     const message = `Gender: ${gender}\nAge: ${age}\nCity: ${city}\nPhone: ${phone}\nInstagram: ${instagram}\nHasCar: ${hasCar}\nTastes: ${tastes}\n\n${note}`;
     await sendContactMail({ name, email, subject: "Membership", message });
+
+    // Diske kaydet
+    if (name && email) {
+      const list = await readMembers();
+      const id = memberIdFromEmail(email);
+      const createdAt = new Date().toISOString();
+      const next = list.filter((m) => m.id !== id);
+      next.unshift({
+        id,
+        name,
+        email,
+        gender: gender || undefined,
+        age: age ? Number(age) : undefined,
+        city: city || undefined,
+        phone: phone || undefined,
+        instagram: instagram || undefined,
+        hasCar: hasCar === "yes" ? "yes" : "no",
+        tastes: tastes || undefined,
+        note: note || undefined,
+        createdAt,
+      });
+      await writeMembers(next);
+    }
+
+    // Otomatik yeniden yayın (Deploy Hook varsa)
+    if (process.env.VERCEL_DEPLOY_HOOK_URL) {
+      try { await fetch(process.env.VERCEL_DEPLOY_HOOK_URL, { method: "POST" }); } catch {}
+    }
   }
 
   return (

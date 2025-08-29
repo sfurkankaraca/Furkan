@@ -12,7 +12,14 @@ async function getEvents(): Promise<EventItem[]> {
 }
 
 export default async function Home() {
-  const events = (await getEvents()).slice(0, 3);
+  const now = Date.now();
+  const events = (await getEvents())
+    .filter((e) => {
+      const t = new Date(e.date).getTime();
+      return !Number.isNaN(t) && t >= now;
+    })
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 3);
   return (
     <main>
       <section className="relative overflow-hidden">
