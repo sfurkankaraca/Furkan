@@ -5,6 +5,7 @@ import UploadWidget from "@/components/UploadWidget";
 import { createEvent } from "../actions";
 
 export const metadata = { title: "Admin — Yeni Etkinlik | noqta" };
+export const dynamic = "force-dynamic";
 
 function parseNestedList<T extends Record<string, unknown>>(formData: FormData, prefix: string): T[] {
   const map = new Map<number, T>();
@@ -28,13 +29,9 @@ function parseNestedList<T extends Record<string, unknown>>(formData: FormData, 
 }
 
 export default function AdminNewEventPage() {
-  async function action(formData: FormData) {
-    "use server";
-    return createEvent(formData);
-  }
 
   return (
-    <form action={action} className="grid gap-4 max-w-xl" encType="multipart/form-data">
+    <form action={createEvent} className="grid gap-4 max-w-xl" encType="multipart/form-data">
       <div className="grid gap-2">
         <label htmlFor="title" className="text-sm text-white/80">Başlık *</label>
         <input id="title" name="title" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="Etkinlik adı" />

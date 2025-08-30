@@ -6,6 +6,7 @@ import UploadWidget from "@/components/UploadWidget";
 import { updateEvent } from "../../actions";
 
 export const metadata = { title: "Admin — Etkinlik Düzenle | noqta" };
+export const dynamic = "force-dynamic";
 
 function parseNestedList<T extends Record<string, unknown>>(formData: FormData, prefix: string): T[] {
   const map = new Map<number, T>();
