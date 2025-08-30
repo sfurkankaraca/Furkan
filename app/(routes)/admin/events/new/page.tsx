@@ -29,7 +29,7 @@ function parseNestedList<T extends Record<string, unknown>>(formData: FormData, 
 }
 
 export default function AdminNewEventPage() {
-  async function action(_prev: unknown, formData: FormData) {
+  async function action(formData: FormData) {
     "use server";
     const title = String(formData.get("title") || "");
     const date = String(formData.get("date") || "");
