@@ -1,6 +1,6 @@
 "use client";
 
-import UploadWidget from "./UploadWidget";
+import { upload } from "@vercel/blob/client";
 
 export type PhotoItem = { url: string; title?: string; description?: string };
 
@@ -36,18 +36,12 @@ export default function PhotoListEditor({
     if (files.length === 0) return;
     for (const file of files.slice(0, max)) {
       try {
-        const res = await fetch("/api/upload-url", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ filename: file.name, contentType: file.type }),
+        const { url } = await upload(file.name, file, {
+          access: "public",
+          contentType: file.type,
+          handleUploadUrl: "/api/blob/upload",
         });
-        const payload = await res.json().catch(() => ({ ok: false, error: `HTTP ${res.status}` }));
-        const { url, ok, error } = payload as { url?: string; ok?: boolean; error?: string };
-        if (!res.ok || !ok || !url) { alert(error || `Upload URL alınamadı (HTTP ${res.status})`); break; }
-        const up = await fetch(url, { method: "POST", body: file });
-        const json = await up.json().catch(() => ({} as any));
-        const blobUrl: string | undefined = (json as any)?.url;
-        if (blobUrl) appendUrl(blobUrl);
+        if (url) appendUrl(url);
       } catch (err: any) {
         alert(err?.message || "Yükleme hatası");
         break;
