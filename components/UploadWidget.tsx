@@ -1,4 +1,5 @@
 "use client";
+import { useId } from "react";
 
 type Props = {
   targetTextareaId?: string;
@@ -6,6 +7,9 @@ type Props = {
 };
 
 export default function UploadWidget({ targetTextareaId, targetInputId }: Props) {
+  const uid = useId().replace(/[:]/g, "");
+  const inputId = `upload-${uid}`;
+
   async function onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -33,9 +37,10 @@ export default function UploadWidget({ targetTextareaId, targetInputId }: Props)
     e.currentTarget.value = "";
   }
   return (
-    <div className="flex items-center gap-2">
-      <input type="file" accept="image/*" onChange={onChange} className="text-sm" />
-      <span className="text-xs text-white/50">Seçtiğin görsel yüklenir ve alanına eklenir.</span>
+    <div className="flex items-center gap-3">
+      <input id={inputId} type="file" accept="image/*" onChange={onChange} className="hidden" />
+      <label htmlFor={inputId} className="cursor-pointer rounded-xl bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90">Yükle</label>
+      <span className="text-xs text-white/60">Seçtiğin görsel yüklenir ve forma eklenir.</span>
     </div>
   );
 }
