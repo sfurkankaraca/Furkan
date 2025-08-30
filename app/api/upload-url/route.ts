@@ -10,13 +10,11 @@ export async function POST(req: Request) {
     const filename = typeof body?.filename === "string" ? body.filename : undefined;
     const contentType = typeof body?.contentType === "string" ? body.contentType : undefined;
 
+    // Vercel Blob RW token, Authorization header'ı değil; body'deki `token` alanını bekler
     const res = await fetch("https://api.vercel.com/v2/blob/generate-upload-url", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ access: "public", token: undefined, filename, contentType }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ access: "public", token, filename, contentType }),
     });
     const json = await res.json().catch(() => ({} as any));
     if (!res.ok) return NextResponse.json({ ok: false, error: json?.error?.message || json?.error || `Upload URL başarısız (status ${res.status})` }, { status: 500 });
