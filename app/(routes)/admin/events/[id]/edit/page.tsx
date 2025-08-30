@@ -88,8 +88,9 @@ export default async function AdminEditEvent({ params }: { params: { id: string 
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="image" className="text-sm text-white/80">Kapak Görseli URL</label>
-        <input id="image" name="image" defaultValue={event.image} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
+        <span className="text-sm text-white/80">Kapak Görseli</span>
+        {/* URL alanını göstermiyoruz; UploadWidget seçilen dosyayı Vercel Blob'a yükler ve bu gizli input'a URL'i yazar */}
+        <input id="image" name="image" type="hidden" defaultValue={event.image} />
         <UploadWidget targetInputId="image" />
       </div>
 
