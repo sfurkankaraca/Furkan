@@ -12,6 +12,7 @@ export async function POST(request: Request) {
       return {
         allowedContentTypes: ['image/*'],
         maximumSizeInBytes: 10_000_000, // 10 MB
+        token: process.env.BLOB_READ_WRITE_TOKEN || process.env.VERCEL_BLOB_RW_TOKEN || process.env.VERCEL_BLOB_READ_WRITE_TOKEN,
         pathname: `covers/${Date.now()}-${filename}`,
       };
     },
