@@ -2,6 +2,7 @@
 
 import { readEvents, writeEvents, slugify, type AdminEvent, type PhotoItem, type PlaylistItem } from "@/lib/events";
 import { sendAdminEventMail } from "@/lib/mail/send";
+import { redirect } from "next/navigation";
 
 function parseNestedList<T extends Record<string, unknown>>(formData: FormData, prefix: string): T[] {
   const map = new Map<number, T>();
@@ -58,7 +59,7 @@ export async function createEvent(formData: FormData) {
   await writeEvents(next);
 
   await sendAdminEventMail({ title, date, city, venue: venue || undefined, ctaUrl, image: image || undefined, note: "Yeni etkinlik eklendi" });
-  return { ok: true } as const;
+  redirect("/admin/events");
 }
 
 export async function updateEvent(formData: FormData) {
@@ -87,7 +88,7 @@ export async function updateEvent(formData: FormData) {
   } : e);
 
   await writeEvents(next);
-  return { ok: true } as const;
+  redirect("/admin/events");
 }
 
 

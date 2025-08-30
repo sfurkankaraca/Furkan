@@ -29,9 +29,8 @@ function parseNestedList<T extends Record<string, unknown>>(formData: FormData, 
 
 export default function AdminNewEventPage() {
   async function action(formData: FormData) {
-    const res = await createEvent(formData);
-    if (!res?.ok) return res;
-    redirect("/admin/events");
+    "use server";
+    return createEvent(formData);
   }
 
   return (

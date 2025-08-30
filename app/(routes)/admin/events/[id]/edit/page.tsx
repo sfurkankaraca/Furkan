@@ -34,10 +34,9 @@ export default async function AdminEditEvent({ params }: { params: { id: string 
   if (!event) return notFound();
 
   async function action(formData: FormData) {
+    "use server";
     formData.set("eventId", event.id);
-    const res = await updateEvent(formData);
-    if (!res?.ok) return res;
-    redirect("/admin/events");
+    return updateEvent(formData);
   }
 
   return (
