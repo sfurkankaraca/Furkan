@@ -34,9 +34,13 @@ export default function PhotoListEditor({
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
     for (const file of files.slice(0, max)) {
-      const res = await fetch("/api/upload-url", { method: "POST" });
-      const { url, ok } = await res.json();
-      if (!ok || !url) { alert("Upload URL alınamadı"); break; }
+      const res = await fetch("/api/upload-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      });
+      const { url, ok, error } = await res.json();
+      if (!ok || !url) { alert(error || "Upload URL alınamadı"); break; }
       const up = await fetch(url, { method: "POST", body: file });
       const json = await up.json();
       const blobUrl: string | undefined = json?.url;
