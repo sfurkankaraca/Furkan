@@ -31,22 +31,29 @@ export default function PhotoListEditor({
   }
 
   async function onFilesSelected(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files || []);
+    const inputEl = e.currentTarget;
+    const files = Array.from(inputEl.files || []);
     if (files.length === 0) return;
     for (const file of files.slice(0, max)) {
-      const res = await fetch("/api/upload-url", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ filename: file.name, contentType: file.type }),
-      });
-      const { url, ok, error } = await res.json();
-      if (!ok || !url) { alert(error || "Upload URL alınamadı"); break; }
-      const up = await fetch(url, { method: "POST", body: file });
-      const json = await up.json();
-      const blobUrl: string | undefined = json?.url;
-      if (blobUrl) appendUrl(blobUrl);
+      try {
+        const res = await fetch("/api/upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filename: file.name, contentType: file.type }),
+        });
+        const payload = await res.json().catch(() => ({ ok: false, error: `HTTP ${res.status}` }));
+        const { url, ok, error } = payload as { url?: string; ok?: boolean; error?: string };
+        if (!res.ok || !ok || !url) { alert(error || `Upload URL alınamadı (HTTP ${res.status})`); break; }
+        const up = await fetch(url, { method: "POST", body: file });
+        const json = await up.json().catch(() => ({} as any));
+        const blobUrl: string | undefined = (json as any)?.url;
+        if (blobUrl) appendUrl(blobUrl);
+      } catch (err: any) {
+        alert(err?.message || "Yükleme hatası");
+        break;
+      }
     }
-    e.currentTarget.value = "";
+    inputEl.value = "";
   }
 
   return (
