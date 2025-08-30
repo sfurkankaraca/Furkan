@@ -31,6 +31,7 @@ export type AdminEvent = {
 };
 
 const eventsFile = path.join(process.cwd(), "data", "events.json");
+const tmpEventsFile = "/tmp/events.json";
 
 async function blobListLatest(prefix: string): Promise<string | undefined> {
   if (!blobToken) return undefined;
@@ -64,7 +65,10 @@ export async function readEvents(): Promise<AdminEvent[]> {
   }
   // fallback to local file
   try {
-    const json = await fs.readFile(eventsFile, "utf8");
+    // Try tmp first (Vercel writeable path)
+    const json = await fs
+      .readFile(process.env.VERCEL ? tmpEventsFile : eventsFile, "utf8")
+      .catch(async () => fs.readFile(eventsFile, "utf8"));
     const arr = JSON.parse(json);
     return Array.isArray(arr) ? arr : [];
   } catch (e) {
@@ -87,6 +91,11 @@ export async function writeEvents(events: AdminEvent[]) {
         if (up.ok) return;
       }
     } catch {}
+  }
+  // Fallback: on Vercel, write to /tmp; locally, write to repo data
+  if (process.env.VERCEL) {
+    await fs.writeFile(tmpEventsFile, text, "utf8");
+    return;
   }
   await fs.writeFile(eventsFile, text, "utf8");
 }
