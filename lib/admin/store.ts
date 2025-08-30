@@ -1,6 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+const blobToken = process.env.BLOB_READ_WRITE_TOKEN || process.env.VERCEL_BLOB_RW_TOKEN || process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
+const blobApi = "https://api.vercel.com/v2/blob";
+
 export type Member = {
   id: string;
   name: string;
@@ -45,7 +48,35 @@ async function ensureDir() {
   try { await fs.mkdir(dataDir, { recursive: true }); } catch {}
 }
 
-async function readJson<T>(file: string): Promise<T[]> {
+async function blobListLatest(prefix: string): Promise<string | undefined> {
+  if (!blobToken) return undefined;
+  try {
+    const res = await fetch(`${blobApi}?prefix=${encodeURIComponent(prefix)}`, {
+      headers: { Authorization: `Bearer ${blobToken}` },
+      cache: "no-store",
+    });
+    const json = await res.json().catch(() => ({} as any));
+    const blobs: any[] = Array.isArray(json?.blobs) ? json.blobs : [];
+    const sorted = blobs.sort((a, b) => new Date(b?.uploadedAt || 0).getTime() - new Date(a?.uploadedAt || 0).getTime());
+    return sorted[0]?.url as string | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+async function readJson<T>(file: string, blobPrefix?: string): Promise<T[]> {
+  if (blobToken && blobPrefix) {
+    try {
+      const latestUrl = await blobListLatest(blobPrefix);
+      if (latestUrl) {
+        const res = await fetch(latestUrl, { cache: "no-store" });
+        if (res.ok) {
+          const arr = await res.json();
+          return Array.isArray(arr) ? arr : [];
+        }
+      }
+    } catch {}
+  }
   try {
     const json = await fs.readFile(file, "utf8");
     const arr = JSON.parse(json);
@@ -55,14 +86,28 @@ async function readJson<T>(file: string): Promise<T[]> {
   }
 }
 
-async function writeJson<T>(file: string, rows: T[]) {
-  await ensureDir();
+async function writeJson<T>(file: string, rows: T[], blobPrefix?: string) {
   const text = JSON.stringify(rows, null, 2) + "\n";
+  if (blobToken && blobPrefix) {
+    try {
+      const gen = await fetch(`${blobApi}/generate-upload-url`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${blobToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ access: "public", filename: `${blobPrefix}-${Date.now()}.json`, contentType: "application/json" }),
+      });
+      const { url, ok } = await gen.json();
+      if (gen.ok && ok && url) {
+        const up = await fetch(url, { method: "POST", body: text });
+        if (up.ok) return;
+      }
+    } catch {}
+  }
+  await ensureDir();
   await fs.writeFile(file, text, "utf8");
 }
 
 export async function readMembers(): Promise<Member[]> {
-  return readJson<Member>(membersFile);
+  return readJson<Member>(membersFile, "members.json");
 }
 
 export async function addMember(row: Omit<Member, "id" | "createdAt">) {
@@ -70,17 +115,17 @@ export async function addMember(row: Omit<Member, "id" | "createdAt">) {
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const createdAt = new Date().toISOString();
   rows.unshift({ id, createdAt, banned: false, ...row });
-  await writeJson(membersFile, rows);
+  await writeJson(membersFile, rows, "members.json");
 }
 
 export async function setMemberBanned(memberId: string, banned: boolean) {
   const rows = await readMembers();
   const next = rows.map((m) => (m.id === memberId ? { ...m, banned } : m));
-  await writeJson(membersFile, next);
+  await writeJson(membersFile, next, "members.json");
 }
 
 export async function readApplications(): Promise<Application[]> {
-  return readJson<Application>(applicationsFile);
+  return readJson<Application>(applicationsFile, "applications.json");
 }
 
 export async function addApplication(row: Omit<Application, "id" | "createdAt">) {
@@ -88,7 +133,7 @@ export async function addApplication(row: Omit<Application, "id" | "createdAt">)
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const createdAt = new Date().toISOString();
   rows.unshift({ id, createdAt, ...row });
-  await writeJson(applicationsFile, rows);
+  await writeJson(applicationsFile, rows, "applications.json");
 }
 
 export async function readApplicationsByEvent(eventId: string) {
