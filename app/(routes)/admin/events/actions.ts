@@ -1,0 +1,93 @@
+"use server";
+
+import { readEvents, writeEvents, slugify, type AdminEvent, type PhotoItem, type PlaylistItem } from "@/lib/events";
+import { sendAdminEventMail } from "@/lib/mail/send";
+
+function parseNestedList<T extends Record<string, unknown>>(formData: FormData, prefix: string): T[] {
+  const map = new Map<number, T>();
+  for (const [key, value] of formData.entries()) {
+    if (!key.startsWith(prefix + "[")) continue;
+    const idxStart = prefix.length + 1;
+    const idxEnd = key.indexOf("]", idxStart);
+    if (idxEnd === -1) continue;
+    const idx = Number(key.slice(idxStart, idxEnd));
+    const fieldStart = key.indexOf("[", idxEnd + 1);
+    const fieldEnd = key.indexOf("]", fieldStart + 1);
+    if (fieldStart === -1 || fieldEnd === -1) continue;
+    const field = key.slice(fieldStart + 1, fieldEnd);
+    const existing = (map.get(idx) || {}) as T;
+    (existing as any)[field] = String(value);
+    map.set(idx, existing);
+  }
+  return Array.from(map.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([, v]) => v);
+}
+
+export async function createEvent(formData: FormData) {
+  const title = String(formData.get("title") || "");
+  const date = String(formData.get("date") || "");
+  const city = String(formData.get("city") || "");
+  const venue = String(formData.get("venue") || "");
+  const ctaUrlRaw = String(formData.get("ctaUrl") || "");
+  const image = String(formData.get("image") || "");
+
+  if (!title || !date || !city) {
+    return { ok: false, error: "Zorunlu alanları doldurun" } as const;
+  }
+
+  const photos = parseNestedList<PhotoItem>(formData, "photos").filter((p) => p.url);
+  const playlists = parseNestedList<PlaylistItem>(formData, "playlists").filter((p) => p.spotifyEmbedUrl && p.djName);
+
+  const ctaUrl = ctaUrlRaw || "/events/apply";
+  const id = `${slugify(title)}-${date.slice(0, 10)}`;
+
+  const next = await readEvents();
+  const event: AdminEvent = {
+    id,
+    title,
+    date: new Date(date).toISOString(),
+    city,
+    venue: venue || undefined,
+    ctaUrl,
+    image: image || undefined,
+    photos: photos.length ? photos : undefined,
+    playlists: playlists.length ? playlists : undefined,
+  };
+  next.unshift(event);
+  await writeEvents(next);
+
+  await sendAdminEventMail({ title, date, city, venue: venue || undefined, ctaUrl, image: image || undefined, note: "Yeni etkinlik eklendi" });
+  return { ok: true } as const;
+}
+
+export async function updateEvent(formData: FormData) {
+  const eventId = String(formData.get("eventId") || "");
+  const title = String(formData.get("title") || "");
+  const date = String(formData.get("date") || "");
+  const city = String(formData.get("city") || "");
+  const venue = String(formData.get("venue") || "");
+  const ctaUrl = String(formData.get("ctaUrl") || "");
+  const image = String(formData.get("image") || "");
+
+  const photos = parseNestedList<PhotoItem>(formData, "photos").filter((p) => p.url);
+  const playlists = parseNestedList<PlaylistItem>(formData, "playlists").filter((p) => p.spotifyEmbedUrl && p.djName);
+
+  const events = await readEvents();
+  const next = events.map((e) => e.id === eventId ? {
+    ...e,
+    title: title || e.title,
+    date: date ? new Date(date).toISOString() : e.date,
+    city: city || e.city,
+    venue: venue || undefined,
+    ctaUrl: ctaUrl || undefined,
+    image: image || undefined,
+    photos: photos.length ? photos : undefined,
+    playlists: playlists.length ? playlists : undefined,
+  } : e);
+
+  await writeEvents(next);
+  return { ok: true } as const;
+}
+
+

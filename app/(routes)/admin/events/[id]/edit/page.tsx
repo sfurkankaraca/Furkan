@@ -1,8 +1,9 @@
-import { readEvents, writeEvents, type PhotoItem, type PlaylistItem } from "@/lib/events";
+import { readEvents } from "@/lib/events";
 import { notFound, redirect } from "next/navigation";
 import PhotoListEditor from "@/components/PhotoListEditor";
 import PlaylistListEditor from "@/components/PlaylistListEditor";
 import UploadWidget from "@/components/UploadWidget";
+import { updateEvent } from "../../actions";
 
 export const metadata = { title: "Admin — Etkinlik Düzenle | noqta" };
 
@@ -33,30 +34,9 @@ export default async function AdminEditEvent({ params }: { params: { id: string 
   if (!event) return notFound();
 
   async function action(formData: FormData) {
-    "use server";
-    const title = String(formData.get("title") || "");
-    const date = String(formData.get("date") || "");
-    const city = String(formData.get("city") || "");
-    const venue = String(formData.get("venue") || "");
-    const ctaUrl = String(formData.get("ctaUrl") || "");
-    const image = String(formData.get("image") || "");
-
-    const photos = parseNestedList<PhotoItem>(formData, "photos").filter((p) => p.url);
-    const playlists = parseNestedList<PlaylistItem>(formData, "playlists").filter((p) => p.spotifyEmbedUrl && p.djName);
-
-    const next = events.map((e) => e.id === event.id ? {
-      ...e,
-      title: title || e.title,
-      date: date ? new Date(date).toISOString() : e.date,
-      city: city || e.city,
-      venue: venue || undefined,
-      ctaUrl: ctaUrl || undefined,
-      image: image || undefined,
-      photos: photos.length ? photos : undefined,
-      playlists: playlists.length ? playlists : undefined,
-    } : e);
-
-    await writeEvents(next);
+    formData.set("eventId", event.id);
+    const res = await updateEvent(formData);
+    if (!res?.ok) return res;
     redirect("/admin/events");
   }
 

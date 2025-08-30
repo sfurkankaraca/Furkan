@@ -1,9 +1,8 @@
-import { readEvents, writeEvents, slugify, type AdminEvent, type PhotoItem, type PlaylistItem } from "@/lib/events";
-import { sendAdminEventMail } from "@/lib/mail/send";
 import { redirect } from "next/navigation";
 import PhotoListEditor from "@/components/PhotoListEditor";
 import PlaylistListEditor from "@/components/PlaylistListEditor";
 import UploadWidget from "@/components/UploadWidget";
+import { createEvent } from "../actions";
 
 export const metadata = { title: "Admin — Yeni Etkinlik | noqta" };
 
@@ -30,44 +29,8 @@ function parseNestedList<T extends Record<string, unknown>>(formData: FormData, 
 
 export default function AdminNewEventPage() {
   async function action(formData: FormData) {
-    "use server";
-    const title = String(formData.get("title") || "");
-    const date = String(formData.get("date") || "");
-    const city = String(formData.get("city") || "");
-    const venue = String(formData.get("venue") || "");
-    const ctaUrlRaw = String(formData.get("ctaUrl") || "");
-    const image = String(formData.get("image") || "");
-
-    if (!title || !date || !city) {
-      return { ok: false, error: "Zorunlu alanları doldurun" } as const;
-    }
-
-    const photos = parseNestedList<PhotoItem>(formData, "photos").filter((p) => p.url);
-    const playlists = parseNestedList<PlaylistItem>(formData, "playlists").filter((p) => p.spotifyEmbedUrl && p.djName);
-
-    const ctaUrl = ctaUrlRaw || "/events/apply";
-
-    const id = `${slugify(title)}-${date.slice(0, 10)}`;
-    // Image URL comes from client-side UploadWidget (Vercel Blob)
-    const uploadedImagePath: string | undefined = image || undefined;
-
-    const next = await readEvents();
-    const event: AdminEvent = {
-      id,
-      title,
-      date: new Date(date).toISOString(),
-      city,
-      venue: venue || undefined,
-      ctaUrl,
-      image: uploadedImagePath,
-      photos: photos.length ? photos : undefined,
-      playlists: playlists.length ? playlists : undefined,
-    };
-    next.unshift(event);
-    await writeEvents(next);
-
-    await sendAdminEventMail({ title, date, city, venue: venue || undefined, ctaUrl, image: uploadedImagePath, note: "Yeni etkinlik eklendi" });
-
+    const res = await createEvent(formData);
+    if (!res?.ok) return res;
     redirect("/admin/events");
   }
 
