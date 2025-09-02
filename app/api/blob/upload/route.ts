@@ -1,27 +1,46 @@
 // web/app/api/blob/upload/route.ts
-import { handleUpload } from '@vercel/blob/client';
-import { NextResponse } from 'next/server';
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+import { put } from "@vercel/blob";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const body: any = await request.json().catch(() => ({}));
-  return handleUpload({
-    request,
-    body,
-    onBeforeGenerateToken: async (ctx: any) => {
-      const filename = ctx?.filename || 'file';
-      return {
-        allowedContentTypes: ['image/*'],
-        maximumSizeInBytes: 10_000_000, // 10 MB
-        token: process.env.BLOB_READ_WRITE_TOKEN || process.env.VERCEL_BLOB_RW_TOKEN || process.env.VERCEL_BLOB_READ_WRITE_TOKEN,
-        pathname: `covers/${Date.now()}-${filename}`,
-      };
-    },
-    onUploadCompleted: async ({ blob }: any) => {
-      console.log('Upload completed:', blob?.url);
-    },
-  });
+  console.log(">> POST /api/blob/upload tetiklendi");
+  
+  const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+  console.log(">> Blob token mevcut mu?:", blobToken ? "evet" : "hayır");
+  
+  if (!blobToken) {
+    console.error(">> BLOB_READ_WRITE_TOKEN bulunamadı");
+    return NextResponse.json({ error: "Blob token not configured" }, { status: 500 });
+  }
+  
+  try {
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+    
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+    
+    console.log(">> Dosya alındı:", file.name, file.type, file.size);
+    
+    const { url } = await put(`covers/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+      token: blobToken,
+    });
+    
+    console.log(">> Upload başarılı:", url);
+    
+    return NextResponse.json({ url });
+  } catch (err: any) {
+    console.error(">> Upload HATASI:", err?.message || err);
+    return NextResponse.json({ ok: false, error: "Upload failed" }, { status: 500 });
+  }
 }
 
 export async function GET() {
+  console.log(">> GET /api/blob/upload çağrıldı");
   return NextResponse.json({ ok: true });
 }

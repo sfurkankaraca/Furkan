@@ -63,15 +63,39 @@ export async function readEvents(): Promise<AdminEvent[]> {
       }
     } catch {}
   }
-  // fallback to local file
+  
+  // Fallback: try to read from local file system
   try {
-    // Try tmp first (Vercel writeable path)
-    const json = await fs
-      .readFile(process.env.VERCEL ? tmpEventsFile : eventsFile, "utf8")
-      .catch(async () => fs.readFile(eventsFile, "utf8"));
+    if (process.env.VERCEL) {
+      // On Vercel, try tmp file first
+      try {
+        const json = await fs.readFile(tmpEventsFile, "utf8");
+        const arr = JSON.parse(json);
+        return Array.isArray(arr) ? arr : [];
+      } catch {
+        // If tmp file doesn't exist, return empty array
+        return [];
+      }
+    } else {
+      // Locally, read from repo data
+      const json = await fs.readFile(eventsFile, "utf8");
+      const arr = JSON.parse(json);
+      return Array.isArray(arr) ? arr : [];
+    }
+  } catch (e) {
+    console.error("Error reading events:", e);
+    return [];
+  }
+}
+
+// Fallback function that always returns local data
+export async function readEventsLocal(): Promise<AdminEvent[]> {
+  try {
+    const json = await fs.readFile(eventsFile, "utf8");
     const arr = JSON.parse(json);
     return Array.isArray(arr) ? arr : [];
   } catch (e) {
+    console.error("Error reading local events:", e);
     return [];
   }
 }

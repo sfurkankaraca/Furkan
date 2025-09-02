@@ -1,8 +1,9 @@
 "use client";
 
-import { upload } from "@vercel/blob/client";
+import { useState } from "react";
+import Image from "next/image";
 
-export type PhotoItem = { url: string; title?: string; description?: string };
+export type PhotoItem = { url: string };
 
 export default function PhotoListEditor({
   name,
@@ -13,58 +14,106 @@ export default function PhotoListEditor({
   initial?: PhotoItem[];
   max?: number;
 }) {
-  function appendUrl(url: string) {
-    const container = document.getElementById(`${name}-items`);
-    if (!container) return;
-    const count = container.querySelectorAll("[data-photo-item]").length;
-    if (count >= max) return alert(`Maksimum ${max} fotoğraf`);
-    const idx = count;
-    const wrapper = document.createElement("div");
-    wrapper.setAttribute("data-photo-item", "1");
-    wrapper.className = "grid gap-2 border border-white/10 rounded-xl p-3";
-    wrapper.innerHTML = `
-      <input name="${name}[${idx}][url]" class="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Görsel URL" value="${url}" />
-      <input name="${name}[${idx}][title]" class="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Başlık (isteğe bağlı)" />
-      <textarea name="${name}[${idx}][description]" rows="2" class="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Açıklama (isteğe bağlı)"></textarea>
-    `;
-    container.appendChild(wrapper);
+  const [photos, setPhotos] = useState<PhotoItem[]>(initial || []);
+
+  function addPhoto(url: string) {
+    setPhotos(prev => {
+      const next = [...prev, { url }];
+      if (next.length > max) return next.slice(0, max);
+      return next;
+    });
+  }
+
+  function removePhoto(index: number) {
+    setPhotos(photos.filter((_, i) => i !== index));
   }
 
   async function onFilesSelected(e: React.ChangeEvent<HTMLInputElement>) {
-    const inputEl = e.currentTarget;
+    const inputEl = e.target;
     const files = Array.from(inputEl.files || []);
     if (files.length === 0) return;
-    for (const file of files.slice(0, max)) {
+    
+    for (const file of files) {
       try {
-        const { url } = await upload(file.name, file, {
-          access: "public",
-          contentType: file.type,
-          handleUploadUrl: "/api/blob/upload",
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const res = await fetch('/api/blob/upload', {
+          method: 'POST',
+          body: formData,
         });
-        if (url) appendUrl(url);
+
+        if (!res.ok) {
+          const error = await res.json().catch(() => ({}));
+          throw new Error(error.error || `HTTP ${res.status}`);
+        }
+
+        const { url } = await res.json();
+        if (url) addPhoto(url);
       } catch (err: any) {
         alert(err?.message || "Yükleme hatası");
         break;
       }
     }
-    inputEl.value = "";
+    // Güvenli şekilde input'u temizle
+    if (inputEl) {
+      inputEl.value = "";
+    }
   }
 
   return (
     <div className="grid gap-3">
-      <div id={`${name}-items`} className="grid gap-3">
-        {(initial || []).slice(0, max).map((p, idx) => (
-          <div key={idx} data-photo-item className="grid gap-2 border border-white/10 rounded-xl p-3">
-            <input name={`${name}[${idx}][url]`} defaultValue={p.url} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Görsel URL" />
-            <input name={`${name}[${idx}][title]`} defaultValue={p.title} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Başlık (isteğe bağlı)" />
-            <textarea name={`${name}[${idx}][description]`} defaultValue={p.description} rows={2} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Açıklama (isteğe bağlı)" />
+      {/* Hidden inputs for form submission */}
+      {photos.map((photo, idx) => (
+        <input key={idx} type="hidden" name={`${name}[${idx}][url]`} value={photo.url} />
+      ))}
+      
+      {/* Photo grid display */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {photos.map((photo, idx) => (
+          <div key={idx} className="relative group">
+            <div className="aspect-square relative rounded-lg overflow-hidden border border-white/20">
+              <Image 
+                src={photo.url} 
+                alt={`Photo ${idx + 1}`} 
+                fill 
+                className="object-cover"
+              />
+              {/* Remove button */}
+              <button
+                type="button"
+                onClick={() => removePhoto(idx)}
+                className="absolute top-1 right-1 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                title="Fotoğrafı kaldır"
+              >
+                ×
+              </button>
+            </div>
           </div>
         ))}
       </div>
-      <div className="flex items-center gap-2">
-        <input type="file" accept="image/*" multiple onChange={onFilesSelected} className="text-sm" />
-        <span className="text-xs text-white/50">Topluca seçebilirsin (max {max}).</span>
-      </div>
+      
+      {/* Upload section */}
+      {photos.length < max && (
+        <div className="flex items-center gap-2">
+          <input 
+            type="file" 
+            accept="image/*" 
+            multiple 
+            onChange={onFilesSelected} 
+            className="text-sm" 
+          />
+          <span className="text-xs text-white/50">
+            Topluca seçebilirsin (max {max}). {photos.length}/{max} fotoğraf.
+          </span>
+        </div>
+      )}
+      
+      {photos.length === 0 && (
+        <p className="text-sm text-white/50 text-center py-4">
+          Henüz fotoğraf yok. Yüklemek için dosya seç.
+        </p>
+      )}
     </div>
   );
 }

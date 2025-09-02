@@ -1,9 +1,31 @@
-import { readEvents } from "@/lib/events";
+"use client";
 
-export const metadata = { title: "Admin — Etkinlikler | noqta" };
+import { useState, useEffect } from "react";
 
-export default async function AdminEventsList() {
-  const events = await readEvents();
+export default function AdminEventsList() {
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) return <div>Yükleniyor...</div>;
+
   return (
     <div className="grid gap-4">
       <div className="flex items-center justify-between">
@@ -30,7 +52,7 @@ export default async function AdminEventsList() {
                 <td className="px-3 py-2">{new Date(e.date).toLocaleString()}</td>
                 <td className="px-3 py-2">{e.city}</td>
                 <td className="px-3 py-2">{e.photos?.length || 0}</td>
-                <td className="px-3 py-2">{e.spotifyEmbeds?.length || 0}</td>
+                <td className="px-3 py-2">{e.playlists?.length || 0}</td>
                 <td className="px-3 py-2">
                   <a className="underline" href={`/events/${e.id}`} target="_blank">görüntüle</a>
                 </td>

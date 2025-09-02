@@ -1,11 +1,12 @@
-import { readEvents } from "@/lib/events";
-import { notFound, redirect } from "next/navigation";
+"use client";
+
+import { redirect } from "next/navigation";
 import PhotoListEditor from "@/components/PhotoListEditor";
 import PlaylistListEditor from "@/components/PlaylistListEditor";
 import UploadWidget from "@/components/UploadWidget";
 import { updateEvent } from "../../actions";
+import { useState, useEffect } from "react";
 
-export const metadata = { title: "Admin — Etkinlik Düzenle | noqta" };
 export const dynamic = "force-dynamic";
 
 function parseNestedList<T extends Record<string, unknown>>(formData: FormData, prefix: string): T[] {
@@ -29,13 +30,52 @@ function parseNestedList<T extends Record<string, unknown>>(formData: FormData, 
     .map(([, v]) => v);
 }
 
-export default async function AdminEditEvent({ params }: { params: { id: string } }) {
-  const events = await readEvents();
-  const event = events.find((e) => e.id === params.id);
-  if (!event) return notFound();
+export default function AdminEditEvent({ params }: { params: { id: string } }) {
+  const [event, setEvent] = useState<any>(null);
+  const [currentImage, setCurrentImage] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch event from API
+    const fetchEvent = async () => {
+      try {
+        const response = await fetch('/api/events');
+        if (response.ok) {
+          const events = await response.json();
+          const foundEvent = events.find((e: any) => e.id === params.id);
+          if (foundEvent) {
+            setEvent(foundEvent);
+            setCurrentImage(foundEvent.image || "");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching event:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvent();
+
+    // Listen for image updates
+    const handleImageUpdate = (e: CustomEvent) => {
+      if (e.detail.eventId === params.id) {
+        setCurrentImage(e.detail.newImage);
+        console.log("Image updated in real-time:", e.detail.newImage);
+      }
+    };
+
+    window.addEventListener('eventImageUpdated', handleImageUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('eventImageUpdated', handleImageUpdate as EventListener);
+    };
+  }, [params.id]);
+
+  if (loading) return <div>Yükleniyor...</div>;
+  if (!event) return <div>Etkinlik bulunamadı.</div>;
 
   async function action(formData: FormData) {
-    "use server";
     formData.set("eventId", event.id);
     return updateEvent(formData);
   }
@@ -54,7 +94,7 @@ export default async function AdminEditEvent({ params }: { params: { id: string 
 
       <div className="grid gap-2">
         <label htmlFor="city" className="text-sm text-white/80">Şehir</label>
-        <input id="city" name="city" defaultValue={event.city} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30" />
+        <input id="city" name="city" defaultValue={event.city} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" />
       </div>
 
       <div className="grid gap-2">
@@ -70,8 +110,26 @@ export default async function AdminEditEvent({ params }: { params: { id: string 
       <div className="grid gap-2">
         <span className="text-sm text-white/80">Kapak Görseli</span>
         {/* URL alanını göstermiyoruz; UploadWidget seçilen dosyayı Vercel Blob'a yükler ve bu gizli input'a URL'i yazar */}
-        <input id="image" name="image" type="hidden" defaultValue={event.image} />
-        <UploadWidget targetInputId="image" />
+        <input id="image" name="image" type="hidden" value={currentImage} />
+        <UploadWidget 
+          targetInputId="image" 
+          onUploadComplete={(url) => setCurrentImage(url)}
+          eventId={event?.id || params.id}
+        />
+        
+        {/* Mevcut fotoğrafı göster */}
+        {currentImage && (
+          <div className="mt-2">
+            <span className="text-xs text-white/60 block mb-2">Kapak görseli:</span>
+            <div className="relative w-32 h-20 rounded-lg overflow-hidden border border-white/20">
+              <img 
+                src={currentImage} 
+                alt="Kapak görseli" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid gap-2">

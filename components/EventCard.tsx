@@ -21,7 +21,7 @@ export default function EventCard({ event }: { event: EventItem }) {
   });
 
   return (
-    <div className="group rounded-2xl bg-white/5 border border-white/10 overflow-hidden">
+    <div className="group rounded-2xl bg-white/5 border border-white/10 overflow-hidden hover:bg-white/10 transition-colors">
       <div className="aspect-[16/9] relative bg-white/5">
         {event.image ? (
           <Image src={event.image} alt={event.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
@@ -33,13 +33,6 @@ export default function EventCard({ event }: { event: EventItem }) {
       <div className="p-4">
         <h3 className="text-lg font-medium text-white">{event.title}</h3>
         <p className="text-white/60 text-sm mt-1">{event.city}{event.venue ? ` · ${event.venue}` : ""}</p>
-        <div className="mt-3 flex items-center gap-2">
-          {event.ctaUrl ? (
-            <Button asChild size="sm" className="rounded-xl">
-              <Link href={event.ctaUrl} target="_blank" rel="noopener noreferrer">Detay / RSVP</Link>
-            </Button>
-          ) : null}
-        </div>
       </div>
     </div>
   );

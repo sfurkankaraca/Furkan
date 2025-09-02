@@ -1,18 +1,46 @@
+
+
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DotRing from "@/components/DotRing";
-import fs from "node:fs/promises";
-import path from "node:path";
 import EventCard, { EventItem } from "@/components/EventCard";
+import { useState, useEffect } from "react";
 
-async function getEvents(): Promise<EventItem[]> {
-  const file = path.join(process.cwd(), "data", "events.json");
-  const json = await fs.readFile(file, "utf8");
-  return JSON.parse(json);
-}
+export default function Home() {
+  const [events, setEvents] = useState([
+    {
+      "id": "private-meteor-party-2025-08-12",
+      "title": "Private Meteor Party",
+      "date": "2025-08-12T21:00:00+03:00",
+      "city": "Kayseri",
+      "venue": "Somewhere near Felahiye",
+      "ctaUrl": "/events/apply",
+      "image": "/events/perseid.jpeg"
+    }
+  ]);
 
-export default async function Home() {
-  const events = (await getEvents()).slice(0, 3);
+  useEffect(() => {
+    const fetchLatestEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        if (response.ok) {
+          const latestEvents = await response.json();
+          setEvents(latestEvents);
+          localStorage.setItem('noqta-events', JSON.stringify(latestEvents));
+          return;
+        }
+      } catch {}
+      const storedEvents = localStorage.getItem('noqta-events');
+      if (storedEvents) {
+        try { setEvents(JSON.parse(storedEvents)); } catch {}
+      }
+    };
+
+    fetchLatestEvents();
+  }, []);
+
   return (
     <main>
       <section className="relative overflow-hidden">
@@ -39,39 +67,13 @@ export default async function Home() {
         <div className="container mx-auto max-w-7xl px-4">
           <p className="text-white/70">quiet energy. deep rhythm. we experiment, we share.</p>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {[
-              { href: "/events", title: "Events", desc: "What’s next" },
-              { href: "/collective", title: "Collective", desc: "Why we gather" },
-              { href: "/labs", title: "Labs", desc: "Small experiments" },
-            ].map((c) => (
-              <Link
-                key={c.href}
-                href={c.href}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition block"
-              >
+            {[{ href: "/events", title: "Events", desc: "What’s next" }, { href: "/collective", title: "Collective", desc: "Why we gather" }, { href: "/labs", title: "Labs", desc: "Small experiments" }].map((c) => (
+              <Link key={c.href} href={c.href} className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition block">
                 <div className="text-xl font-medium">{c.title}</div>
                 <div className="text-white/60 mt-1">{c.desc}</div>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section>
-        <div className="container mx-auto max-w-7xl px-4">
-          <div className="mb-4 flex items-end justify-between">
-            <h2 className="text-2xl font-semibold text-white">Upcoming Events</h2>
-            <Link href="/events" className="text-sm text-white/70 hover:text-white">See all</Link>
-          </div>
-          {events.length === 0 ? (
-            <p className="text-white/60">No events yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {events.map((e) => (
-                <EventCard key={e.id} event={e} />
-              ))}
-            </div>
-          )}
         </div>
       </section>
     </main>

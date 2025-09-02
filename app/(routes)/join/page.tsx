@@ -1,96 +1,116 @@
-import { sendContactMail } from "@/lib/mail/send";
-import Section from "@/components/Section";
-import { addMember } from "@/lib/admin/store";
+"use client";
 
-export const metadata = { title: "Kaybol | noqta" };
+import Section from "@/components/Section";
+import { useState } from "react";
+import { submitJoin } from "./actions";
 
 export default function JoinPage() {
+  const [role, setRole] = useState<'dj' | 'participant' | 'student' | ''>('');
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+
   async function action(formData: FormData) {
-    "use server";
-    const name = String(formData.get("name") || "");
-    const email = String(formData.get("email") || "");
-    const note = String(formData.get("note") || "");
-    const gender = String(formData.get("gender") || "");
-    const age = Number(formData.get("age") || 0) || undefined;
-    const city = String(formData.get("city") || "");
-    const phone = String(formData.get("phone") || "");
-    const instagram = String(formData.get("instagram") || "");
-    const hasCar = String(formData.get("hasCar") || "no");
-    const tastes = String(formData.get("tastes") || "");
-
-    await addMember({
-      name,
-      email,
-      city: city || undefined,
-      phone: phone || undefined,
-      instagram: instagram || undefined,
-      gender: gender || undefined,
-      age,
-      hasCar: hasCar === "yes",
-      tastes: tastes || undefined,
-      note: note || undefined,
-    });
-
-    const message = `Gender: ${gender}\nAge: ${age ?? ""}\nCity: ${city}\nPhone: ${phone}\nInstagram: ${instagram}\nHasCar: ${hasCar}\nTastes: ${tastes}\n\n${note}`;
-    await sendContactMail({ name, email, subject: "Membership", message });
+    setBusy(true);
+    try {
+      await submitJoin(formData);
+      setDone(true);
+    } catch (e) {
+      alert('Gönderim başarısız');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
-    <Section title="Kaybol" description="Join the circle. leave a few details.">
-      <form action={action} className="grid gap-4">
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="grid gap-2" htmlFor="name">
-            <span className="text-sm text-white/80">Name</span>
-            <input id="name" name="name" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="Your name" />
-          </label>
-          <label className="grid gap-2" htmlFor="email">
-            <span className="text-sm text-white/80">Email</span>
-            <input id="email" type="email" name="email" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="you@mail.com" />
-          </label>
-          <label className="grid gap-2" htmlFor="gender">
-            <span className="text-sm text-white/80">Gender</span>
-            <select id="gender" name="gender" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30">
-              <option value="">Prefer not to say</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="nonbinary">Nonbinary</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
-          <label className="grid gap-2" htmlFor="age">
-            <span className="text-sm text-white/80">Age</span>
-            <input id="age" name="age" type="number" min="16" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="" />
-          </label>
-          <label className="grid gap-2" htmlFor="city">
-            <span className="text-sm text-white/80">City</span>
-            <input id="city" name="city" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="" />
-          </label>
-          <label className="grid gap-2" htmlFor="phone">
-            <span className="text-sm text-white/80">Phone</span>
-            <input id="phone" name="phone" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="+90 ..." />
-          </label>
-          <label className="grid gap-2" htmlFor="instagram">
-            <span className="text-sm text-white/80">Instagram</span>
-            <input id="instagram" name="instagram" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="@handle" />
-          </label>
-          <label className="grid gap-2" htmlFor="hasCar">
-            <span className="text-sm text-white/80">Car available?</span>
-            <select id="hasCar" name="hasCar" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30">
-              <option value="no">No</option>
-              <option value="yes">Yes</option>
-            </select>
-          </label>
+    <Section title="Kaybol" description="Rollünü seç ve aramıza katıl.">
+      <div className="grid gap-6 max-w-3xl mx-auto">
+        {/* Role selector as neon cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 place-items-center">
+          {[{id:'dj',label:'DJ',desc:'Set, tarz, ekipman'},{id:'participant',label:'Katılımcı',desc:'Dinlediğin tarzlar'},{id:'student',label:'Öğrenci',desc:'Okul ve ilgi alanları'}].map((r:any)=> (
+            <button key={r.id} onClick={() => setRole(r.id)} className={`w-full inline-flex rounded-2xl p-[2px] ${role===r.id? 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400':'bg-gradient-to-r from-white/20 via-white/10 to-white/20'}`}>
+              <span className={`rounded-[14px] w-full bg-black/80 p-4 text-left ${role===r.id? 'text-white':'text-white/80'}`}>
+                <div className="text-lg font-medium">{r.label}</div>
+                <div className="text-white/60 text-sm mt-1">{r.desc}</div>
+              </span>
+            </button>
+          ))}
         </div>
-        <label className="grid gap-2" htmlFor="tastes">
-          <span className="text-sm text-white/80">What do you listen to?</span>
-          <input id="tastes" name="tastes" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="ambient, dub techno, minimal, ..." />
-        </label>
-        <label className="grid gap-2" htmlFor="note">
-          <span className="text-sm text-white/80">Note (optional)</span>
-          <textarea id="note" name="note" rows={6} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="Tell us a bit about yourself" />
-        </label>
-        <button type="submit" className="rounded-xl bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90">Kaybol</button>
-      </form>
+
+        {role === '' ? (
+          <div className="text-white/70 text-sm text-center">Kaydolmak istediğin rolü seç.</div>
+        ) : done ? (
+          <div className="rounded-xl border border-white/10 p-4 bg-white/5 text-center">Teşekkürler! Başvurun alındı.</div>
+        ) : (
+          <form action={action} className="grid gap-4">
+            <input type="hidden" name="role" value={role} />
+
+            {/* Common fields */}
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="grid gap-2" htmlFor="name">
+                <span className="text-sm text-white/80">Ad Soyad</span>
+                <input id="name" name="name" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="Ad Soyad" />
+              </label>
+              <label className="grid gap-2" htmlFor="email">
+                <span className="text-sm text-white/80">Email</span>
+                <input id="email" type="email" name="email" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="you@mail.com" />
+              </label>
+              <label className="grid gap-2" htmlFor="city">
+                <span className="text-sm text-white/80">Şehir</span>
+                <input id="city" name="city" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" />
+              </label>
+              <label className="grid gap-2" htmlFor="phone">
+                <span className="text-sm text-white/80">Telefon</span>
+                <input id="phone" name="phone" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="+90 ..." />
+              </label>
+              <label className="grid gap-2" htmlFor="instagram">
+                <span className="text-sm text-white/80">Instagram</span>
+                <input id="instagram" name="instagram" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" placeholder="@handle" />
+              </label>
+            </div>
+
+            {/* Role specific */}
+            {role === 'dj' && (
+              <div className="grid gap-3 rounded-xl border border-white/10 p-3">
+                <div className="text-sm text-white/80">DJ Bilgileri</div>
+                <input name="genres" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Tarz(lar)" />
+                <input name="experienceYears" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Deneyim (yıl)" />
+                <input name="equipment" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Ekipman" />
+                <input name="mixes" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Mix/Set linkleri" />
+                <input name="availability" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Uygunluk (gün/saat)" />
+              </div>
+            )}
+
+            {role === 'participant' && (
+              <div className="grid gap-3 rounded-xl border border-white/10 p-3">
+                <div className="text-sm text-white/80">Katılımcı Bilgileri</div>
+                <input name="tastes" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Neler dinlersin?" />
+                <input name="age" type="number" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Yaş" />
+                <select name="hasCar" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white">
+                  <option value="no">Arabam yok</option>
+                  <option value="yes">Arabam var</option>
+                </select>
+              </div>
+            )}
+
+            {role === 'student' && (
+              <div className="grid gap-3 rounded-xl border border-white/10 p-3">
+                <div className="text-sm text-white/80">Öğrenci Bilgileri</div>
+                <input name="school" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Okul" />
+                <input name="study" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Bölüm/Program" />
+                <input name="interests" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="İlgi alanları" />
+                <input name="availability" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Uygunluk (gün/saat)" />
+              </div>
+            )}
+
+            <label className="grid gap-2" htmlFor="note">
+              <span className="text-sm text-white/80">Ek Not (opsiyonel)</span>
+              <textarea id="note" name="note" rows={4} className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white placeholder:text-white/30 outline-none focus:ring-2 focus:ring-white/30" />
+            </label>
+
+            <div className="flex justify-center"><button type="submit" disabled={busy} className="rounded-xl bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 disabled:opacity-60">Kaydol</button></div>
+          </form>
+        )}
+      </div>
     </Section>
   );
 } 

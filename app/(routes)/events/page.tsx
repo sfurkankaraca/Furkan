@@ -1,20 +1,73 @@
+"use client";
+
 import EventCard, { EventItem } from "@/components/EventCard";
 import Section from "@/components/Section";
-import fs from "node:fs/promises";
-import path from "node:path";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
-async function getEvents(): Promise<EventItem[]> {
-  const file = path.join(process.cwd(), "data", "events.json");
-  const json = await fs.readFile(file, "utf8");
-  return JSON.parse(json);
-}
+export default function EventsPage() {
+  const [events, setEvents] = useState([
+    {
+      "id": "private-meteor-party-2025-08-12",
+      "title": "Private Meteor Party",
+      "date": "2025-08-12T21:00:00+03:00",
+      "city": "Kayseri",
+      "venue": "Somewhere near Felahiye",
+      "ctaUrl": "/events/apply",
+      "image": "/events/perseid.jpeg"
+    }
+  ]);
 
-export const metadata = {
-  title: "Etkinlikler | noqta",
-};
+  useEffect(() => {
+    // Önce veritabanından güncel veriyi çekmeye çalış
+    const fetchLatestEvents = async () => {
+      try {
+        const response = await fetch('/api/events');
+        if (response.ok) {
+          const latestEvents = await response.json();
+          setEvents(latestEvents);
+          localStorage.setItem('noqta-events', JSON.stringify(latestEvents));
+          console.log("Latest events fetched from database:", latestEvents);
+          return;
+        }
+      } catch (error) {
+        console.log("Could not fetch from database, using localStorage fallback");
+      }
+      
+      // Fallback: Local storage'dan güncel veriyi al
+      const storedEvents = localStorage.getItem('noqta-events');
+      if (storedEvents) {
+        try {
+          const parsedEvents = JSON.parse(storedEvents);
+          setEvents(parsedEvents);
+        } catch (error) {
+          console.error('Error parsing stored events:', error);
+        }
+      }
+    };
 
-export default async function EventsPage() {
-  const events = await getEvents();
+    fetchLatestEvents();
+
+    // Listen for image updates
+    const handleImageUpdate = (e: CustomEvent) => {
+      setEvents(e.detail.updatedEvents);
+      console.log("Events page updated with new events:", e.detail.updatedEvents);
+      
+      // Also update localStorage with the new data
+      localStorage.setItem('noqta-events', JSON.stringify(e.detail.updatedEvents));
+      
+      // Update blob URL if available
+      if (e.detail.eventsBlobUrl) {
+        localStorage.setItem('noqta-events-blob-url', e.detail.eventsBlobUrl);
+      }
+    };
+
+    window.addEventListener('eventImageUpdated', handleImageUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('eventImageUpdated', handleImageUpdate as EventListener);
+    };
+  }, []);
   const now = Date.now();
   const upcoming = events
     .filter((e) => new Date(e.date).getTime() >= now)
@@ -39,7 +92,7 @@ export default async function EventsPage() {
           name: (e as any).venue || e.city,
           address: e.city,
         },
-        url: (e as any).ctaUrl || "https://noqta.ai/events",
+        url: `/events/${e.id}`,
         image: e.image ? [e.image] : undefined,
       },
     })),
@@ -53,7 +106,9 @@ export default async function EventsPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {upcoming.map((e) => (
-              <EventCard key={e.id} event={e} />
+              <Link key={e.id} href={`/events/${e.id}`} className="block">
+                <EventCard event={e} />
+              </Link>
             ))}
           </div>
         )}
@@ -65,7 +120,9 @@ export default async function EventsPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {past.map((e) => (
-              <EventCard key={e.id} event={e} />
+              <Link key={e.id} href={`/events/${e.id}`} className="block">
+                <EventCard event={e} />
+              </Link>
             ))}
           </div>
         )}
