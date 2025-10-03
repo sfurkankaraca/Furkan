@@ -29,10 +29,19 @@ export default function UploadWidget({
       let url = "";
       try {
         // Önce direct upload dener
-        const gen = await fetch('/api/upload-url', { cache: 'no-store' });
+        const gen = await fetch('/api/upload-url', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name, contentType: file.type }),
+          cache: 'no-store' 
+        });
         if (!gen.ok) throw new Error(`Upload URL alınamadı (${gen.status})`);
         const { url: uploadUrl } = await gen.json();
-        const up = await fetch(uploadUrl, { method: 'POST', body: file });
+        const up = await fetch(uploadUrl, { 
+          method: 'POST', 
+          headers: { 'Content-Type': file.type || 'application/octet-stream' },
+          body: file 
+        });
         if (!up.ok) throw new Error(`Upload başarısız (${up.status})`);
         const json = await up.json();
         url = json.url;
