@@ -70,7 +70,7 @@ export default function EventsPage() {
   }, []);
   const now = Date.now();
   const upcoming = events
-    .filter((e) => new Date(e.date).getTime() >= now)
+    .filter((e) => !e.date || new Date(e.date).getTime() >= now)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const past = events
     .filter((e) => new Date(e.date).getTime() < now)

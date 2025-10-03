@@ -28,9 +28,9 @@ export default function Navbar() {
 
   const links = [
     { href: "/events", label: dict.nav.events },
-    { href: "/collective", label: dict.nav.collective },
-    { href: "/labs", label: "Labs", highlight: false },
+    { href: "/academy", label: "Academy" },
     { href: "/games", label: "Games", highlight: true },
+    { href: "/collective", label: "Collective" },
     { href: "/contact", label: dict.nav.contact },
   ] as const;
 

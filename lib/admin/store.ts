@@ -40,11 +40,25 @@ export type Application = {
   createdAt: string;
 };
 
+export type WorkshopApplication = {
+  id: string;
+  kind: "dj" | "production" | string;
+  name: string;
+  email: string;
+  phone?: string;
+  city?: string;
+  instagram?: string;
+  answers: Record<string, string | number | boolean>;
+  createdAt: string;
+};
+
 const dataDir = path.join(process.cwd(), "data");
 const membersFile = path.join(dataDir, "members.json");
 const applicationsFile = path.join(dataDir, "applications.json");
+const workshopApplicationsFile = path.join(dataDir, "workshop-applications.json");
 const tmpMembersFile = "/tmp/members.json";
 const tmpApplicationsFile = "/tmp/applications.json";
+const tmpWorkshopApplicationsFile = "/tmp/workshop-applications.json";
 
 async function ensureDir() {
   try { await fs.mkdir(dataDir, { recursive: true }); } catch {}
@@ -147,4 +161,21 @@ export async function addApplication(row: Omit<Application, "id" | "createdAt">)
 export async function readApplicationsByEvent(eventId: string) {
   const rows = await readApplications();
   return rows.filter((a) => a.eventId === eventId);
+}
+
+export async function readWorkshopApplications(): Promise<WorkshopApplication[]> {
+  return readJson<WorkshopApplication>(workshopApplicationsFile, "workshop-applications.json", tmpWorkshopApplicationsFile);
+}
+
+export async function addWorkshopApplication(row: Omit<WorkshopApplication, "id" | "createdAt">) {
+  const rows = await readWorkshopApplications();
+  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const createdAt = new Date().toISOString();
+  rows.unshift({ id, createdAt, ...row });
+  await writeJson(workshopApplicationsFile, rows, "workshop-applications.json", tmpWorkshopApplicationsFile);
+}
+
+export async function readWorkshopApplicationsByKind(kind: string) {
+  const rows = await readWorkshopApplications();
+  return rows.filter((a) => a.kind === kind);
 }

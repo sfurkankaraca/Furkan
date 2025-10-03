@@ -187,3 +187,62 @@ function escapeHtml(value: string) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+export type WorkshopApplicationMailPayload = {
+  kind: "dj" | "production" | string;
+  name: string;
+  email: string;
+  phone?: string;
+  city?: string;
+  instagram?: string;
+  answers: Record<string, string | number | boolean>;
+};
+
+export async function sendWorkshopApplicationMail(input: WorkshopApplicationMailPayload) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[workshop-apply]", input);
+    return { ok: true };
+  }
+  const fromAddress = "noqta <onboarding@resend.dev>";
+  const toPrimary = process.env.EVENTS_TO || "sfurkankaraca@gmail.com";
+  const bccSecondary = process.env.EVENTS_BCC || "hi@noqta.club";
+  const subject = `[workshop] ${input.kind} — ${input.name}`;
+
+  const rows = Object.entries(input.answers).map(([k, v]) => `<tr><td><b>${escapeHtml(k)}</b></td><td>${escapeHtml(String(v))}</td></tr>`).join("");
+  const html = `
+    <h2>Yeni Workshop Başvurusu</h2>
+    <p><b>Workshop:</b> ${escapeHtml(input.kind)}</p>
+    <table cellpadding="6" cellspacing="0" style="border-collapse:collapse">
+      <tr><td><b>Ad Soyad</b></td><td>${escapeHtml(input.name)}</td></tr>
+      <tr><td><b>E‑posta</b></td><td>${escapeHtml(input.email)}</td></tr>
+      ${input.phone ? `<tr><td><b>Telefon</b></td><td>${escapeHtml(input.phone)}</td></tr>` : ""}
+      ${input.city ? `<tr><td><b>Şehir</b></td><td>${escapeHtml(input.city)}</td></tr>` : ""}
+      ${input.instagram ? `<tr><td><b>Instagram</b></td><td>${escapeHtml(input.instagram)}</td></tr>` : ""}
+      ${rows}
+    </table>
+  `;
+  const textLines = [
+    `Workshop: ${input.kind}`,
+    `Ad Soyad: ${input.name}`,
+    `E‑posta: ${input.email}`,
+    input.phone ? `Telefon: ${input.phone}` : undefined,
+    input.city ? `Şehir: ${input.city}` : undefined,
+    input.instagram ? `Instagram: ${input.instagram}` : undefined,
+    ...Object.entries(input.answers).map(([k, v]) => `${k}: ${v}`),
+  ].filter(Boolean);
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [toPrimary],
+      bcc: bccSecondary ? [bccSecondary] : undefined,
+      subject,
+      html,
+      text: textLines.join("\n"),
+      reply_to: [input.email],
+    }),
+  });
+  return { ok: res.ok };
+}

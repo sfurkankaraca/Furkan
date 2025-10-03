@@ -1,7 +1,7 @@
 "use client";
 
 import Section from "@/components/Section";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { submitJoin } from "./actions";
 
 export default function JoinPage() {
@@ -20,6 +20,14 @@ export default function JoinPage() {
       setBusy(false);
     }
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get('role');
+    if (roleParam === 'dj' || roleParam === 'participant' || roleParam === 'student') {
+      setRole(roleParam as 'dj' | 'participant' | 'student');
+    }
+  }, []);
 
   return (
     <Section title="Kaybol" description="Rollünü seç ve aramıza katıl.">

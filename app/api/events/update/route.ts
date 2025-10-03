@@ -65,7 +65,9 @@ export async function POST(request: Request) {
       success: true, 
       message: "Event updated successfully",
       updatedEvents: currentEvents,
-      blobUrl: mainBlob.url
+      blobUrl: mainBlob.url,
+      // For backward compatibility with clients expecting eventsBlobUrl
+      eventsBlobUrl: mainBlob.url
     });
     
   } catch (error) {
