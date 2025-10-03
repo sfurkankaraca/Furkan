@@ -144,11 +144,7 @@ export default function AdminEditEvent({ params }: { params: { id: string } }) {
 
       <div className="flex items-center gap-3">
         <button type="submit" className="rounded-xl bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90">Kaydet</button>
-        <form action={async (formData: FormData) => {
-          formData.set("eventId", event.id);
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          deleteEvent(formData);
-        }}>
+        <form action={deleteEvent} onSubmit={(ev) => { if (!confirm("Bu etkinliği silmek istediğine emin misin?")) ev.preventDefault(); }}>
           <input type="hidden" name="eventId" value={event.id} />
           <button type="submit" className="rounded-xl bg-red-500 text-white px-4 py-2 text-sm font-medium hover:bg-red-600">Sil</button>
         </form>

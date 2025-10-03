@@ -61,11 +61,7 @@ export default function AdminEventsList() {
                 </td>
                 <td className="px-3 py-2"><a className="underline" href={`/admin/events/${e.id}/edit`}>düzenle</a></td>
                 <td className="px-3 py-2">
-                  <form action={async (formData: FormData) => {
-                    formData.set("eventId", e.id);
-                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    deleteEvent(formData);
-                  }}>
+                  <form action={deleteEvent} onSubmit={(ev) => { if (!confirm("Bu etkinliği silmek istediğine emin misin?")) ev.preventDefault(); }}>
                     <input type="hidden" name="eventId" value={e.id} />
                     <button type="submit" className="underline text-red-400 hover:text-red-300">sil</button>
                   </form>
