@@ -33,8 +33,10 @@ export default function PhotoListEditor({
     const files = Array.from(inputEl.files || []);
     if (files.length === 0) return;
     
-    for (const file of files) {
+    for (const f of files) {
       try {
+        const compressed = await compressImage(f, 1920, 0.75);
+        const file = compressed || f;
         let url = "";
         try {
           const gen = await fetch('/api/upload-url', { 
@@ -131,4 +133,26 @@ export default function PhotoListEditor({
       )}
     </div>
   );
+}
+
+async function compressImage(file: File, maxWidth: number, quality: number): Promise<File | null> {
+  try {
+    const isImage = /^image\//.test(file.type);
+    if (!isImage) return null;
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxWidth / bitmap.width);
+    const targetW = Math.round(bitmap.width * scale);
+    const targetH = Math.round(bitmap.height * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = targetW;
+    canvas.height = targetH;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    ctx.drawImage(bitmap, 0, 0, targetW, targetH);
+    const blob: Blob = await new Promise((resolve) => canvas.toBlob((b) => resolve(b as Blob), 'image/jpeg', quality));
+    if (!blob) return null;
+    return new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+  } catch {
+    return null;
+  }
 }

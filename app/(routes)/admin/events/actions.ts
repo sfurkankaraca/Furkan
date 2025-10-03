@@ -160,3 +160,14 @@ export async function updateEvent(formData: FormData) {
 }
 
 
+export async function deleteEvent(formData: FormData) {
+  const eventId = String(formData.get("eventId") || "");
+  if (!eventId) {
+    return { ok: false, error: "eventId missing" } as const;
+  }
+  const events = await getEventsFromBlob();
+  const next = events.filter((e) => e.id !== eventId);
+  await saveEventsToBlob(next);
+  redirect("/admin/events");
+}
+

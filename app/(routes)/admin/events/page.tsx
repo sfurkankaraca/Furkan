@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 
+import { deleteEvent } from "./actions";
+
 export default function AdminEventsList() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,6 +45,7 @@ export default function AdminEventsList() {
               <th className="px-3 py-2">Spotify</th>
               <th className="px-3 py-2">Detay</th>
               <th className="px-3 py-2">Düzenle</th>
+              <th className="px-3 py-2">Sil</th>
             </tr>
           </thead>
           <tbody>
@@ -56,8 +59,16 @@ export default function AdminEventsList() {
                 <td className="px-3 py-2">
                   <a className="underline" href={`/events/${e.id}`} target="_blank">görüntüle</a>
                 </td>
+                <td className="px-3 py-2"><a className="underline" href={`/admin/events/${e.id}/edit`}>düzenle</a></td>
                 <td className="px-3 py-2">
-                  <a className="underline" href={`/admin/events/${e.id}/edit`}>düzenle</a>
+                  <form action={async (formData: FormData) => {
+                    formData.set("eventId", e.id);
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    deleteEvent(formData);
+                  }}>
+                    <input type="hidden" name="eventId" value={e.id} />
+                    <button type="submit" className="underline text-red-400 hover:text-red-300">sil</button>
+                  </form>
                 </td>
               </tr>
             ))}

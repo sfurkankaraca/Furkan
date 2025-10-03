@@ -26,21 +26,25 @@ export default function UploadWidget({
 
     setBusy(true);
     try {
+      // Client-side compress (JPEG, kalite ~0.75, max genişlik 1920)
+      const compressed = await compressImage(file, 1920, 0.75);
+      const uploadFile = compressed || file;
+
       let url = "";
       try {
         // Önce direct upload dener
         const gen = await fetch('/api/upload-url', { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ filename: file.name, contentType: file.type }),
+          body: JSON.stringify({ filename: uploadFile.name, contentType: uploadFile.type }),
           cache: 'no-store' 
         });
         if (!gen.ok) throw new Error(`Upload URL alınamadı (${gen.status})`);
         const { url: uploadUrl } = await gen.json();
         const up = await fetch(uploadUrl, { 
           method: 'POST', 
-          headers: { 'Content-Type': file.type || 'application/octet-stream' },
-          body: file 
+          headers: { 'Content-Type': uploadFile.type || 'application/octet-stream' },
+          body: uploadFile 
         });
         if (!up.ok) throw new Error(`Upload başarısız (${up.status})`);
         const json = await up.json();
@@ -48,7 +52,7 @@ export default function UploadWidget({
       } catch (directErr) {
         // Fallback: küçük dosyalar için API üzerinden yükle (Server limitlerine tabi)
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', uploadFile);
         const res = await fetch('/api/blob/upload', { method: 'POST', body: formData });
         if (!res.ok) {
           const errJson = await res.json().catch(() => ({}));
@@ -162,6 +166,28 @@ export default function UploadWidget({
       </span>
     </div>
   );
+}
+
+async function compressImage(file: File, maxWidth: number, quality: number): Promise<File | null> {
+  try {
+    const isImage = /^image\//.test(file.type);
+    if (!isImage) return null;
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxWidth / bitmap.width);
+    const targetW = Math.round(bitmap.width * scale);
+    const targetH = Math.round(bitmap.height * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = targetW;
+    canvas.height = targetH;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    ctx.drawImage(bitmap, 0, 0, targetW, targetH);
+    const blob: Blob = await new Promise((resolve) => canvas.toBlob((b) => resolve(b as Blob), 'image/jpeg', quality));
+    if (!blob) return null;
+    return new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' });
+  } catch {
+    return null;
+  }
 }
 
 
