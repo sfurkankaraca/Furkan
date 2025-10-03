@@ -26,21 +26,14 @@ export default function UploadWidget({
 
     setBusy(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const res = await fetch('/api/blob/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const error = await res.json().catch(() => ({}));
-        throw new Error(error.error || `HTTP ${res.status}`);
-      }
-
-      const { url } = await res.json();
-      console.log(">> Client upload başarılı, URL:", url);
+      // Generate direct upload URL (pre-signed) then POST the file there
+      const gen = await fetch('/api/upload-url', { cache: 'no-store' });
+      if (!gen.ok) throw new Error(`Upload URL alınamadı (${gen.status})`);
+      const { url: uploadUrl } = await gen.json();
+      const up = await fetch(uploadUrl, { method: 'POST', body: file });
+      if (!up.ok) throw new Error(`Upload başarısız (${up.status})`);
+      const { url } = await up.json();
+      console.log(">> Client direct upload başarılı, URL:", url);
 
       if (targetTextareaId) {
         const ta = document.getElementById(targetTextareaId) as HTMLTextAreaElement | null;
