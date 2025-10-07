@@ -8,7 +8,13 @@ export const metadata = { title: "Collective | noqta" };
 export default function CollectivePage() {
   return (
     <Section title="Collective" description="a small circle for people who feel in loops.">
-      <div className="relative grid place-items-center py-10 gap-4">
+      <div className="relative grid place-items-center py-10 gap-4 overflow-hidden">
+        {/* Background image with reduced brightness */}
+        <div className="absolute inset-0 -z-10">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/DSC04369-1.jpg" alt="collective background" className="w-full h-full object-cover scale-105 brightness-[0.35]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+        </div>
         <DotRing size={220} />
         <blockquote className="text-center text-white/70">label, community, and a quiet place to get lost together.</blockquote>
         <p className="max-w-2xl text-center text-white/80">
