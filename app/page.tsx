@@ -45,15 +45,32 @@ export default function Home() {
 
   return (
     <main>
+      {/* HERO: Full-bleed background video (muted) with centered CTAs */}
       <section className="relative overflow-hidden">
-        <div className="container mx-auto max-w-7xl px-4 py-16 md:py-24 grid md:grid-cols-2 items-center gap-10">
-          <div className="relative isolate rounded-2xl border border-white/15 bg-white/5/50 backdrop-blur-xl p-6">
-            <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-2/3 -translate-x-1/2 bg-gradient-to-b from-white/10 to-transparent blur-2xl" />
+        <div className="absolute inset-0 -z-10">
+          <video
+            className="w-full h-full object-cover"
+            src="/hero.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/og.png"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+        <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28">
+          <div className="grid place-items-center text-center gap-6">
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">noqta.</h1>
-            <p className="mt-4 text-lg text-white/70 max-w-prose">lost in loops. together, we listen.</p>
-          </div>
-          <div className="grid place-items-center">
-            <DotRing size={260} />
+            <p className="text-lg text-white/80">lost in loops. together, we listen.</p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Button asChild className="rounded-xl">
+                <Link href={(process.env.NEXT_PUBLIC_BMC_URL as string) || "https://buymeacoffee.com/noqta"} target="_blank" rel="noopener noreferrer">Buy me a coffee</Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-xl">
+                <Link href="/join">Klube Katıl</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -73,12 +90,12 @@ export default function Home() {
       </section>
 
       <section className="py-12 md:py-16">
-        <div className="container mx-auto max-w-7xl px-4">
+        <div className="container mx-auto max-w-5xl px-4">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-semibold">Yaklaşan Etkinlikler</h2>
             <Link href="/events" className="text-sm text-white/70 hover:text-white">Tümü</Link>
           </div>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
             {upcoming.map((ev) => (
               <EventCard key={ev.id} event={ev as any} />
             ))}
@@ -88,12 +105,12 @@ export default function Home() {
 
       {/* Geçmiş Etkinlikler */}
       <section className="py-8 md:py-12">
-        <div className="container mx-auto max-w-7xl px-4">
+        <div className="container mx-auto max-w-5xl px-4">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-2xl md:text-3xl font-semibold">Geçmiş Etkinlikler</h2>
             <Link href="/events" className="text-sm text-white/70 hover:text-white">Tümü</Link>
           </div>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
             {events
               .filter((e) => e.date && new Date(e.date).getTime() < Date.now())
               .slice(0, 3)
