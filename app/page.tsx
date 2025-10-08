@@ -50,14 +50,7 @@ export default function Home() {
           <div>
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">noqta.</h1>
             <p className="mt-4 text-lg text-white/70 max-w-prose">lost in loops. together, we listen.</p>
-            <div className="mt-8 flex gap-3">
-              <Button asChild className="rounded-xl">
-                <Link href="/login">Giriş</Link>
-              </Button>
-              <Button asChild variant="outline" className="rounded-xl">
-                <Link href="/join">Kaybol</Link>
-              </Button>
-            </div>
+            {/* Auth CTA'lar kaldırıldı */}
           </div>
           <div className="grid place-items-center">
             <DotRing size={260} />
@@ -89,6 +82,56 @@ export default function Home() {
             {upcoming.map((ev) => (
               <EventCard key={ev.id} event={ev as any} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Geçmiş Etkinlikler */}
+      <section className="py-8 md:py-12">
+        <div className="container mx-auto max-w-7xl px-4">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-2xl md:text-3xl font-semibold">Geçmiş Etkinlikler</h2>
+            <Link href="/events" className="text-sm text-white/70 hover:text-white">Tümü</Link>
+          </div>
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {events
+              .filter((e) => e.date && new Date(e.date).getTime() < Date.now())
+              .slice(0, 3)
+              .map((ev) => (
+                <EventCard key={ev.id} event={ev as any} />
+              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Academy */}
+      <section className="py-10 md:py-14">
+        <div className="container mx-auto max-w-7xl px-4 grid md:grid-cols-2 gap-6 items-center">
+          <div>
+            <h3 className="text-2xl md:text-3xl font-semibold">Academy</h3>
+            <p className="text-white/70 mt-2">DJ ve prodüksiyon için atölyeler, birebir dersler ve paylaşımlar.</p>
+            <div className="mt-4">
+              <Link href="/academy" className="underline">Detaylar</Link>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <div className="text-white/80">Yakında atölyeler ve kayıt bağlantıları burada.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* Collective */}
+      <section className="py-10 md:py-14">
+        <div className="container mx-auto max-w-7xl px-4 grid md:grid-cols-2 gap-6 items-center">
+          <div>
+            <h3 className="text-2xl md:text-3xl font-semibold">Collective</h3>
+            <p className="text-white/70 mt-2">Topluluk, üretim ve sakin alan: birlikte kaybolmak için.</p>
+            <div className="mt-4">
+              <Link href="/collective" className="underline">Keşfet</Link>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <div className="text-white/80">Etkinlikten kareler, playlistler ve hikayeler.</div>
           </div>
         </div>
       </section>
