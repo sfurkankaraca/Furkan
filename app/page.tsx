@@ -47,10 +47,10 @@ export default function Home() {
     <main>
       <section className="relative overflow-hidden">
         <div className="container mx-auto max-w-7xl px-4 py-16 md:py-24 grid md:grid-cols-2 items-center gap-10">
-          <div>
+          <div className="relative isolate rounded-2xl border border-white/15 bg-white/5/50 backdrop-blur-xl p-6">
+            <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-2/3 -translate-x-1/2 bg-gradient-to-b from-white/10 to-transparent blur-2xl" />
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">noqta.</h1>
             <p className="mt-4 text-lg text-white/70 max-w-prose">lost in loops. together, we listen.</p>
-            {/* Auth CTA'lar kaldırıldı */}
           </div>
           <div className="grid place-items-center">
             <DotRing size={260} />
