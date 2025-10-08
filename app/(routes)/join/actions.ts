@@ -25,10 +25,14 @@ export async function submitJoin(formData: FormData) {
     payload.age = String(formData.get("age") || "");
     payload.hasCar = String(formData.get("hasCar") || "no");
   } else if (role === "student") {
-    payload.school = String(formData.get("school") || "");
-    payload.study = String(formData.get("study") || "");
-    payload.interests = String(formData.get("interests") || "");
-    payload.availability = String(formData.get("availability") || "");
+    payload.age = String(formData.get("age") || "");
+    payload.socials = String(formData.get("q_socials") || "");
+    payload.level = String(formData.get("q_level") || "");
+    payload.genres = String(formData.get("q_genres") || "");
+    payload.reason = String(formData.get("q_reason") || "");
+    payload.goal = String(formData.get("q_goal") || "");
+    payload.availability = Array.from(formData.getAll("q_availability")).map(String).join(", ");
+    payload.hasGear = String(formData.get("q_has_gear") || "");
   }
 
   await addMember({

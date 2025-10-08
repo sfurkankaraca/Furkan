@@ -34,7 +34,7 @@ export default function JoinPage() {
       <div className="grid gap-6 max-w-3xl mx-auto">
         {/* Role selector as neon cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 place-items-center">
-          {[{id:'dj',label:'DJ',desc:'Set, tarz, ekipman'},{id:'participant',label:'Katılımcı',desc:'Dinlediğin tarzlar'},{id:'student',label:'Öğrenci',desc:'Okul ve ilgi alanları'}].map((r:any)=> (
+          {[{id:'dj',label:'DJ',desc:'Set, tarz, ekipman'},{id:'participant',label:'Katılımcı',desc:'Dinlediğin tarzlar'},{id:'student',label:'DJ Eğitimi Adayı',desc:'Seviye, amaç, uygunluk'}].map((r:any)=> (
             <button key={r.id} onClick={() => setRole(r.id)} className={`w-full inline-flex rounded-2xl p-[2px] ${role===r.id? 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400':'bg-gradient-to-r from-white/20 via-white/10 to-white/20'}`}>
               <span className={`rounded-[14px] w-full bg-black/80 p-4 text-left ${role===r.id? 'text-white':'text-white/80'}`}>
                 <div className="text-lg font-medium">{r.label}</div>
@@ -102,11 +102,69 @@ export default function JoinPage() {
 
             {role === 'student' && (
               <div className="grid gap-3 rounded-xl border border-white/10 p-3">
-                <div className="text-sm text-white/80">Öğrenci Bilgileri</div>
-                <input name="school" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Okul" />
-                <input name="study" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Bölüm/Program" />
-                <input name="interests" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="İlgi alanları" />
-                <input name="availability" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Uygunluk (gün/saat)" />
+                <div className="text-sm text-white/80 font-medium">DJ Eğitimi Aday Formu</div>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <input name="age" type="number" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Yaş" />
+                  <input name="q_socials" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Sosyal hesap(lar) (@, link)" />
+                </div>
+
+                <div className="grid gap-2">
+                  <span className="text-sm text-white/80">DJ'likle alakan ne düzeyde?</span>
+                  <div className="grid gap-2 text-sm text-white/80">
+                    {["Hiç denemedim ama ilgim çok yüksek","Takip ediyorum ama başlamadım","Biraz denedim / öğreniyorum","Evde pratik yapıyorum","Sahne aldım / alıyorum"].map((opt) => (
+                      <label key={opt} className="inline-flex items-center gap-2">
+                        <input type="radio" name="q_level" value={opt} required />
+                        <span>{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <label className="grid gap-2">
+                  <span className="text-sm text-white/80">En çok hangi müzik türleri ilgini çekiyor?</span>
+                  <input name="q_genres" className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white" placeholder="Örn: Techno, House, Afro..." />
+                </label>
+
+                <label className="grid gap-2">
+                  <span className="text-sm text-white/80">Neden DJ eğitimi almak istiyorsun?</span>
+                  <textarea name="q_reason" required className="rounded-xl bg-black border border-white/20 px-3 py-2 text-white min-h-24" />
+                </label>
+
+                <div className="grid gap-2">
+                  <span className="text-sm text-white/80">Hedefin nedir?</span>
+                  <div className="grid gap-2 text-sm text-white/80">
+                    {["Hobi","Arkadaş ortamında çalmak","Bar/etkinlik/festival hedefi"].map((opt) => (
+                      <label key={opt} className="inline-flex items-center gap-2">
+                        <input type="radio" name="q_goal" value={opt} required />
+                        <span>{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-2">
+                  <span className="text-sm text-white/80">Uygunluk (birden fazla seçebilirsin)</span>
+                  <div className="grid gap-2 text-sm text-white/80">
+                    {["Hafta içi akşam","Hafta sonu gündüz","Hafta sonu akşam","Fark etmez"].map((opt) => (
+                      <label key={opt} className="inline-flex items-center gap-2">
+                        <input type="checkbox" name="q_availability" value={opt} />
+                        <span>{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-2">
+                  <span className="text-sm text-white/80">Bilgisayar ve kulaklık var mı?</span>
+                  <div className="grid gap-2 text-sm text-white/80">
+                    {["Evet","Hayır"].map((opt) => (
+                      <label key={opt} className="inline-flex items-center gap-2">
+                        <input type="radio" name="q_has_gear" value={opt} required />
+                        <span>{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
 

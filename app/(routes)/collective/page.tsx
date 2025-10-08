@@ -7,14 +7,10 @@ export const metadata = { title: "Collective | noqta" };
 
 export default function CollectivePage() {
   return (
-    <Section 
-      title="Collective" 
-      description="a small circle for people who feel in loops." 
-      backgroundImageUrl="/DSC04369-1.jpg"
-      backgroundDimClass="brightness-[0.45]"
-    >
-      <div className="mt-2">
+    <Section title="Collective" description="a small circle for people who feel in loops.">
+      {/* Hero bloğu kaldırıldı */}
 
+      <div className="mt-10">
         <h2 className="text-center text-2xl md:text-3xl font-semibold tracking-wide">MANIFESTO</h2>
         <p className="text-center text-white/60 mt-2">ritme, birbirimize ve ana alan açıyoruz</p>
 
@@ -30,9 +26,9 @@ export default function CollectivePage() {
             { t: "KABİLE.", d: "Noqta’da yalnız değilsin, biz bir topluluğuz.", g: "from-green-400 via-emerald-500 to-teal-400" },
           ].map((it, i) => (
             <div key={i} className={`rounded-2xl p-[2px] bg-gradient-to-r ${it.g}`}>
-              <div className="rounded-[14px] bg-black/70 backdrop-blur-sm p-5 h-full">
+              <div className="rounded-[14px] bg-black p-5 h-full">
                 <div className="text-white font-semibold">{it.t}</div>
-                <div className="text-white/80 text-sm mt-1">{it.d}</div>
+                <div className="text-white/70 text-sm mt-1">{it.d}</div>
               </div>
             </div>
           ))}
