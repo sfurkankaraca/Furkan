@@ -90,14 +90,7 @@ export default function Navbar() {
               </Button>
             </>
           ) : (
-            <>
-              <Button asChild size="sm" className="ml-2 rounded-xl">
-                <Link href="/login">Giriş</Link>
-              </Button>
-              <Button asChild size="sm" className="ml-2 rounded-xl">
-                <Link href="/join">Kaybol</Link>
-              </Button>
-            </>
+            <></>
           )}
           
           <Button variant="ghost" size="sm" className="ml-1 rounded-xl text-white/70 hover:text-white" aria-label="Switch language" onClick={toggle}>
@@ -152,18 +145,7 @@ export default function Navbar() {
                       </Button>
                     </>
                   ) : (
-                    <>
-                      <Button asChild className="rounded-xl">
-                        <Link href="/login" onClick={() => setOpen(false)}>
-                          Giriş
-                        </Link>
-                      </Button>
-                      <Button asChild className="rounded-xl">
-                        <Link href="/join" onClick={() => setOpen(false)}>
-                          Kaybol
-                        </Link>
-                      </Button>
-                    </>
+                    <></>
                   )}
                   
                   <Button variant="ghost" size="sm" className="rounded-xl text-white/70 hover:text-white" onClick={() => { toggle(); setOpen(false); }}>

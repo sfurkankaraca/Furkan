@@ -8,25 +8,7 @@ export const metadata = { title: "Collective | noqta" };
 export default function CollectivePage() {
   return (
     <Section title="Collective" description="a small circle for people who feel in loops.">
-      <div className="relative grid place-items-center py-10 gap-4 overflow-hidden">
-        {/* Background image with reduced brightness */}
-        <div className="absolute inset-0 -z-10">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/DSC04369-1.jpg" alt="collective background" className="w-full h-full object-cover scale-105 brightness-[0.35]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
-        </div>
-        <DotRing size={220} />
-        <blockquote className="text-center text-white/70">label, community, and a quiet place to get lost together.</blockquote>
-        <p className="max-w-2xl text-center text-white/80">
-          minimal and unhurried. we listen first, then we move. we gather to share, to try, to make. if you’re
-          around the same loop, you’re home.
-        </p>
-        <div className="mt-4">
-          <Button asChild className="rounded-xl">
-            <Link href="/join">Klube Katıl</Link>
-          </Button>
-        </div>
-      </div>
+      {/* Hero bloğu kaldırıldı */}
 
       <div className="mt-10">
         <h2 className="text-center text-2xl md:text-3xl font-semibold tracking-wide">MANIFESTO</h2>
@@ -50,6 +32,11 @@ export default function CollectivePage() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-8 flex justify-center">
+          <Button asChild className="rounded-xl">
+            <Link href="/join">Klube Katıl</Link>
+          </Button>
         </div>
       </div>
     </Section>
