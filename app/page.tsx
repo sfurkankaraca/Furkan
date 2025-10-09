@@ -61,7 +61,7 @@ export default function Home() {
         </div>
         <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28">
           <div className="grid place-items-center text-center gap-6">
-            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">noqta.</h1>
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight font-satoshi">noqta</h1>
             <p className="text-lg text-white/80">lost in loops. together, we listen.</p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Button asChild className="rounded-xl">

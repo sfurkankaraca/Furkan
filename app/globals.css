@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url('https://fonts.cdnfonts.com/css/satoshi');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -112,6 +113,11 @@ body::before {
     radial-gradient(600px 400px at 20% -10%, rgba(255,255,255,0.07), transparent 60%),
     radial-gradient(700px 500px at 100% 120%, rgba(56,189,248,0.08), transparent 60%),
     radial-gradient(600px 400px at -10% 100%, rgba(168,85,247,0.06), transparent 60%);
+}
+
+/* Satoshi font helper */
+.font-satoshi {
+  font-family: 'Satoshi', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
 }
 
 .prose :where(p, li) {
