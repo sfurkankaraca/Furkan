@@ -13,17 +13,20 @@ const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
 export const metadata: Metadata = {
   title: {
-    default: "noqta",
+    default: "Noqta – DJ Eğitimi, Elektronik Müzik Topluluğu ve Etkinlikler",
     template: "%s | noqta",
   },
-  description: "A sound collective for people who feel in loops.",
+  description:
+    "Noqta; DJ ve prodüksiyon eğitimi, elektronik müzik topluluğu ve etkinlik deneyimi sunan Türkiye merkezli bir kolektiftir. Academy, Club, Radio ve Collective ile topluluğa katıl.",
   metadataBase: new URL("https://noqta.club"),
   openGraph: {
-    title: "noqta",
-    description: "A sound collective for people who feel in loops.",
+    title: "Noqta – DJ Eğitimi ve Elektronik Müzik Topluluğu",
+    description:
+      "DJ öğren, topluluğa katıl, etkinlikleri keşfet. Academy, Club, Radio ve Collective — Türkiye'nin elektronik müzik platformu.",
     images: [{ url: "/og.png" }],
     type: "website",
   },
+  alternates: { canonical: "https://noqta.club" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
