@@ -222,6 +222,15 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     categoryLabel: "Efsaneler",
     keywords: ["Carl Cox","techno DJ","Ibiza","acid house","Space Ibiza","DJ efsaneleri"],
   },
+  {
+    slug: "elektronik-muzik-haberleri-temmuz-2026",
+    title: "Sahne raporu — Temmuz 2026: Festival sezonu, Villalobos'un Sun Ra kompilasyonu ve Berlin'in kulüp krizi",
+    description: "Junction 2'nin 10. yılı, Stone Techno'nun küratör serisi, Dekmantel haftası, Barış K'nın yer aldığı Sun Ra reworks albümü ve Berlin kulüp sahnesinin gayrimenkul sınavı.",
+    publishedAt: "2026-07-23",
+    category: "haber",
+    categoryLabel: "Haberler & duyurular",
+    keywords: ["elektronik müzik haberleri","techno festival 2026","Junction 2 2026","Stone Techno Festival","Dekmantel 2026","Ricardo Villalobos Sun Ra","Berlin kulüp krizi"],
+  },
 ] as const;
 
 export function blogPostBySlug(slug: string): BlogPostMeta | undefined {

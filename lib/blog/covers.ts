@@ -15,6 +15,12 @@ export type BlogCover = {
  * Kapak tanımlanmayan yazılar tipografik kapağa düşer (BlogCoverArt).
  */
 export const BLOG_COVERS: Record<string, BlogCover> = {
+  "elektronik-muzik-haberleri-temmuz-2026": {
+    src: "/journal/elektronik-muzik-haberleri-temmuz-2026.jpg",
+    alt: "Zeche Zollverein kok fabrikasının çelik soğutma kulesine aşağıdan bakış",
+    credit: "db3em, CC BY 2.0 / Wikimedia Commons",
+    creditUrl: "https://commons.wikimedia.org/wiki/File:Kokerei_Zollverein_Essen_-_k%C3%BChlt%C3%BCrme_-_by_db3em.jpg",
+  },
   "kraftwerk-elektronik-muzigin-mimarlari": {
     src: "/journal/kraftwerk-elektronik-muzigin-mimarlari.jpg",
     alt: "Kraftwerk sahnede, neon ızgara kostümleriyle dört üye klavyelerinin başında",
