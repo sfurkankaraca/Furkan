@@ -29,6 +29,9 @@ import { ArticleElektronikMuzikHaberleriTemmuz2026 } from "@/components/blog/art
 import { ArticleEnergyFlashJoeyBeltramParcaninHikayesi } from "@/components/blog/articles/energy-flash-joey-beltram-parcanin-hikayesi";
 import { ArticleSahneHaritasiBerlin } from "@/components/blog/articles/sahne-haritasi-berlin";
 
+import { ArticleLarryLevanParadiseGarageEfsanesi } from "@/components/blog/articles/larry-levan-paradise-garage-efsanesi";
+import { ArticleStringsOfLifeDerrickMayParcaninHikayesi } from "@/components/blog/articles/strings-of-life-derrick-may-parcanin-hikayesi";
+
 export const BLOG_ARTICLE_BODIES: Record<string, ComponentType> = {
   "dugun-ve-kurumsal-etkinlik-icin-dj-secimi": ArticleDugunVeKurumsalEtkinlikIcinDjSecimi,
   "etkinlik-muzigi-brif-rehberi": ArticleEtkinlikMuzigiBrifRehberi,
@@ -55,4 +58,6 @@ export const BLOG_ARTICLE_BODIES: Record<string, ComponentType> = {
   "elektronik-muzik-haberleri-temmuz-2026": ArticleElektronikMuzikHaberleriTemmuz2026,
   "energy-flash-joey-beltram-parcanin-hikayesi": ArticleEnergyFlashJoeyBeltramParcaninHikayesi,
   "sahne-haritasi-berlin": ArticleSahneHaritasiBerlin,
+  "larry-levan-paradise-garage-efsanesi": ArticleLarryLevanParadiseGarageEfsanesi,
+  "strings-of-life-derrick-may-parcanin-hikayesi": ArticleStringsOfLifeDerrickMayParcaninHikayesi,
 };

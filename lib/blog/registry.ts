@@ -262,6 +262,26 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     series: "sahne-haritasi",
     keywords: ["Berlin techno","Berlin kulüpleri","Berghain","kapı kültürü","Berlin gece hayatı","techno başkenti"],
   },
+  {
+    slug: "larry-levan-paradise-garage-efsanesi",
+    title: "Larry Levan: Paradise Garage ve modern kulübün icadı",
+    description: "New York'ta bir garajda kurulan Paradise Garage, kulüp kültürünün prototipini yarattı. Larry Levan'ın 'Saturday Mass' setleri ve garage house'un doğuşu.",
+    publishedAt: "2026-07-26",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    series: "efsaneler",
+    keywords: ["Larry Levan","Paradise Garage","garage house","New York house","kulüp kültürü tarihi","DJ efsaneleri"],
+  },
+  {
+    slug: "strings-of-life-derrick-may-parcanin-hikayesi",
+    title: "Parçanın hikâyesi: Rhythim Is Rhythim — Strings of Life (1987)",
+    description: "Bir piyano cümlesinin techno'nun en duygusal marşına dönüşmesi. Derrick May'in 'Strings of Life'ı nasıl yaptığı ve neden makinelerin duygusuz olmadığını kanıtladığı.",
+    publishedAt: "2026-07-27",
+    category: "sahne",
+    categoryLabel: "Sahne & kültür",
+    series: "parcanin-hikayesi",
+    keywords: ["Strings of Life","Derrick May","Rhythim Is Rhythim","Detroit techno","Transmat","techno klasikleri"],
+  },
 ] as const;
 
 export function blogPostBySlug(slug: string): BlogPostMeta | undefined {
