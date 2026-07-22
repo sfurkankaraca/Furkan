@@ -9,15 +9,15 @@ import { readSiteImageOverrides } from "@/lib/site-images/store";
 import { SITE_URL } from "@/lib/site-url";
 
 const BLOG_INDEX_DESCRIPTION =
-  "Düğün ve kurumsal etkinlik DJ seçimi, etkinlik müziği brifi, DJ eğitimi, marka geceleri ve Türkiye geneli booking hakkında rehber yazılar.";
+  "Elektronik müzik dergisi: haberler ve duyurular, türün efsaneleri, sahne ve kültür yazıları, DJ'lik ve prodüksiyon rehberleri.";
 
 export const metadata: Metadata = {
-  title: "Blog — DJ, etkinlik müziği, Academy ve B2B | noqta",
+  title: "Journal — Elektronik müzik dergisi | noqta",
   description: BLOG_INDEX_DESCRIPTION,
   alternates: { canonical: "/blog" },
   openGraph: {
-    title: "noqta blog",
-    description: "DJ performansı, etkinlik müziği, eğitim ve iş birlikleri için SEO odaklı rehber içerikler.",
+    title: "noqta journal — elektronik müzik dergisi",
+    description: "Elektronik müzik dünyasından haberler, efsane portreleri, sahne yazıları ve rehberler.",
     url: "/blog",
   },
 };
@@ -49,7 +49,7 @@ export default async function BlogIndexPage() {
   const blogListJsonLd = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: "noqta blog",
+    name: "noqta journal",
     description: BLOG_INDEX_DESCRIPTION,
     url: `${SITE_URL}/blog`,
     blogPost: BLOG_POSTS.map((p) => ({
@@ -65,14 +65,14 @@ export default async function BlogIndexPage() {
       <PageHeroVideo
         sources={heroSources}
         poster={posterUrl}
-        posterAlt="Noqta blog — DJ, etkinlik müziği ve Academy rehberleri arka plan görseli"
+        posterAlt="Noqta journal — elektronik müzik dergisi arka plan görseli"
       >
         <div className="h-6 md:h-8" aria-hidden="true" />
         <PageShell withGlow={false}>
         <PageHeader
-          eyebrow={<span className="text-xs font-medium uppercase tracking-wider text-white/50">Rehber & SEO</span>}
-          title="Blog"
-          description="Düğün ve kurumsal DJ, etkinlik müziği brifi, Academy, sahne pratiği ve marka iş birlikleri için stratejik yazılar. İç bağlantılarla booking, B2B ve eğitim sayfalarımıza bağlanır."
+          eyebrow={<span className="text-xs font-medium uppercase tracking-wider text-white/50">Online elektronik müzik dergisi</span>}
+          title="Journal"
+          description="Elektronik müzik dünyasından haberler ve duyurular, türün efsanelerini tanıtan portreler, sahne ve kültür yazıları, DJ'lik ve prodüksiyon rehberleri."
         />
 
         <div className="mt-12 grid gap-12">

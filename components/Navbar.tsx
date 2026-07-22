@@ -284,6 +284,7 @@ export default function Navbar() {
     { href: "/academy", label: dict.nav.academy },
     { href: "/academy/games", label: "Games" },
     { href: "/events", label: dict.nav.events },
+    { href: "/blog", label: "Journal" },
   ] as const;
 
   return (
