@@ -8,6 +8,8 @@ export type BlogPostMeta = {
   category: BlogCategory;
   /** Arayüz etiketi */
   categoryLabel: string;
+  /** Devam eden yazı dizisi (lib/blog/series.ts) */
+  series?: import("@/lib/blog/series").SeriesId;
   keywords: string[];
 };
 
@@ -148,6 +150,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "sahne",
     categoryLabel: "Sahne & kültür",
+    series: "baslangic-seti",
     keywords: ["house techno farkı", "melodic techno nedir", "elektronik müzik türleri", "techno nedir", "house müzik"],
   },
   {
@@ -157,6 +160,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "sahne",
     categoryLabel: "Sahne & kültür",
+    series: "sahne-haritasi",
     keywords: ["istanbul elektronik müzik mekanları", "istanbul techno kulüpleri", "kadıköy elektronik müzik", "istanbul gece hayatı", "istanbul club"],
   },
   {
@@ -175,6 +179,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "efsaneler",
     categoryLabel: "Efsaneler",
+    series: "efsaneler",
     keywords: ["Kraftwerk","elektronik müzik tarihi","Autobahn","Trans-Europe Express","krautrock","techno kökeni"],
   },
   {
@@ -184,6 +189,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "efsaneler",
     categoryLabel: "Efsaneler",
+    series: "efsaneler",
     keywords: ["Frankie Knuckles","house müzik","Chicago house","Warehouse","house müzik tarihi","DJ efsaneleri"],
   },
   {
@@ -193,6 +199,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "efsaneler",
     categoryLabel: "Efsaneler",
+    series: "efsaneler",
     keywords: ["Belleville Three","Detroit techno","Juan Atkins","Derrick May","Kevin Saunderson","techno tarihi"],
   },
   {
@@ -202,6 +209,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "efsaneler",
     categoryLabel: "Efsaneler",
+    series: "efsaneler",
     keywords: ["Jeff Mills","The Wizard","Underground Resistance","The Bells","Detroit techno","techno DJ"],
   },
   {
@@ -211,6 +219,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "efsaneler",
     categoryLabel: "Efsaneler",
+    series: "efsaneler",
     keywords: ["Daft Punk","French touch","Homework","Discovery","Random Access Memories","elektronik müzik pop"],
   },
   {
@@ -220,6 +229,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "efsaneler",
     categoryLabel: "Efsaneler",
+    series: "efsaneler",
     keywords: ["Carl Cox","techno DJ","Ibiza","acid house","Space Ibiza","DJ efsaneleri"],
   },
   {
@@ -229,7 +239,28 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-23",
     category: "haber",
     categoryLabel: "Haberler & duyurular",
+    series: "sahne-raporu",
     keywords: ["elektronik müzik haberleri","techno festival 2026","Junction 2 2026","Stone Techno Festival","Dekmantel 2026","Ricardo Villalobos Sun Ra","Berlin kulüp krizi"],
+  },
+  {
+    slug: "energy-flash-joey-beltram-parcanin-hikayesi",
+    title: "Parçanın hikâyesi: Joey Beltram — Energy Flash (1990)",
+    description: "New York'lu bir gencin R&S Records için yaptığı kayıt, Avrupa rave kültürünün sesini nasıl belirledi? Techno'nun en etkili bas hattının hikâyesi.",
+    publishedAt: "2026-07-24",
+    category: "sahne",
+    categoryLabel: "Sahne & kültür",
+    series: "parcanin-hikayesi",
+    keywords: ["Energy Flash","Joey Beltram","R&S Records","rave tarihi","techno klasikleri","hardcore techno"],
+  },
+  {
+    slug: "sahne-haritasi-berlin",
+    title: "Sahne haritası: Berlin",
+    description: "Techno'nun küresel başkentinde kulüp kültürü nasıl işler? Kapı kültüründen mekan tiplerine, UNESCO tescilinden kira krizine Berlin rehberi.",
+    publishedAt: "2026-07-25",
+    category: "sahne",
+    categoryLabel: "Sahne & kültür",
+    series: "sahne-haritasi",
+    keywords: ["Berlin techno","Berlin kulüpleri","Berghain","kapı kültürü","Berlin gece hayatı","techno başkenti"],
   },
 ] as const;
 

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import type { BlogPostMeta } from "@/lib/blog/registry";
 import { BlogCoverArt, BlogCoverCredit } from "@/components/blog/BlogCoverArt";
+import { seriesOf, episodeNumber, postsInSeries } from "@/lib/blog/series";
 import { SITE_URL } from "@/lib/site-url";
 
 export function BlogArticleLayout({
@@ -11,6 +12,10 @@ export function BlogArticleLayout({
   post: BlogPostMeta;
   children: ReactNode;
 }) {
+  const series = seriesOf(post);
+  const episode = episodeNumber(post);
+  const siblings = series ? postsInSeries(series.id).filter((p) => p.slug !== post.slug).slice(-3).reverse() : [];
+
   const published = new Date(post.publishedAt).toLocaleDateString("tr-TR", {
     day: "numeric",
     month: "long",
@@ -67,7 +72,14 @@ export function BlogArticleLayout({
         {/* Başlık bloğu */}
         <header className="mx-auto max-w-3xl border-b border-foreground/15 pb-8 pt-8 md:pt-12">
           <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            {post.categoryLabel}
+            {series ? (
+              <>
+                {series.name}
+                {episode ? <span className="opacity-60"> · Bölüm {episode}</span> : null}
+              </>
+            ) : (
+              post.categoryLabel
+            )}
           </p>
           <h1 className="mt-4 text-3xl font-black leading-[1.03] tracking-[-0.035em] md:text-5xl">{post.title}</h1>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground md:text-xl">{post.description}</p>
@@ -104,6 +116,30 @@ export function BlogArticleLayout({
         >
           {children}
         </div>
+
+        {/* Dizi kutusu */}
+        {series ? (
+          <section className="mx-auto mt-16 max-w-[42rem] border-t-2 border-foreground pt-6">
+            <div className="flex flex-wrap items-baseline gap-x-3">
+              <h2 className="text-lg font-black tracking-[-0.02em]">{series.name}</h2>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                {series.cadence} · devam eden dizi
+              </span>
+            </div>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{series.tagline}</p>
+            {siblings.length > 0 ? (
+              <ul className="mt-4 divide-y divide-foreground/10 border-t border-foreground/10">
+                {siblings.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={`/blog/${p.slug}`} className="block py-3 text-sm transition hover:opacity-70">
+                      {p.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </section>
+        ) : null}
 
         {/* Alt bant */}
         <aside className="mx-auto mt-16 max-w-[42rem] border-t border-foreground/15 pt-8">

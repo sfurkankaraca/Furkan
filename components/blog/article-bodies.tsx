@@ -26,6 +26,9 @@ import { ArticleCarlCoxSahneninYasayanEfsanesi } from "@/components/blog/article
 
 import { ArticleElektronikMuzikHaberleriTemmuz2026 } from "@/components/blog/articles/elektronik-muzik-haberleri-temmuz-2026";
 
+import { ArticleEnergyFlashJoeyBeltramParcaninHikayesi } from "@/components/blog/articles/energy-flash-joey-beltram-parcanin-hikayesi";
+import { ArticleSahneHaritasiBerlin } from "@/components/blog/articles/sahne-haritasi-berlin";
+
 export const BLOG_ARTICLE_BODIES: Record<string, ComponentType> = {
   "dugun-ve-kurumsal-etkinlik-icin-dj-secimi": ArticleDugunVeKurumsalEtkinlikIcinDjSecimi,
   "etkinlik-muzigi-brif-rehberi": ArticleEtkinlikMuzigiBrifRehberi,
@@ -50,4 +53,6 @@ export const BLOG_ARTICLE_BODIES: Record<string, ComponentType> = {
   "daft-punk-elektronik-muzigi-pop-yapan-ikili": ArticleDaftPunkElektronikMuzigiPopYapanIkili,
   "carl-cox-sahnenin-yasayan-efsanesi": ArticleCarlCoxSahneninYasayanEfsanesi,
   "elektronik-muzik-haberleri-temmuz-2026": ArticleElektronikMuzikHaberleriTemmuz2026,
+  "energy-flash-joey-beltram-parcanin-hikayesi": ArticleEnergyFlashJoeyBeltramParcaninHikayesi,
+  "sahne-haritasi-berlin": ArticleSahneHaritasiBerlin,
 };

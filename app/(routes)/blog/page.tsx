@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS, type BlogCategory, type BlogPostMeta } from "@/lib/blog/registry";
 import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
+import { SERIES, SERIES_ORDER, postsInSeries } from "@/lib/blog/series";
 import { SITE_URL } from "@/lib/site-url";
 
 const BLOG_INDEX_DESCRIPTION =
@@ -140,6 +141,47 @@ export default function BlogIndexPage() {
           ))}
         </section>
       ) : null}
+
+      {/* Devam eden diziler */}
+      <section aria-labelledby="diziler" className="border-b border-foreground/10 py-10">
+        <div className="flex items-baseline justify-between border-b-2 border-foreground pb-2">
+          <h2 id="diziler" className="text-xl font-black uppercase tracking-[-0.01em] md:text-2xl">
+            Devam eden diziler
+          </h2>
+          <span className="text-xs text-muted-foreground">düzenli yayın</span>
+        </div>
+        <div className="grid gap-x-6 gap-y-8 pt-6 sm:grid-cols-2 lg:grid-cols-3">
+          {SERIES_ORDER.map((id) => {
+            const meta = SERIES[id];
+            const posts = postsInSeries(id);
+            const latest = posts[posts.length - 1];
+            return (
+              <article key={id} className="flex flex-col">
+                <div className="flex items-baseline gap-2">
+                  <h3 className="text-lg font-bold tracking-[-0.02em]">{meta.name}</h3>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    {meta.cadence}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{meta.tagline}</p>
+                {latest ? (
+                  <p className="mt-3 text-sm">
+                    <span className="text-muted-foreground">Son bölüm: </span>
+                    <Link href={`/blog/${latest.slug}`} className="font-medium underline-offset-4 hover:underline">
+                      {latest.title}
+                    </Link>
+                  </p>
+                ) : (
+                  <p className="mt-3 text-sm text-muted-foreground">İlk bölüm yakında.</p>
+                )}
+                <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                  {posts.length} bölüm
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Bölümler */}
       <div className="grid gap-14 py-12">

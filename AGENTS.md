@@ -22,3 +22,16 @@ These defaults are optimized for AI coding agents (and humans) working on apps t
   needed. Always curl https://ai-gateway.vercel.sh/v1/models first; never trust model IDs from memory
 - For durable agent loops or untrusted code: use Workflow (pause/resume/state) + Sandbox; use Vercel MCP for secure infra access
 <!-- VERCEL BEST PRACTICES END -->
+
+## Journal (dergi) içeriği
+
+`/blog` bir online elektronik müzik dergisidir. İçerik eklemeden ya da düzenlemeden önce
+**`docs/EDITORIAL.md` okunmalıdır** — özellikle:
+
+- **Doğruluk protokolü:** hiçbir olgusal iddia hafızadan yazılmaz; kaynak açılır, **tarihi
+  kontrol edilir** (arama motorları eski haberi güncel gibi sunabiliyor), iddialı başlıklarda
+  ikinci kaynak aranır. Emin olunmayan madde yayımlanmaz.
+- **Telif:** telifli basın fotoğrafı kullanılmaz; yalnızca serbest lisanslı (CC/kamu malı) veya
+  noqta arşivi görselleri, künyesiyle (fotoğrafçı + lisans + link) birlikte.
+- **Diziler:** yazılar `lib/blog/series.ts`'teki devam eden dizilere bağlanır; yeni dizi
+  eklenirken tutulabilecek bir ritim seçilir.
