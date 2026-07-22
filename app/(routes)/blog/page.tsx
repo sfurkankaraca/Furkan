@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BLOG_POSTS, type BlogCategory } from "@/lib/blog/registry";
-import { PageShell, PageHeader } from "@/components/layout/PageShell";
-import { PageHeroVideo } from "@/components/layout/PageHeroVideo";
-import { resolveRandomHeroSources } from "@/lib/page-hero-videos";
-import { resolveBlogIndexPoster } from "@/lib/blog/hero";
-import { readSiteImageOverrides } from "@/lib/site-images/store";
+import { BLOG_POSTS, type BlogCategory, type BlogPostMeta } from "@/lib/blog/registry";
+import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
 import { SITE_URL } from "@/lib/site-url";
 
 const BLOG_INDEX_DESCRIPTION =
@@ -25,25 +21,31 @@ export const metadata: Metadata = {
 const ORDER: BlogCategory[] = ["haber", "efsaneler", "sahne", "dj", "produksiyon", "booking", "egitim", "b2b"];
 
 const LABEL: Record<BlogCategory, string> = {
-  booking: "Booking & etkinlik",
-  egitim: "Eğitim",
+  haber: "Haberler & duyurular",
+  efsaneler: "Efsaneler",
+  sahne: "Sahne & kültür",
   dj: "DJ & performans",
   produksiyon: "Prodüksiyon",
-  efsaneler: "Efsaneler",
-  haber: "Haberler & duyurular",
-  sahne: "Sahne & kültür",
+  booking: "Booking & etkinlik",
+  egitim: "Eğitim",
   b2b: "İş birlikleri",
 };
 
-export default async function BlogIndexPage() {
-  const overrides = await readSiteImageOverrides();
-  const posterUrl = resolveBlogIndexPoster(overrides);
-  const heroSources = resolveRandomHeroSources("blog-index");
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
 
+function byDateDesc(a: BlogPostMeta, b: BlogPostMeta) {
+  return a.publishedAt < b.publishedAt ? 1 : a.publishedAt > b.publishedAt ? -1 : 0;
+}
+
+export default function BlogIndexPage() {
+  const all = [...BLOG_POSTS].sort(byDateDesc);
+  const [lead, ...others] = all;
+  const secondary = others.slice(0, 4);
   const grouped = ORDER.map((cat) => ({
     cat,
     label: LABEL[cat],
-    posts: BLOG_POSTS.filter((p) => p.category === cat),
+    posts: all.filter((p) => p.category === cat),
   })).filter((g) => g.posts.length > 0);
 
   const blogListJsonLd = {
@@ -61,51 +63,128 @@ export default async function BlogIndexPage() {
   };
 
   return (
-    <main>
-      <PageHeroVideo
-        sources={heroSources}
-        poster={posterUrl}
-        posterAlt="Noqta journal — elektronik müzik dergisi arka plan görseli"
-      >
-        <div className="h-6 md:h-8" aria-hidden="true" />
-        <PageShell withGlow={false}>
-        <PageHeader
-          eyebrow={<span className="text-xs font-medium uppercase tracking-wider text-white/50">Online elektronik müzik dergisi</span>}
-          title="Journal"
-          description="Elektronik müzik dünyasından haberler ve duyurular, türün efsanelerini tanıtan portreler, sahne ve kültür yazıları, DJ'lik ve prodüksiyon rehberleri."
-        />
+    <main className="container mx-auto max-w-7xl px-4 pb-20">
+      {/* Masthead */}
+      <header className="border-b border-foreground/15 pt-10 pb-6 md:pt-14">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+          Online elektronik müzik dergisi
+        </p>
+        <h1 className="mt-3 text-5xl font-black leading-[0.9] tracking-[-0.04em] md:text-8xl">Journal</h1>
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+          Haberler ve duyurular, türün efsaneleri, sahne ve kültür yazıları, DJ&apos;lik ve prodüksiyon rehberleri.
+        </p>
+      </header>
 
-        <div className="mt-12 grid gap-12">
-          {grouped.map(({ cat, label, posts }) => (
-            <section key={cat} aria-labelledby={`blog-cat-${cat}`}>
-              <h2 id={`blog-cat-${cat}`} className="text-lg font-semibold text-white mb-4 border-b border-white/10 pb-2">
+      {/* Kategori şeridi */}
+      <nav aria-label="Bölümler" className="flex flex-wrap gap-x-5 gap-y-2 border-b border-foreground/10 py-3">
+        {grouped.map((g) => (
+          <a
+            key={g.cat}
+            href={`#bolum-${g.cat}`}
+            className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground transition hover:text-foreground"
+          >
+            {g.label}
+            <span className="ml-1 tabular-nums opacity-50">{g.posts.length}</span>
+          </a>
+        ))}
+      </nav>
+
+      {/* Manşet */}
+      {lead ? (
+        <section className="grid gap-8 border-b border-foreground/10 py-10 md:grid-cols-12 md:py-14">
+          <Link href={`/blog/${lead.slug}`} className="group md:col-span-7">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-muted">
+              <BlogCoverArt post={lead} priority sizes="(min-width: 768px) 58vw, 100vw" />
+            </div>
+          </Link>
+          <div className="flex flex-col justify-center md:col-span-5">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {lead.categoryLabel} · {fmtDate(lead.publishedAt)}
+            </p>
+            <h2 className="mt-3 text-3xl font-bold leading-[1.05] tracking-[-0.03em] md:text-5xl">
+              <Link href={`/blog/${lead.slug}`} className="transition hover:opacity-70">
+                {lead.title}
+              </Link>
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">{lead.description}</p>
+            <Link
+              href={`/blog/${lead.slug}`}
+              className="mt-6 w-fit border-b-2 border-foreground pb-0.5 text-sm font-semibold transition hover:opacity-60"
+            >
+              Yazıyı oku
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
+      {/* İkincil ızgara */}
+      {secondary.length > 0 ? (
+        <section className="grid gap-x-6 gap-y-10 border-b border-foreground/10 py-10 sm:grid-cols-2 lg:grid-cols-4">
+          {secondary.map((p) => (
+            <article key={p.slug} className="group">
+              <Link href={`/blog/${p.slug}`}>
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted">
+                  <BlogCoverArt post={p} sizes="(min-width: 1024px) 23vw, (min-width: 640px) 46vw, 100vw" />
+                </div>
+              </Link>
+              <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                {p.categoryLabel}
+              </p>
+              <h3 className="mt-1.5 text-lg font-bold leading-snug tracking-[-0.02em]">
+                <Link href={`/blog/${p.slug}`} className="transition hover:opacity-70">
+                  {p.title}
+                </Link>
+              </h3>
+              <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
+            </article>
+          ))}
+        </section>
+      ) : null}
+
+      {/* Bölümler */}
+      <div className="grid gap-14 py-12">
+        {grouped.map(({ cat, label, posts }) => (
+          <section key={cat} id={`bolum-${cat}`} aria-labelledby={`baslik-${cat}`} className="scroll-mt-24">
+            <div className="flex items-baseline justify-between border-b-2 border-foreground pb-2">
+              <h2 id={`baslik-${cat}`} className="text-xl font-black uppercase tracking-[-0.01em] md:text-2xl">
                 {label}
               </h2>
-              <ul className="grid gap-4 md:gap-5">
-                {posts.map((p) => (
-                  <li key={p.slug}>
-                    <Link
-                      href={`/blog/${p.slug}`}
-                      className="group block rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-5 transition hover:border-white/20 hover:bg-white/[0.06]"
-                    >
-                      <p className="text-[11px] font-medium uppercase tracking-wider text-fuchsia-300/85 mb-1">
-                        {p.categoryLabel}
-                      </p>
-                      <h3 className="text-base font-semibold text-white group-hover:text-cyan-100/95 transition md:text-lg">
+              <span className="text-xs tabular-nums text-muted-foreground">{posts.length} yazı</span>
+            </div>
+
+            <ul className="divide-y divide-foreground/10">
+              {posts.map((p, i) => (
+                <li key={p.slug}>
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className="group grid gap-4 py-5 sm:grid-cols-[2rem_9rem_1fr] sm:items-start"
+                  >
+                    <span className="hidden text-sm tabular-nums text-muted-foreground sm:block">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="relative aspect-[4/3] w-32 overflow-hidden rounded-lg bg-muted sm:w-36">
+                      <BlogCoverArt post={p} sizes="9rem" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-lg font-bold leading-snug tracking-[-0.02em] transition group-hover:opacity-70 md:text-xl">
                         {p.title}
                       </h3>
-                      <p className="mt-2 text-sm text-white/60 leading-relaxed line-clamp-2">{p.description}</p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
+                      <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                        {p.description}
+                      </p>
+                      <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                        {fmtDate(p.publishedAt)}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
 
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd) }} />
-        </PageShell>
-      </PageHeroVideo>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd) }} />
     </main>
   );
 }

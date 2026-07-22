@@ -1,19 +1,14 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import type { BlogPostMeta } from "@/lib/blog/registry";
-import { PageShell } from "@/components/layout/PageShell";
-import { PageHeroVideo } from "@/components/layout/PageHeroVideo";
+import { BlogCoverArt, BlogCoverCredit } from "@/components/blog/BlogCoverArt";
 import { SITE_URL } from "@/lib/site-url";
 
 export function BlogArticleLayout({
   post,
-  heroSources,
-  posterUrl,
   children,
 }: {
   post: BlogPostMeta;
-  heroSources: readonly string[];
-  posterUrl: string;
   children: ReactNode;
 }) {
   const published = new Date(post.publishedAt).toLocaleDateString("tr-TR", {
@@ -43,86 +38,100 @@ export function BlogArticleLayout({
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Ana sayfa", item: `${SITE_URL}/` },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 2, name: "Journal", item: `${SITE_URL}/blog` },
       { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` },
     ],
   };
 
   return (
-    <main>
-      <PageHeroVideo
-        sources={heroSources}
-        poster={posterUrl}
-        posterAlt={`${post.title} — noqta blog arka plan görseli`}
-      >
-        <div className="h-6 md:h-8" aria-hidden="true" />
-        <PageShell withGlow={false}>
-        <nav className="text-xs text-white/45 mb-6" aria-label="İçerik konumu">
-          <ol className="flex flex-wrap items-center gap-x-1 gap-y-1">
-            <li>
-              <Link href="/" className="hover:text-white/70 transition">
-                Ana sayfa
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
-            <li>
-              <Link href="/blog" className="hover:text-white/70 transition">
-                Blog
-              </Link>
-            </li>
-            <li aria-hidden>/</li>
-            <li className="text-white/60 line-clamp-1">{post.title}</li>
-          </ol>
-        </nav>
+    <main className="container mx-auto max-w-7xl px-4 pb-20">
+      <nav className="pt-8 text-xs text-muted-foreground" aria-label="İçerik konumu">
+        <ol className="flex flex-wrap items-center gap-x-1.5">
+          <li>
+            <Link href="/" className="transition hover:text-foreground">
+              Ana sayfa
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li>
+            <Link href="/blog" className="transition hover:text-foreground">
+              Journal
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li className="line-clamp-1 text-foreground/70">{post.title}</li>
+        </ol>
+      </nav>
 
-        <article className="max-w-3xl">
-          <header className="mb-10 grid gap-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-fuchsia-300/90">{post.categoryLabel}</p>
-            <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl md:leading-tight">{post.title}</h1>
-            <p className="text-sm text-white/55">{published}</p>
-            <p className="text-base leading-relaxed text-white/70">{post.description}</p>
-          </header>
+      <article>
+        {/* Başlık bloğu */}
+        <header className="mx-auto max-w-3xl border-b border-foreground/15 pb-8 pt-8 md:pt-12">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            {post.categoryLabel}
+          </p>
+          <h1 className="mt-4 text-3xl font-black leading-[1.03] tracking-[-0.035em] md:text-5xl">{post.title}</h1>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground md:text-xl">{post.description}</p>
+          <p className="mt-6 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+            noqta journal · {published}
+          </p>
+        </header>
 
-          <div className="space-y-5 text-[15px] leading-relaxed text-white/80 md:text-base md:leading-relaxed">
-            {children}
+        {/* Kapak */}
+        <figure className="mx-auto mt-8 max-w-5xl">
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-muted">
+            <BlogCoverArt post={post} priority sizes="(min-width: 1024px) 64rem, 100vw" />
           </div>
+          <figcaption className="mt-2 flex justify-end">
+            <BlogCoverCredit post={post} />
+          </figcaption>
+        </figure>
 
-          <aside className="mt-12 rounded-2xl border border-white/12 bg-white/[0.04] p-5 md:p-6">
-            <h2 className="text-sm font-semibold text-white mb-3">Devam etmek için</h2>
-            <ul className="grid gap-2 text-sm text-cyan-200/90">
-              <li>
-                <Link href="/booking" className="hover:underline underline-offset-4">
-                  DJ booking ve etkinlik müziği teklifi
-                </Link>
-              </li>
-              <li>
-                <Link href="/academy" className="hover:underline underline-offset-4">
-                  Noqta Academy — eğitim ve atölyeler
-                </Link>
-              </li>
-              <li>
-                <Link href="/b2b" className="hover:underline underline-offset-4">
-                  Marka ve B2B iş birlikleri
-                </Link>
-              </li>
-              <li>
-                <Link href="/events" className="hover:underline underline-offset-4">
-                  Yaklaşan etkinlikler
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:underline underline-offset-4">
-                  İletişim ve özel sorular
-                </Link>
-              </li>
-            </ul>
-          </aside>
-        </article>
+        {/* Gövde */}
+        <div
+          className="
+            mx-auto mt-10 max-w-[42rem] text-[1.0625rem] leading-[1.75] text-foreground/85
+            md:text-[1.125rem] md:leading-[1.8]
+            [&>p]:mt-5
+            [&>p:first-child]:mt-0
+            [&>p:first-child]:text-xl [&>p:first-child]:leading-[1.6] [&>p:first-child]:text-foreground
+            [&>h2]:mt-12 [&>h2]:text-2xl [&>h2]:font-black [&>h2]:tracking-[-0.02em] [&>h2]:text-foreground md:[&>h2]:text-3xl
+            [&>h3]:mt-8 [&>h3]:text-lg [&>h3]:font-bold [&>h3]:tracking-[-0.01em] [&>h3]:text-foreground md:[&>h3]:text-xl
+            [&>ul]:mt-5 [&>ul]:list-disc [&>ul]:space-y-2 [&>ul]:pl-5
+            [&>ol]:mt-5 [&>ol]:list-decimal [&>ol]:space-y-2 [&>ol]:pl-5
+            [&_strong]:font-semibold [&_strong]:text-foreground
+            [&_a]:underline [&_a]:underline-offset-4 [&_a]:decoration-foreground/30 hover:[&_a]:decoration-foreground
+          "
+        >
+          {children}
+        </div>
 
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-        </PageShell>
-      </PageHeroVideo>
+        {/* Alt bant */}
+        <aside className="mx-auto mt-16 max-w-[42rem] border-t border-foreground/15 pt-8">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            noqta&apos;da devam et
+          </h2>
+          <ul className="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+            {[
+              { href: "/academy", label: "Academy — eğitim ve atölyeler" },
+              { href: "/events", label: "Yaklaşan etkinlikler" },
+              { href: "/booking", label: "DJ booking ve etkinlik müziği" },
+              { href: "/blog", label: "Journal'daki tüm yazılar" },
+            ].map((l) => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  className="border-b border-foreground/20 pb-0.5 transition hover:border-foreground"
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </article>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     </main>
   );
 }
