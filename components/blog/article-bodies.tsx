@@ -17,6 +17,13 @@ import { ArticleHouseTechnoMelodicTechnoFarklari } from "@/components/blog/artic
 import { ArticleIstanbuldaElektronikMuzikMekanlari } from "@/components/blog/articles/istanbulda-elektronik-muzik-mekanlari";
 import { ArticleTurkiyedeElektronikMuzikFestivalleri } from "@/components/blog/articles/turkiyede-elektronik-muzik-festivalleri";
 
+import { ArticleKraftwerkElektronikMuziginMimarlari } from "@/components/blog/articles/kraftwerk-elektronik-muzigin-mimarlari";
+import { ArticleFrankieKnucklesHouseMuziginBabasi } from "@/components/blog/articles/frankie-knuckles-house-muzigin-babasi";
+import { ArticleDetroitBellevilleThreeTechnoDogusu } from "@/components/blog/articles/detroit-belleville-three-techno-dogusu";
+import { ArticleJeffMillsTheWizardTechnoUstasi } from "@/components/blog/articles/jeff-mills-the-wizard-techno-ustasi";
+import { ArticleDaftPunkElektronikMuzigiPopYapanIkili } from "@/components/blog/articles/daft-punk-elektronik-muzigi-pop-yapan-ikili";
+import { ArticleCarlCoxSahneninYasayanEfsanesi } from "@/components/blog/articles/carl-cox-sahnenin-yasayan-efsanesi";
+
 export const BLOG_ARTICLE_BODIES: Record<string, ComponentType> = {
   "dugun-ve-kurumsal-etkinlik-icin-dj-secimi": ArticleDugunVeKurumsalEtkinlikIcinDjSecimi,
   "etkinlik-muzigi-brif-rehberi": ArticleEtkinlikMuzigiBrifRehberi,
@@ -34,4 +41,10 @@ export const BLOG_ARTICLE_BODIES: Record<string, ComponentType> = {
   "house-techno-melodic-techno-farklari": ArticleHouseTechnoMelodicTechnoFarklari,
   "istanbulda-elektronik-muzik-mekanlari": ArticleIstanbuldaElektronikMuzikMekanlari,
   "turkiyede-elektronik-muzik-festivalleri": ArticleTurkiyedeElektronikMuzikFestivalleri,
+  "kraftwerk-elektronik-muzigin-mimarlari": ArticleKraftwerkElektronikMuziginMimarlari,
+  "frankie-knuckles-house-muzigin-babasi": ArticleFrankieKnucklesHouseMuziginBabasi,
+  "detroit-belleville-three-techno-dogusu": ArticleDetroitBellevilleThreeTechnoDogusu,
+  "jeff-mills-the-wizard-techno-ustasi": ArticleJeffMillsTheWizardTechnoUstasi,
+  "daft-punk-elektronik-muzigi-pop-yapan-ikili": ArticleDaftPunkElektronikMuzigiPopYapanIkili,
+  "carl-cox-sahnenin-yasayan-efsanesi": ArticleCarlCoxSahneninYasayanEfsanesi,
 };

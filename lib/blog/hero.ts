@@ -21,6 +21,8 @@ const CATEGORY_POSTER_SLOTS: Record<BlogPostMeta["category"], readonly string[]>
   b2b: ["b2b_hero_poster", "collective_hero_poster", "booking_hero_poster"],
   produksiyon: ["academy_hero_poster", "radio_hero_poster", "collective_hero_poster"],
   sahne: ["club_hero_poster", "events_hero_poster", "radio_hero_poster", "collective_hero_poster"],
+  efsaneler: ["radio_hero_poster", "club_hero_poster", "collective_hero_poster", "academy_hero_poster"],
+  haber: ["events_hero_poster", "home_hero_poster", "collective_hero_poster"],
 };
 
 function firstPoster(overrides: Record<string, string>, slotIds: readonly string[]): string {

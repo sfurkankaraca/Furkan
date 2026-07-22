@@ -22,13 +22,15 @@ export const metadata: Metadata = {
   },
 };
 
-const ORDER: BlogCategory[] = ["dj", "produksiyon", "sahne", "booking", "egitim", "b2b"];
+const ORDER: BlogCategory[] = ["haber", "efsaneler", "sahne", "dj", "produksiyon", "booking", "egitim", "b2b"];
 
 const LABEL: Record<BlogCategory, string> = {
   booking: "Booking & etkinlik",
   egitim: "Eğitim",
   dj: "DJ & performans",
   produksiyon: "Prodüksiyon",
+  efsaneler: "Efsaneler",
+  haber: "Haberler & duyurular",
   sahne: "Sahne & kültür",
   b2b: "İş birlikleri",
 };

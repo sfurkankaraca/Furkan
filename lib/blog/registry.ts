@@ -1,4 +1,4 @@
-export type BlogCategory = "dj" | "egitim" | "booking" | "b2b" | "produksiyon" | "sahne";
+export type BlogCategory = "dj" | "egitim" | "booking" | "b2b" | "produksiyon" | "sahne" | "efsaneler" | "haber";
 
 export type BlogPostMeta = {
   slug: string;
@@ -85,7 +85,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "dj",
     categoryLabel: "DJ & performans",
-    keywords: [],
+    keywords: ["dj nasıl olunur", "dj olmak", "dj eğitimi", "sıfırdan dj", "dj başlangıç rehberi", "dj ekipmanları"],
   },
   {
     slug: "baslangic-icin-dj-controller-onerileri",
@@ -94,7 +94,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "dj",
     categoryLabel: "DJ & performans",
-    keywords: [],
+    keywords: ["dj controller önerileri", "başlangıç dj controller", "dj setup", "DDJ-FLX4", "dj ekipman fiyatları"],
   },
   {
     slug: "rekordbox-serato-traktor-karsilastirmasi",
@@ -103,7 +103,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "dj",
     categoryLabel: "DJ & performans",
-    keywords: [],
+    keywords: ["rekordbox mu serato mu", "dj yazılımı karşılaştırma", "traktor pro", "serato dj", "rekordbox"],
   },
   {
     slug: "beatmatching-nedir-nasil-ogrenilir",
@@ -112,7 +112,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "dj",
     categoryLabel: "DJ & performans",
-    keywords: [],
+    keywords: ["beatmatching nedir", "kulaktan miks", "beatmatch öğrenme", "dj geçiş teknikleri", "sync tuşu"],
   },
   {
     slug: "ilk-dj-setini-hazirlama-rehberi",
@@ -121,7 +121,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "dj",
     categoryLabel: "DJ & performans",
-    keywords: [],
+    keywords: ["dj seti nasıl hazırlanır", "dj set enerji eğrisi", "mix hazırlama", "harmonic mixing", "dj kayıt"],
   },
   {
     slug: "muzik-produksiyonuna-nereden-baslanir",
@@ -130,7 +130,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "produksiyon",
     categoryLabel: "Prodüksiyon",
-    keywords: [],
+    keywords: ["müzik prodüksiyonu nasıl yapılır", "prodüksiyona başlangıç", "DAW seçimi", "elektronik müzik üretimi", "beat yapma"],
   },
   {
     slug: "ableton-mu-fl-studio-mu",
@@ -139,7 +139,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "produksiyon",
     categoryLabel: "Prodüksiyon",
-    keywords: [],
+    keywords: ["ableton mu fl studio mu", "DAW karşılaştırma", "ableton live", "fl studio", "müzik yazılımı"],
   },
   {
     slug: "house-techno-melodic-techno-farklari",
@@ -148,7 +148,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "sahne",
     categoryLabel: "Sahne & kültür",
-    keywords: [],
+    keywords: ["house techno farkı", "melodic techno nedir", "elektronik müzik türleri", "techno nedir", "house müzik"],
   },
   {
     slug: "istanbulda-elektronik-muzik-mekanlari",
@@ -157,7 +157,7 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "sahne",
     categoryLabel: "Sahne & kültür",
-    keywords: [],
+    keywords: ["istanbul elektronik müzik mekanları", "istanbul techno kulüpleri", "kadıköy elektronik müzik", "istanbul gece hayatı", "istanbul club"],
   },
   {
     slug: "turkiyede-elektronik-muzik-festivalleri",
@@ -166,7 +166,61 @@ export const BLOG_POSTS: readonly BlogPostMeta[] = [
     publishedAt: "2026-07-22",
     category: "sahne",
     categoryLabel: "Sahne & kültür",
-    keywords: [],
+    keywords: ["türkiye elektronik müzik festivalleri", "festival takvimi", "techno festival türkiye", "koy festivali", "festival bilet"],
+  },
+  {
+    slug: "kraftwerk-elektronik-muzigin-mimarlari",
+    title: "Kraftwerk: Elektronik müziğin mimarları",
+    description: "Düsseldorf'ta bir stüdyodan çıkıp techno'dan hip-hop'a her şeyi etkileyen Kraftwerk'in hikâyesi, albümleri ve bugüne uzanan mirası.",
+    publishedAt: "2026-07-23",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    keywords: ["Kraftwerk","elektronik müzik tarihi","Autobahn","Trans-Europe Express","krautrock","techno kökeni"],
+  },
+  {
+    slug: "frankie-knuckles-house-muzigin-babasi",
+    title: "Frankie Knuckles: House müziğin babası",
+    description: "Chicago'daki Warehouse'tan dünyaya yayılan house müziğin doğuşu ve Frankie Knuckles'ın DJ'liği bir sanata dönüştüren mirası.",
+    publishedAt: "2026-07-23",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    keywords: ["Frankie Knuckles","house müzik","Chicago house","Warehouse","house müzik tarihi","DJ efsaneleri"],
+  },
+  {
+    slug: "detroit-belleville-three-techno-dogusu",
+    title: "Belleville Three: Detroit'te techno nasıl doğdu?",
+    description: "Juan Atkins, Derrick May ve Kevin Saunderson'ın Detroit banliyösünde kurduğu techno'nun hikâyesi; Avrupa'ya yolculuğu ve bugünkü sahneye etkisi.",
+    publishedAt: "2026-07-23",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    keywords: ["Belleville Three","Detroit techno","Juan Atkins","Derrick May","Kevin Saunderson","techno tarihi"],
+  },
+  {
+    slug: "jeff-mills-the-wizard-techno-ustasi",
+    title: "Jeff Mills: The Wizard ve techno'nun sınırları",
+    description: "Detroit radyolarından dünya sahnelerine, Underground Resistance'tan uzay temalı konsept albümlere: Jeff Mills'in techno'yu sanata dönüştüren yolculuğu.",
+    publishedAt: "2026-07-23",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    keywords: ["Jeff Mills","The Wizard","Underground Resistance","The Bells","Detroit techno","techno DJ"],
+  },
+  {
+    slug: "daft-punk-elektronik-muzigi-pop-yapan-ikili",
+    title: "Daft Punk: Elektronik müziği pop'un merkezine taşıyan ikili",
+    description: "French touch'tan Grammy'lere, kasklı sahne kimliğinden Random Access Memories'e: Daft Punk'ın elektronik müziği ana akıma taşıyan hikâyesi.",
+    publishedAt: "2026-07-23",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    keywords: ["Daft Punk","French touch","Homework","Discovery","Random Access Memories","elektronik müzik pop"],
+  },
+  {
+    slug: "carl-cox-sahnenin-yasayan-efsanesi",
+    title: "Carl Cox: Sahnenin yaşayan efsanesi",
+    description: "Üç deck'li setlerden Ibiza rezidanlıklarına, acid house yıllarından bugüne Carl Cox'un techno ve house sahnesindeki kalıcı etkisi.",
+    publishedAt: "2026-07-23",
+    category: "efsaneler",
+    categoryLabel: "Efsaneler",
+    keywords: ["Carl Cox","techno DJ","Ibiza","acid house","Space Ibiza","DJ efsaneleri"],
   },
 ] as const;
 
