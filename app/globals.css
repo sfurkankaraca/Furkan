@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.cdnfonts.com/css/satoshi');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,24 +45,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.985 0.004 60);
+  --foreground: oklch(0.12 0.008 45);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.12 0.008 45);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.12 0.008 45);
+  --primary: oklch(0.12 0.008 45);
+  --primary-foreground: oklch(0.985 0.004 60);
+  --secondary: oklch(0.94 0.008 60);
+  --secondary-foreground: oklch(0.12 0.008 45);
+  --muted: oklch(0.96 0.005 60);
+  --muted-foreground: oklch(0.50 0.010 55);
+  --accent: oklch(0.92 0.012 60);
+  --accent-foreground: oklch(0.12 0.008 45);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.90 0.008 60);
+  --input: oklch(0.90 0.008 60);
+  --ring: oklch(0.12 0.008 45);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -96,24 +95,6 @@ a {
   text-underline-offset: 3px;
 }
 
-/* Dark-first palette tweaks */
-body {
-  background-color: #000;
-  color: #fff;
-}
-
-/* Subtle global gradient/glass background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(600px 400px at 20% -10%, rgba(255,255,255,0.07), transparent 60%),
-    radial-gradient(700px 500px at 100% 120%, rgba(56,189,248,0.08), transparent 60%),
-    radial-gradient(600px 400px at -10% 100%, rgba(168,85,247,0.06), transparent 60%);
-}
 
 /* Satoshi font helper */
 .font-satoshi {
@@ -121,7 +102,7 @@ body::before {
 }
 
 .prose :where(p, li) {
-  color: #d1d5db;
+  color: var(--foreground);
 }
 
 .dark {

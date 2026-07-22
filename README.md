@@ -20,6 +20,7 @@ pnpm dev
 ## Çevre Değişkenleri
 
 - `RESEND_API_KEY`: İletişim formu için e‑posta gönderimi (opsiyonel; yoksa console.log yapılır)
+- `ADMIN_ACTIVITY_EMAIL`: Bildirim kopyası (virgülle çoklu). Yoksa `sfurkankaraca@gmail.com` — iletişim, başvuru, bilet, kulüp vb. tüm Resend gönderilerinde BCC (veya uygun yerde) kullanılır
 - `NEXT_PUBLIC_PLAUSIBLE_DOMAIN`: Plausible domain (opsiyonel)
 
 ## Yapı

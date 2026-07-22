@@ -1,70 +1,127 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from "react";
 
-interface User {
+export type PublicUser = {
   id: string;
-  username: string;
-  role: 'admin' | 'member';
-}
+  email: string;
+  name?: string | null;
+  image?: string | null;
+};
 
-interface AuthContextType {
-  user: User | null;
+export type ClubAccessPayload = {
+  applicationApproved: boolean;
+  subscriptionActive: boolean;
+  fullMember: boolean;
+  periodEnd: string | null;
+};
+
+type AuthContextType = {
+  user: PublicUser | null;
+  needsOnboarding: boolean;
   isLoggedIn: boolean;
-  isAdmin: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
-}
+  isAdminNav: boolean;
+  /** Kulüp başvurusu / abonelik özeti (giriş yoksa null) */
+  club: ClubAccessPayload | null;
+  loading: boolean;
+  refresh: () => Promise<void>;
+  login: (email: string, password: string) => Promise<{ ok: boolean; error?: string; needsOnboarding?: boolean }>;
+  register: (email: string, password: string, name?: string) => Promise<{ ok: boolean; error?: string; needsOnboarding?: boolean }>;
+  logout: () => Promise<void>;
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<PublicUser | null>(null);
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const [isAdminNav, setIsAdminNav] = useState(false);
+  const [club, setClub] = useState<ClubAccessPayload | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Sayfa yüklendiğinde localStorage'dan auth durumunu kontrol et
-    const authData = localStorage.getItem('noqta-auth');
-    if (authData) {
-      try {
-        const parsed = JSON.parse(authData);
-        setUser(parsed);
-      } catch (error) {
-        localStorage.removeItem('noqta-auth');
-      }
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/auth/me", { credentials: "include" });
+      const data = await res.json().catch(() => ({}));
+      setUser(data?.user ?? null);
+      setNeedsOnboarding(!!data?.needsOnboarding);
+      setClub(data?.club ?? null);
+    } catch {
+      setUser(null);
+      setNeedsOnboarding(false);
+      setClub(null);
+    }
+    try {
+      const a = await fetch("/api/auth/admin-session", { credentials: "include" });
+      const j = await a.json().catch(() => ({}));
+      setIsAdminNav(!!j?.admin);
+    } catch {
+      setIsAdminNav(false);
     }
   }, []);
 
-  const login = (username: string, password: string): boolean => {
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'Bapdor-hetsoq-8nyggu';
-    const memberPassword = process.env.NEXT_PUBLIC_MEMBER_PASSWORD || 'member123';
-    
-    if (username === 'admin' && password === adminPassword) {
-      const adminUser = { id: 'admin', username: 'admin', role: 'admin' as const };
-      setUser(adminUser);
-      localStorage.setItem('noqta-auth', JSON.stringify(adminUser));
-      return true;
-    } else if (username === 'member' && password === memberPassword) {
-      const memberUser = { id: 'member', username: 'member', role: 'member' as const };
-      setUser(memberUser);
-      localStorage.setItem('noqta-auth', JSON.stringify(memberUser));
-      return true;
+  useEffect(() => {
+    refresh().finally(() => setLoading(false));
+  }, [refresh]);
+
+  const login = async (email: string, password: string) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return { ok: false, error: data?.error || "Giriş başarısız" };
     }
-    return false;
+    setUser(data.user ?? null);
+    setNeedsOnboarding(!!data.needsOnboarding);
+    await refresh();
+    return { ok: true, needsOnboarding: !!data.needsOnboarding };
   };
 
-  const logout = () => {
+  const register = async (email: string, password: string, name?: string) => {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password, name }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return { ok: false, error: data?.error || "Kayıt başarısız" };
+    }
+    setUser(data.user ?? null);
+    setNeedsOnboarding(!!data.needsOnboarding);
+    await refresh();
+    return { ok: true, needsOnboarding: !!data.needsOnboarding };
+  };
+
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setUser(null);
-    localStorage.removeItem('noqta-auth');
+    setNeedsOnboarding(false);
+    setClub(null);
+    setIsAdminNav(false);
+    await refresh();
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isLoggedIn: !!user, 
-      isAdmin: user?.role === 'admin',
-      login, 
-      logout 
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        needsOnboarding,
+        isLoggedIn: !!user,
+        isAdminNav,
+        club,
+        loading,
+        refresh,
+        login,
+        register,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -73,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

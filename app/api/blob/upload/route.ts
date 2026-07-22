@@ -8,7 +8,10 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   console.log(">> POST /api/blob/upload tetiklendi");
   
-  const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+  const blobToken =
+    process.env.BLOB_READ_WRITE_TOKEN ||
+    process.env.VERCEL_BLOB_RW_TOKEN ||
+    process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
   console.log(">> Blob token mevcut mu?:", blobToken ? "evet" : "hayır");
   
   if (!blobToken) {
@@ -36,7 +39,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ url });
   } catch (err: any) {
     console.error(">> Upload HATASI:", err?.message || err);
-    return NextResponse.json({ ok: false, error: "Upload failed" }, { status: 500 });
+    return NextResponse.json({ ok: false, error: err?.message || "Upload failed" }, { status: 500 });
   }
 }
 

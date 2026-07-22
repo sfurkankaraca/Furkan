@@ -1,0 +1,150 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  passwordHash       String?
+  name               String?
+  image              String?
+  googleSub          String?   @unique
+  profileCompletedAt DateTime?
+  createdAt          DateTime  @default(now())
+  orders             Order[]
+  tickets            Ticket[]
+  profile            UserProfile?
+  clubSubscription   ClubSubscription?
+  radioChatMessages  RadioChatMessage[]
+}
+
+model UserProfile {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  musicGenres           String[]  @default([])
+  favoriteArtists       String?
+  musicNotes            String?
+  /** Kısa tanıtım (herkese açık gösterim için sınırlı kullanım) */
+  bio                   String?
+  /** Instagram kullanıcı adı (@ olmadan) */
+  instagramHandle       String?
+  firstName             String?
+  lastName              String?
+  phone                 String?
+  birthDate             DateTime?
+  city                  String?
+  district              String?
+  addressLine           String?
+  postalCode            String?
+  country               String?   @default("TR")
+  companyName           String?
+  taxNumber             String?
+  taxOffice             String?
+  invoiceEmail          String?
+  marketingEmailConsent Boolean   @default(false)
+  termsAcceptedAt       DateTime?
+  onboardingStep        Int       @default(0)
+  adminNotes            String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Order {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId          String
+  eventTitle       String?
+  quantity         Int
+  amountKurus      Int
+  currency         String   @default("TRY")
+  status           String   @default("pending")
+  iyzicoToken      String?
+  iyzicoPaymentId  String?
+  conversationId   String?  @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  tickets          Ticket[]
+
+  @@index([userId])
+  @@index([eventId])
+}
+
+model Ticket {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId    String?
+  order      Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  eventId    String
+  eventTitle String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([eventId])
+}
+
+/// Aylık kulüp aboneliği bitişi; periodEnd şu anından büyükse erişim aktif
+model ClubSubscription {
+  userId    String   @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  periodEnd DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Spotify ve kapak URL’leri admin panelden; /radio sayfasında listelenir
+model Playlist {
+  id          String   @id @default(cuid())
+  title       String
+  spotifyUrl  String
+  coverImage  String
+  category    String
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([featured, sortOrder])
+}
+
+/// Tek satır: id = "default". Admin panelden OBS / akış URL ve yayın açık-kapalı.
+model RadioLiveConfig {
+  id        String   @id
+  streamUrl String   @default("")
+  title     String   @default("Noqta canlı")
+  isLive    Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+}
+
+/// Admin görseller paneli — Blob'a yüklenen görsellerin kataloğu.
+model SiteAsset {
+  id        String   @id @default(cuid())
+  category  String
+  label     String
+  url       String
+  createdAt DateTime @default(now())
+
+  @@index([category])
+}
+
+/// /radio/chat — yazmak için oturum gerekir; okuma herkese açık.
+model RadioChatMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

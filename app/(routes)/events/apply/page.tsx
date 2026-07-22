@@ -1,6 +1,6 @@
-import Section from "@/components/Section";
 import EventApplicationForm from "@/components/EventApplicationForm";
 import { sendEventApplicationMail } from "@/lib/mail/send";
+import { ContentCard, PageHeader, PageShell } from "@/components/layout/PageShell";
 
 export const metadata = { title: "Etkinlik Başvurusu | noqta" };
 
@@ -63,8 +63,27 @@ export default function EventApplyPage() {
   );
 
   return (
-    <Section title="Perseid Meteor Party — Başvuru" description={description}>
-      <EventApplicationForm action={action} defaultEventId="private-meteor-party-2025-08-12" defaultEventTitle="Private Meteor Party" />
-    </Section>
+    <div>
+      <PageShell>
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-start md:gap-12">
+          <PageHeader
+            eyebrow={
+              <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/70">
+                Başvuru
+              </p>
+            }
+            title="Perseid Meteor Party — Başvuru"
+            description={description}
+          />
+          <ContentCard className="p-6 md:p-8">
+            <EventApplicationForm
+              action={action}
+              defaultEventId="private-meteor-party-2025-08-12"
+              defaultEventTitle="Private Meteor Party"
+            />
+          </ContentCard>
+        </div>
+      </PageShell>
+    </div>
   );
 } 

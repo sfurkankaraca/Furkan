@@ -1,4 +1,42 @@
-export async function sendContactMail(input: { name: string; email: string; subject: string; message: string }) {
+const DEFAULT_ADMIN_ACTIVITY_EMAIL = "sfurkankaraca@gmail.com";
+
+/** Virgül veya noktalı virgülle çoklu adres. `ADMIN_ACTIVITY_EMAIL` yoksa varsayılan Gmail. */
+export function adminActivityRecipients(): string[] {
+  const raw = (process.env.ADMIN_ACTIVITY_EMAIL || "").trim() || DEFAULT_ADMIN_ACTIVITY_EMAIL;
+  return [...new Set(raw.split(/[,;]+/).map((s) => s.trim()).filter(Boolean))];
+}
+
+/**
+ * Site aktivitelerinin kopyasını gideceği BCC listesi.
+ * `allTo` içinde olanlar (alıcı zaten) eklenmez; `extra` önce (mevcut BCC vb.).
+ */
+function adminActivityBcc(allTo: string[], ...extra: (string | string[] | undefined)[]): string[] | undefined {
+  const toSet = new Set(allTo.map((t) => t.trim().toLowerCase()));
+  const extras = extra.flatMap((seg) => (Array.isArray(seg) ? seg : seg ? [seg] : []));
+  const merged = [
+    ...extras.map((s) => String(s).trim()).filter(Boolean),
+    ...adminActivityRecipients(),
+  ];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const addr of merged) {
+    const low = addr.toLowerCase();
+    if (!low || toSet.has(low) || seen.has(low)) continue;
+    seen.add(low);
+    out.push(addr);
+  }
+  return out.length ? out : undefined;
+}
+
+export async function sendContactMail(input: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  phone?: string;
+  formType?: "booking" | "b2b" | "collective" | "general";
+  details?: Record<string, string>;
+}) {
   if (!process.env.RESEND_API_KEY) {
     console.log("[contact]", input);
     return { ok: true };
@@ -6,7 +44,7 @@ export async function sendContactMail(input: { name: string; email: string; subj
 
   const fromAddress = process.env.RESEND_FROM || "noqta <onboarding@resend.dev>";
   const toAddress = "hi@noqta.club"; // force target
-  const bccAddress = process.env.RESEND_BCC || "sfurkankaraca@gmail.com";
+  const bccList = adminActivityBcc([toAddress], process.env.RESEND_BCC);
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -17,10 +55,35 @@ export async function sendContactMail(input: { name: string; email: string; subj
     body: JSON.stringify({
       from: fromAddress,
       to: [toAddress],
-      bcc: bccAddress ? [bccAddress] : undefined,
-      subject: `[noqta] ${input.subject}`,
-      html: `<p><b>${input.name}</b> (${input.email})</p><p>${input.message}</p>`,
-      text: `${input.name} (${input.email})\n\n${input.message}`,
+      bcc: bccList,
+      subject: `[noqta:${input.formType || "general"}] ${input.subject}`,
+      html: `
+        <p><b>${escapeHtml(input.name)}</b> (${escapeHtml(input.email)})</p>
+        ${input.phone ? `<p><b>Telefon:</b> ${escapeHtml(input.phone)}</p>` : ""}
+        <p><b>Form tipi:</b> ${escapeHtml(input.formType || "general")}</p>
+        ${
+          input.details && Object.keys(input.details).length > 0
+            ? `<p><b>Detaylar:</b></p><ul>${Object.entries(input.details)
+                .map(([k, v]) => `<li><b>${escapeHtml(k)}:</b> ${escapeHtml(v)}</li>`)
+                .join("")}</ul>`
+            : ""
+        }
+        <p>${escapeHtml(input.message).replaceAll("\n", "<br/>")}</p>
+      `,
+      text: [
+        `${input.name} (${input.email})`,
+        input.phone ? `Telefon: ${input.phone}` : undefined,
+        `Form tipi: ${input.formType || "general"}`,
+        input.details && Object.keys(input.details).length > 0
+          ? `Detaylar:\n${Object.entries(input.details)
+              .map(([k, v]) => `- ${k}: ${v}`)
+              .join("\n")}`
+          : undefined,
+        "",
+        input.message,
+      ]
+        .filter(Boolean)
+        .join("\n"),
       reply_to: [input.email],
     }),
   });
@@ -59,9 +122,8 @@ export async function sendEventApplicationMail(input: EventApplicationPayload) {
   // Zorunlu olarak Resend'in doğrulanmış gönderenini kullan
   const fromAddress = "noqta <onboarding@resend.dev>";
   // İstenen hedef Gmail; opsiyonel env ile değiştirilebilir
-  const toPrimary = process.env.EVENTS_TO || "sfurkankaraca@gmail.com";
-  // hi@noqta.club da BCC'ye alınsın
-  const bccSecondary = process.env.EVENTS_BCC || "hi@noqta.club";
+  const toPrimary = process.env.EVENTS_TO?.trim() || adminActivityRecipients()[0];
+  const bccSecondary = process.env.EVENTS_BCC?.trim() || "hi@noqta.club";
 
   const subject = `[apply] ${input.eventTitle || input.eventId} — ${input.name}`;
 
@@ -111,7 +173,7 @@ export async function sendEventApplicationMail(input: EventApplicationPayload) {
     body: JSON.stringify({
       from: fromAddress,
       to: [toPrimary],
-      bcc: bccSecondary ? [bccSecondary] : undefined,
+      bcc: adminActivityBcc([toPrimary, input.email], bccSecondary),
       subject,
       html,
       text,
@@ -137,8 +199,8 @@ export async function sendAdminEventMail(input: AdminEventMailPayload) {
     return { ok: true };
   }
   const fromAddress = "noqta <onboarding@resend.dev>";
-  const toAddress = process.env.EVENTS_TO || "sfurkankaraca@gmail.com";
-  const bccAddress = process.env.EVENTS_BCC || "hi@noqta.club";
+  const toAddress = process.env.EVENTS_TO?.trim() || adminActivityRecipients()[0];
+  const bccAddress = process.env.EVENTS_BCC?.trim() || "hi@noqta.club";
   const subject = `[admin] Yeni Etkinlik Talebi — ${input.title}`;
   const html = `
     <h2>Yeni Etkinlik</h2>
@@ -170,7 +232,7 @@ export async function sendAdminEventMail(input: AdminEventMailPayload) {
     body: JSON.stringify({
       from: fromAddress,
       to: [toAddress],
-      bcc: bccAddress ? [bccAddress] : undefined,
+      bcc: adminActivityBcc([toAddress], bccAddress),
       subject,
       html,
       text,
@@ -204,8 +266,8 @@ export async function sendWorkshopApplicationMail(input: WorkshopApplicationMail
     return { ok: true };
   }
   const fromAddress = "noqta <onboarding@resend.dev>";
-  const toPrimary = process.env.EVENTS_TO || "sfurkankaraca@gmail.com";
-  const bccSecondary = process.env.EVENTS_BCC || "hi@noqta.club";
+  const toPrimary = process.env.EVENTS_TO?.trim() || adminActivityRecipients()[0];
+  const bccSecondary = process.env.EVENTS_BCC?.trim() || "hi@noqta.club";
   const subject = `[workshop] ${input.kind} — ${input.name}`;
 
   const rows = Object.entries(input.answers).map(([k, v]) => `<tr><td><b>${escapeHtml(k)}</b></td><td>${escapeHtml(String(v))}</td></tr>`).join("");
@@ -237,11 +299,251 @@ export async function sendWorkshopApplicationMail(input: WorkshopApplicationMail
     body: JSON.stringify({
       from: fromAddress,
       to: [toPrimary],
-      bcc: bccSecondary ? [bccSecondary] : undefined,
+      bcc: adminActivityBcc([toPrimary, input.email], bccSecondary),
       subject,
       html,
       text: textLines.join("\n"),
       reply_to: [input.email],
+    }),
+  });
+  return { ok: res.ok };
+}
+
+// -----------------------
+// Noqta Club Mail
+// -----------------------
+
+export type NoqtaClubApplicationMailPayload = {
+  name: string;
+  email: string;
+  phone?: string;
+  city: string;
+  /** YYYY-MM-DD */
+  birthDate?: string;
+  /** Eski kayıtlar */
+  age?: number;
+  instagram: string;
+  referrer?: string;
+  referralSource?: string;
+  mainReason: string;
+  musicInterest: string;
+};
+
+export async function sendNoqtaClubApplicationMail(input: NoqtaClubApplicationMailPayload) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[club-apply] (dev):", {
+      email: input.email,
+      name: input.name,
+      city: input.city,
+      birthDate: input.birthDate,
+    });
+    return { ok: true };
+  }
+
+  const fromAddress = "noqta <onboarding@resend.dev>";
+  const toPrimary = process.env.NOQTACLUB_TO?.trim() || "hi@noqta.club";
+  const subject = `[club] Yeni başvuru — ${input.name}`;
+
+  const html = `
+    <h2>Yeni Noqta Club Başvurusu</h2>
+    <table cellpadding="6" cellspacing="0" style="border-collapse:collapse">
+      <tr><td><b>Ad Soyad</b></td><td>${escapeHtml(input.name)}</td></tr>
+      <tr><td><b>E-posta</b></td><td>${escapeHtml(input.email)}</td></tr>
+      ${input.phone ? `<tr><td><b>Telefon</b></td><td>${escapeHtml(input.phone)}</td></tr>` : ""}
+      <tr><td><b>Şehir</b></td><td>${escapeHtml(input.city)}</td></tr>
+      <tr><td><b>Doğum tarihi</b></td><td>${escapeHtml(input.birthDate ? String(input.birthDate) : input.age != null ? `Eski kayıt (yaş: ${input.age})` : "—")}</td></tr>
+      <tr><td><b>Instagram</b></td><td>${escapeHtml(input.instagram)}</td></tr>
+      ${input.referrer ? `<tr><td><b>Referans</b></td><td>${escapeHtml(input.referrer).replaceAll("\n","<br/>")}</td></tr>` : ""}
+      ${input.referralSource ? `<tr><td><b>Nasıl ulaştın</b></td><td>${escapeHtml(input.referralSource)}</td></tr>` : ""}
+      <tr><td><b>Neden katılmak istiyorsun?</b></td><td>${escapeHtml(input.mainReason).replaceAll("\n","<br/>")}</td></tr>
+      <tr><td><b>Daha önceki ilgi / etkinlikler</b></td><td>${escapeHtml(input.musicInterest).replaceAll("\n","<br/>")}</td></tr>
+    </table>
+  `;
+
+  const text = [
+    `Noqta Club Başvurusu: ${input.name}`,
+    `Email: ${input.email}`,
+    input.phone ? `Telefon: ${input.phone}` : undefined,
+    `Şehir: ${input.city}`,
+    input.birthDate
+      ? `Doğum tarihi: ${input.birthDate}`
+      : input.age != null
+        ? `Yaş (eski kayıt): ${input.age}`
+        : undefined,
+    `Instagram: ${input.instagram}`,
+    input.referrer ? `Referans: ${input.referrer}` : undefined,
+    input.referralSource ? `Nasıl ulaştın: ${input.referralSource}` : undefined,
+    "",
+    "Neden:",
+    input.mainReason,
+    "",
+    "İlgi/Etkinlik:",
+    input.musicInterest,
+  ].filter(Boolean).join("\n");
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [toPrimary],
+      bcc: adminActivityBcc([toPrimary, input.email]),
+      subject,
+      html,
+      text,
+      reply_to: [input.email],
+    }),
+  });
+
+  return { ok: res.ok };
+}
+
+export async function sendNoqtaClubApprovedMail(input: { name?: string; email: string }) {
+  if (!process.env.RESEND_API_KEY) return { ok: true };
+  const fromAddress = "noqta <onboarding@resend.dev>";
+  const subject = "Noqta Club — aramıza hoş geldin";
+  const html = `
+    <p>Merhaba${input.name ? ` ${escapeHtml(input.name)}` : ""},</p>
+    <p>Başvurunu okuduk ve seni aramızda görmekten mutluluk duyacağız.</p>
+    <p>Gerekirse erişim ve sonraki adımlar için sana ayrıca yazacağız.</p>
+    <p>noqta</p>
+  `;
+  const text = `Merhaba${input.name ? ` ${input.name}` : ""},\n\nBaşvurunu okuduk ve seni aramızda görmekten mutluluk duyacağız.\n\nnoqta`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [input.email],
+      bcc: adminActivityBcc([input.email]),
+      subject,
+      html,
+      text,
+    }),
+  });
+  return { ok: res.ok };
+}
+
+export async function sendNoqtaClubRejectedMail(input: { name?: string; email: string }) {
+  if (!process.env.RESEND_API_KEY) return { ok: true };
+  const fromAddress = "noqta <onboarding@resend.dev>";
+  const subject = "Noqta Club — başvurun hakkında";
+  const html = `
+    <p>Merhaba${input.name ? ` ${escapeHtml(input.name)}` : ""},</p>
+    <p>Başvurun için teşekkürler. Bu turda aramıza katılmak için uygun bir eşleşme bulamadık; bu senin değerinin eksik olduğu anlamına gelmez.</p>
+    <p>Bir süre sonra tekrar başvurabilir veya etkinlikler ve collective üzerinden yine yanımızda olabilirsin.</p>
+    <p>noqta</p>
+  `;
+  const text = `Merhaba${input.name ? ` ${input.name}` : ""},\n\nBaşvurun için teşekkürler. Bu turda aramıza katılmak için uygun bir eşleşme bulamadık.\nİstersen bir süre sonra tekrar deneyebilirsin.\n\nnoqta`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [input.email],
+      bcc: adminActivityBcc([input.email]),
+      subject,
+      html,
+      text,
+    }),
+  });
+  return { ok: res.ok };
+}
+
+export async function sendEventAnnouncementMail(input: {
+  to: string[];
+  title: string;
+  date?: string;
+  city?: string;
+  venue?: string;
+  eventUrl: string;
+  ticketUrl: string;
+}) {
+  if (!input.to.length) return { ok: true, sent: 0 };
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[event-announcement]", input);
+    return { ok: true, sent: input.to.length };
+  }
+  const fromAddress = "noqta <onboarding@resend.dev>";
+  const subject = `Yeni etkinlik: ${input.title}`;
+  const when = input.date ? new Date(input.date).toLocaleString("tr-TR") : "Tarih yakında";
+  const place = [input.venue, input.city].filter(Boolean).join(" · ") || "Lokasyon yakında";
+  const html = `
+    <h2>Yeni etkinlik yayında</h2>
+    <p><b>${escapeHtml(input.title)}</b></p>
+    <p><b>Tarih:</b> ${escapeHtml(when)}</p>
+    <p><b>Yer:</b> ${escapeHtml(place)}</p>
+    <p>
+      <a href="${escapeHtml(input.eventUrl)}">Etkinlik detayını görüntüle</a><br/>
+      <a href="${escapeHtml(input.ticketUrl)}">Bilet al</a>
+    </p>
+  `;
+  const text = `Yeni etkinlik: ${input.title}\nTarih: ${when}\nYer: ${place}\n\nDetay: ${input.eventUrl}\nBilet: ${input.ticketUrl}`;
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [input.to[0]],
+      bcc: adminActivityBcc(input.to, input.to.slice(1)),
+      subject,
+      html,
+      text,
+    }),
+  });
+  return { ok: res.ok, sent: input.to.length };
+}
+
+export async function sendTicketPurchasedMail(input: {
+  to: string;
+  name?: string | null;
+  eventTitle: string;
+  date?: string;
+  city?: string;
+  venue?: string;
+  ticketCodes: string[];
+  ticketsUrl: string;
+}) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[ticket-purchased]", input);
+    return { ok: true };
+  }
+  const fromAddress = "noqta <onboarding@resend.dev>";
+  const subject = `Bilet satın alımın başarılı: ${input.eventTitle}`;
+  const when = input.date ? new Date(input.date).toLocaleString("tr-TR") : "Tarih yakında";
+  const place = [input.venue, input.city].filter(Boolean).join(" · ") || "Lokasyon yakında";
+  const codes = input.ticketCodes.map((c) => `<li><code>${escapeHtml(c)}</code></li>`).join("");
+  const html = `
+    <p>Merhaba${input.name ? ` ${escapeHtml(input.name)}` : ""},</p>
+    <p><b>${escapeHtml(input.eventTitle)}</b> için bilet satın alımın başarıyla tamamlandı.</p>
+    <p><b>Tarih:</b> ${escapeHtml(when)}<br/><b>Yer:</b> ${escapeHtml(place)}</p>
+    <p><b>Bilet kodların:</b></p>
+    <ul>${codes}</ul>
+    <p><a href="${escapeHtml(input.ticketsUrl)}">Biletlerim sayfasına git</a></p>
+  `;
+  const text = [
+    `Merhaba${input.name ? ` ${input.name}` : ""},`,
+    `${input.eventTitle} için bilet satın alımın başarıyla tamamlandı.`,
+    `Tarih: ${when}`,
+    `Yer: ${place}`,
+    "",
+    "Bilet kodların:",
+    ...input.ticketCodes.map((c) => `- ${c}`),
+    "",
+    `Biletlerim: ${input.ticketsUrl}`,
+  ].join("\n");
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [input.to],
+      bcc: adminActivityBcc([input.to]),
+      subject,
+      html,
+      text,
     }),
   });
   return { ok: res.ok };

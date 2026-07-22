@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { upload as blobUpload } from "@vercel/blob/client";
 
 type Props = {
   targetTextareaId?: string;
@@ -8,6 +9,12 @@ type Props = {
   accept?: string;
   onUploadComplete?: (url: string) => void;
   eventId?: string; // Event ID for updating store
+  /** Örn. /api/me/upload-avatar — girişli kullanıcı profil fotoğrafı */
+  uploadApiPath?: string;
+  withCredentials?: boolean;
+  buttonLabel?: string;
+  /** false: sağdaki açıklama satırını gösterme */
+  showHint?: boolean;
 };
 
 export default function UploadWidget({
@@ -16,6 +23,9 @@ export default function UploadWidget({
   accept = "image/*",
   onUploadComplete,
   eventId,
+  uploadApiPath = "/api/blob/upload",
+  withCredentials = false,
+  buttonLabel = "Yükle",
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [busy, setBusy] = useState(false);
@@ -31,29 +41,35 @@ export default function UploadWidget({
       const uploadFile = compressed || file;
 
       let url = "";
+      const isVideo = /^video\//.test(uploadFile.type || file.type || "");
       try {
-        // Önce direct upload dener
-        const gen = await fetch('/api/upload-url', { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ filename: uploadFile.name, contentType: uploadFile.type }),
-          cache: 'no-store' 
+        const safeName = (uploadFile.name || "file")
+          .replace(/[^\w.\-]+/g, "-")
+          .replace(/-+/g, "-")
+          .slice(0, 120);
+        const objectPath = `uploads/${Date.now()}-${safeName}`;
+        // Vercel Blob client upload (büyük video dosyaları için önerilen yol)
+        const uploaded = await blobUpload(objectPath, uploadFile, {
+          access: "public",
+          contentType: uploadFile.type || "application/octet-stream",
+          handleUploadUrl: "/api/upload-url",
+          multipart: isVideo,
         });
-        if (!gen.ok) throw new Error(`Upload URL alınamadı (${gen.status})`);
-        const { url: uploadUrl } = await gen.json();
-        const up = await fetch(uploadUrl, { 
-          method: 'POST', 
-          headers: { 'Content-Type': uploadFile.type || 'application/octet-stream' },
-          body: uploadFile 
-        });
-        if (!up.ok) throw new Error(`Upload başarısız (${up.status})`);
-        const json = await up.json();
-        url = json.url;
+        url = uploaded.url;
       } catch (directErr) {
+        // Video dosyalarında server fallback (multipart) boyut limitine takılabilir.
+        // Bu yüzden direct upload başarısızsa hatayı aynen kullanıcıya göster.
+        if (isVideo) {
+          throw directErr;
+        }
         // Fallback: küçük dosyalar için API üzerinden yükle (Server limitlerine tabi)
         const formData = new FormData();
-        formData.append('file', uploadFile);
-        const res = await fetch('/api/blob/upload', { method: 'POST', body: formData });
+        formData.append("file", uploadFile);
+        const res = await fetch(uploadApiPath, {
+          method: "POST",
+          body: formData,
+          ...(withCredentials ? { credentials: "include" as RequestCredentials } : {}),
+        });
         if (!res.ok) {
           const errJson = await res.json().catch(() => ({}));
           throw new Error(errJson.error || `Upload hata (${res.status})`);
@@ -159,7 +175,7 @@ export default function UploadWidget({
         onClick={() => inputRef.current?.click()}
         disabled={busy}
       >
-        {busy ? "Yükleniyor…" : "Yükle"}
+        {busy ? "Yükleniyor…" : buttonLabel}
       </button>
       <span className="text-xs text-white/50">
         Seçtiğin görsel yüklenir ve alanına eklenir.

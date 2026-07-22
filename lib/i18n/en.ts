@@ -4,14 +4,15 @@ export const en = {
     collective: "Collective",
     academy: "Academy",
     b2b: "B2B",
+    radio: "Radio",
     contact: "Contact",
   },
   home: {
     title: "We are noqta.",
-    subtitle: "A sound collective for people who feel in loops.",
+    subtitle: "A crew built around electronic music and live events.",
     ctaEvents: "Events",
     ctaContact: "Write us",
-    teaser: "We are noqta / A sound collective for people who feel in loops.",
+    teaser: "Events · Academy · Radio · community — across Turkey.",
   },
   contact: {
     title: "Contact",

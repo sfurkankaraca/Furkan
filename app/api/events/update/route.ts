@@ -1,38 +1,22 @@
 import { NextResponse } from "next/server";
-import { put, list } from "@vercel/blob";
+import { readEventsJson, writeEventsJson } from "@/lib/server/events-store";
+import type { PublicEvent } from "@/lib/event-types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    console.log(">> POST /api/events/update tetiklendi");
-    
     const body = await request.json();
-    console.log(">> Request body:", body);
-    
     const { eventId, newImage, title, date, city, venue, ctaUrl, photos, playlists, memberPhotosAdd } = body || {};
-    
+
     if (!eventId) {
       return NextResponse.json({ error: "Missing eventId" }, { status: 400 });
     }
 
-    // Read current events from Blob
-    const { blobs } = await list({ prefix: "noqta-events.json" });
-    let currentEvents: any[] = [];
-    
-    if (blobs.length > 0) {
-      const latestBlob = blobs[blobs.length - 1];
-      const response = await fetch(latestBlob.url, { cache: 'no-store' });
-      if (response.ok) {
-        currentEvents = await response.json();
-      }
-    }
-
-    if (!Array.isArray(currentEvents)) currentEvents = [];
-
-    const idx = currentEvents.findIndex((e: any) => e.id === eventId);
-    const mergeUpdates: Record<string, any> = {};
+    const currentEvents = await readEventsJson();
+    const idx = currentEvents.findIndex((e) => e.id === eventId);
+    const mergeUpdates: Partial<PublicEvent> = {};
     if (newImage) mergeUpdates.image = newImage;
     if (title) mergeUpdates.title = title;
     if (date) mergeUpdates.date = date;
@@ -42,36 +26,40 @@ export async function POST(request: Request) {
     if (Array.isArray(photos)) mergeUpdates.photos = photos;
     if (Array.isArray(playlists)) mergeUpdates.playlists = playlists;
 
+    let nextList: PublicEvent[];
     if (idx !== -1) {
       const prev = currentEvents[idx] || {};
-      let nextObj = { ...prev, ...mergeUpdates };
-      // Append member photos if provided
+      let nextObj: PublicEvent = { ...prev, ...mergeUpdates };
       if (Array.isArray(memberPhotosAdd) && memberPhotosAdd.length > 0) {
         const prevMembers = Array.isArray(prev.memberPhotos) ? prev.memberPhotos : [];
-        nextObj.memberPhotos = [...prevMembers, ...memberPhotosAdd];
+        nextObj = { ...nextObj, memberPhotos: [...prevMembers, ...memberPhotosAdd] };
       }
-      currentEvents[idx] = nextObj;
+      nextList = currentEvents.map((e, i) => (i === idx ? nextObj : e));
     } else {
-      currentEvents.push({ id: eventId, ...mergeUpdates, memberPhotos: Array.isArray(memberPhotosAdd) ? memberPhotosAdd : undefined });
+      nextList = [
+        ...currentEvents,
+        {
+          id: eventId,
+          title: String(title || eventId),
+          date: String(date || ""),
+          city: String(city || ""),
+          ...mergeUpdates,
+          memberPhotos: Array.isArray(memberPhotosAdd) ? memberPhotosAdd : undefined,
+        } as PublicEvent,
+      ];
     }
-    
-    const data = JSON.stringify(currentEvents, null, 2);
-    const mainBlob = await put("noqta-events.json", data, {
-      access: 'public',
-      addRandomSuffix: false
-    });
-    
-    return NextResponse.json({ 
-      success: true, 
+
+    const { url } = await writeEventsJson(nextList);
+
+    return NextResponse.json({
+      success: true,
       message: "Event updated successfully",
-      updatedEvents: currentEvents,
-      blobUrl: mainBlob.url,
-      // For backward compatibility with clients expecting eventsBlobUrl
-      eventsBlobUrl: mainBlob.url
+      updatedEvents: nextList,
+      blobUrl: url,
+      eventsBlobUrl: url,
     });
-    
   } catch (error) {
-    console.error(">> Error updating event:", error);
+    console.error("POST /api/events/update", error);
     return NextResponse.json({ error: "Failed to update event" }, { status: 500 });
   }
 }

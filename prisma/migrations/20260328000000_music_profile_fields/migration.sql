@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "UserProfile" ADD COLUMN IF NOT EXISTS "musicGenres" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+ALTER TABLE "UserProfile" ADD COLUMN IF NOT EXISTS "favoriteArtists" TEXT;
+ALTER TABLE "UserProfile" ADD COLUMN IF NOT EXISTS "musicNotes" TEXT;

@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { list, put } from "@vercel/blob";
 
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN || process.env.VERCEL_BLOB_RW_TOKEN || process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
 const blobApi = "https://api.vercel.com/v2/blob";
@@ -52,13 +53,111 @@ export type WorkshopApplication = {
   createdAt: string;
 };
 
+export type ContactInquiryType = "booking" | "b2b" | "collective" | "general";
+
+export type ContactInquiry = {
+  id: string;
+  type: ContactInquiryType;
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  details?: Record<string, string>;
+  createdAt: string;
+};
+
+export type NoqtaClubStatus = "pending" | "approved" | "rejected";
+
+export type NoqtaClubApplication = {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  city: string;
+  /** YYYY-MM-DD */
+  birthDate?: string;
+  /** Eski başvurular (yaş alanı) */
+  age?: number;
+  instagram: string;
+  /** Seni öneren kişi / referans (serbest metin) */
+  referrer?: string;
+  /** Nasıl duydun / kanal (çoktan seçmeli) */
+  referralSource?: string;
+  mainReason: string;
+  musicInterest: string;
+  consentKvkk: boolean;
+  consentMarketing?: boolean;
+  status: NoqtaClubStatus;
+  tier?: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  rejectionNote?: string;
+  createdAt: string;
+  updatedAt?: string;
+};
+
 const dataDir = path.join(process.cwd(), "data");
 const membersFile = path.join(dataDir, "members.json");
 const applicationsFile = path.join(dataDir, "applications.json");
 const workshopApplicationsFile = path.join(dataDir, "workshop-applications.json");
+const contactInquiriesFile = path.join(dataDir, "contact-inquiries.json");
 const tmpMembersFile = "/tmp/members.json";
 const tmpApplicationsFile = "/tmp/applications.json";
 const tmpWorkshopApplicationsFile = "/tmp/workshop-applications.json";
+const tmpContactInquiriesFile = "/tmp/contact-inquiries.json";
+const clubApplicationsFile = path.join(dataDir, "noqta-club-applications.json");
+const tmpClubApplicationsFile = "/tmp/noqta-club-applications.json";
+/** Vercel Blob — tek dosya; sunucusuz ortamda /tmp yerine kalıcı saklama */
+const clubApplicationsBlobPath = "noqta-club-applications.json";
+
+function blobRwToken(): string | undefined {
+  return blobToken;
+}
+
+async function readNoqtaClubApplicationsFromBlob(): Promise<NoqtaClubApplication[] | null> {
+  const token = blobRwToken();
+  if (!token) return null;
+  try {
+    const { blobs } = await list({ prefix: "noqta-club-applications", token });
+    const exact = blobs.find((b) => b.pathname === clubApplicationsBlobPath);
+    const pick = exact?.url
+      ? exact
+      : blobs
+          .filter((b) => typeof b.pathname === "string" && b.pathname.startsWith("noqta-club-applications"))
+          .sort(
+            (a, b) =>
+              new Date((b as { uploadedAt?: string }).uploadedAt || 0).getTime() -
+              new Date((a as { uploadedAt?: string }).uploadedAt || 0).getTime(),
+          )[0];
+    if (!pick?.url) return [];
+    const res = await fetch(pick.url, { cache: "no-store" });
+    if (!res.ok) return [];
+    const arr = await res.json().catch(() => []);
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) {
+    console.error("[admin/store] noqta-club blob read", e);
+    return [];
+  }
+}
+
+async function writeNoqtaClubApplicationsToBlob(rows: NoqtaClubApplication[]): Promise<boolean> {
+  const token = blobRwToken();
+  if (!token) return false;
+  try {
+    const body = JSON.stringify(rows, null, 2) + "\n";
+    await put(clubApplicationsBlobPath, body, {
+      access: "public",
+      addRandomSuffix: false,
+      token,
+      contentType: "application/json",
+    });
+    return true;
+  } catch (e) {
+    console.error("[admin/store] noqta-club blob write", e);
+    return false;
+  }
+}
 
 async function ensureDir() {
   try { await fs.mkdir(dataDir, { recursive: true }); } catch {}
@@ -178,4 +277,115 @@ export async function addWorkshopApplication(row: Omit<WorkshopApplication, "id"
 export async function readWorkshopApplicationsByKind(kind: string) {
   const rows = await readWorkshopApplications();
   return rows.filter((a) => a.kind === kind);
+}
+
+export async function readContactInquiries(): Promise<ContactInquiry[]> {
+  return readJson<ContactInquiry>(contactInquiriesFile, "contact-inquiries.json", tmpContactInquiriesFile);
+}
+
+export async function addContactInquiry(row: Omit<ContactInquiry, "id" | "createdAt">) {
+  const rows = await readContactInquiries();
+  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const createdAt = new Date().toISOString();
+  rows.unshift({ id, createdAt, ...row });
+  await writeJson(contactInquiriesFile, rows, "contact-inquiries.json", tmpContactInquiriesFile);
+}
+
+// -----------------------
+// Noqta Club Store
+// -----------------------
+
+export async function readNoqtaClubApplications(): Promise<NoqtaClubApplication[]> {
+  const fromBlob = await readNoqtaClubApplicationsFromBlob();
+  if (fromBlob !== null) return fromBlob;
+  return readJson<NoqtaClubApplication>(clubApplicationsFile, undefined, tmpClubApplicationsFile);
+}
+
+export async function getNoqtaClubApplicationByEmail(email: string): Promise<NoqtaClubApplication | null> {
+  const e = email.toLowerCase().trim();
+  const rows = await readNoqtaClubApplications();
+  return rows.find((r) => r.email.toLowerCase().trim() === e) || null;
+}
+
+export async function getNoqtaClubApplicationById(id: string): Promise<NoqtaClubApplication | null> {
+  const rows = await readNoqtaClubApplications();
+  return rows.find((r) => r.id === id) || null;
+}
+
+export async function upsertNoqtaClubApplication(
+  row: Omit<NoqtaClubApplication, "id" | "createdAt" | "updatedAt" | "reviewedAt" | "reviewedBy" | "rejectionNote" | "status"> & {
+    status?: NoqtaClubStatus;
+  }
+): Promise<NoqtaClubApplication> {
+  const rows = await readNoqtaClubApplications();
+  const email = row.email.toLowerCase().trim();
+  const now = new Date().toISOString();
+
+  const existingIdx = rows.findIndex((r) => r.email.toLowerCase().trim() === email);
+  if (existingIdx >= 0) {
+    const prev = rows[existingIdx];
+    rows[existingIdx] = {
+      ...prev,
+      ...row,
+      email,
+      status: "pending",
+      reviewedAt: undefined,
+      reviewedBy: undefined,
+      rejectionNote: undefined,
+      tier: row.tier || prev.tier || "standard",
+      updatedAt: now,
+    };
+    const ok = await writeNoqtaClubApplicationsToBlob(rows);
+    if (!ok) {
+      await writeJson(clubApplicationsFile, rows, undefined, tmpClubApplicationsFile);
+    }
+    return rows[existingIdx];
+  }
+
+  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const createdAt = now;
+  const newRow: NoqtaClubApplication = {
+    id,
+    createdAt,
+    updatedAt: now,
+    tier: row.tier || "standard",
+    reviewedAt: undefined,
+    reviewedBy: undefined,
+    rejectionNote: undefined,
+    status: "pending",
+    ...row,
+    email,
+  };
+  rows.unshift(newRow);
+  const ok = await writeNoqtaClubApplicationsToBlob(rows);
+  if (!ok) {
+    await writeJson(clubApplicationsFile, rows, undefined, tmpClubApplicationsFile);
+  }
+  return newRow;
+}
+
+export async function setNoqtaClubStatus(args: {
+  id: string;
+  status: NoqtaClubStatus;
+  adminEmail?: string;
+  rejectionNote?: string;
+}) {
+  const rows = await readNoqtaClubApplications();
+  const idx = rows.findIndex((r) => r.id === args.id);
+  if (idx < 0) return null;
+  const now = new Date().toISOString();
+  const prev = rows[idx];
+  rows[idx] = {
+    ...prev,
+    status: args.status,
+    reviewedAt: now,
+    reviewedBy: args.adminEmail,
+    rejectionNote: args.status === "rejected" ? args.rejectionNote || undefined : undefined,
+    updatedAt: now,
+  };
+  const ok = await writeNoqtaClubApplicationsToBlob(rows);
+  if (!ok) {
+    await writeJson(clubApplicationsFile, rows, undefined, tmpClubApplicationsFile);
+  }
+  return rows[idx];
 }

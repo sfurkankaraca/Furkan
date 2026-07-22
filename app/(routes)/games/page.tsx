@@ -1,22 +1,58 @@
-export const metadata = { title: "Games | noqta" };
+import type { Metadata } from "next";
+import { Gauge } from "lucide-react";
+import { PageShell, PageHeader } from "@/components/layout/PageShell";
+
+export const metadata: Metadata = {
+  title: "Games | NOQT DJ Academy",
+  description: "Müzikle oynanan deneyimler; genre quiz, BPM guess ve mini oyunlar. NOQT DJ Academy Games.",
+};
 
 export default function GamesPage() {
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-12">
-      <h1 className="text-2xl md:text-3xl font-semibold mb-6">Games</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <a
-          href="https://quiz.noqta.club"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex rounded-2xl p-[2px] bg-gradient-to-r from-emerald-400 via-lime-400 to-teal-300 shadow-[0_0_12px_rgba(52,211,153,0.5)] hover:shadow-[0_0_18px_rgba(52,211,153,0.8)] transition-shadow"
-        >
-          <div className="rounded-[14px] bg-white/5 hover:bg-white/10 transition p-6 w-full">
-            <div className="text-xl font-medium">Genre Quiz</div>
-            <div className="text-white/60 mt-1">Müziğin türünü tahmin et.</div>
-          </div>
-        </a>
+    <PageShell>
+      <div className="grid gap-10">
+        <PageHeader
+          eyebrow={
+            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Games
+            </p>
+          }
+          title="Oyunla keşfet"
+          description="Müzikle oynanan deneyimler; genre quiz, BPM guess ve ileride eklenecek mini oyunlar burada toplanır."
+        />
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <a
+            href="https://quiz.noqta.club"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-2xl border border-border bg-card p-6 transition hover:border-emerald-200 hover:shadow-sm"
+          >
+            <div className="inline-flex rounded-xl bg-emerald-50 border border-emerald-100 p-2.5 mb-4">
+              <svg className="size-6 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+            <div className="text-lg font-semibold text-foreground">Genre Quiz</div>
+            <div className="mt-2 text-sm text-muted-foreground">Müziğin türünü tahmin et.</div>
+            <span className="mt-4 block text-sm text-emerald-600 group-hover:text-emerald-700 transition">quiz.noqta.club →</span>
+          </a>
+
+          <a
+            href="https://bpmguess.noqta.club"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-2xl border border-border bg-card p-6 transition hover:border-fuchsia-200 hover:shadow-sm"
+          >
+            <div className="inline-flex rounded-xl bg-fuchsia-50 border border-fuchsia-100 p-2.5 mb-4">
+              <Gauge className="size-6 text-fuchsia-600" aria-hidden />
+            </div>
+            <div className="text-lg font-semibold text-foreground">BPM Guess</div>
+            <div className="mt-2 text-sm text-muted-foreground">Tempoyu kulakla yakalayıp BPM tahmin et.</div>
+            <span className="mt-4 block text-sm text-fuchsia-600 group-hover:text-fuchsia-700 transition">bpmguess.noqta.club →</span>
+          </a>
+        </div>
       </div>
-    </div>
+    </PageShell>
   );
 }
