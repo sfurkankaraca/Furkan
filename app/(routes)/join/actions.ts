@@ -46,8 +46,55 @@ export async function submitJoin(formData: FormData) {
     extra: payload,
   } as any);
 
+  // Google Sheets webhook (Apps Script vb.) — varsa gönder
+  const webhookUrl = process.env.JOIN_SHEET_WEBHOOK_URL;
+  if (webhookUrl) {
+    const row = {
+      timestamp: new Date().toISOString(),
+      role,
+      name,
+      email,
+      city,
+      phone,
+      instagram,
+      note,
+      details: payload,
+    };
+    try {
+      // Google Apps Script exec URL'leri 302 ile googleusercontent'a yönlendirebilir.
+      // 301/302'de POST -> GET dönüşmesin diye yönlendirmeyi manuel takip ediyoruz.
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        ...(process.env.JOIN_SHEET_AUTH ? { Authorization: `Bearer ${process.env.JOIN_SHEET_AUTH}` } : {}),
+      };
+      const first = await fetch(webhookUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(row),
+        redirect: "manual",
+      } as RequestInit);
+      if (first.status >= 300 && first.status < 400) {
+        const location = first.headers.get("location");
+        if (location) {
+          await fetch(location, {
+            method: "POST",
+            headers,
+            body: JSON.stringify(row),
+          });
+        }
+      } else if (!first.ok) {
+        console.error("[join->sheets] status:", first.status);
+      }
+    } catch (e) {
+      console.error("[join->sheets] gönderim hatası", e);
+    }
+  }
+
   const message = `Role: ${role}\nCity: ${city}\nPhone: ${phone}\nInstagram: ${instagram}\nNote: ${note}\n\nDetails: ${JSON.stringify(payload, null, 2)}`;
-  await sendContactMail({ name, email, subject: `Membership (${role})`, message });
+  // E‑posta bildirimi: JOIN_SEND_EMAIL_FALLBACK=0 ise kapat
+  if (process.env.JOIN_SEND_EMAIL_FALLBACK !== "0") {
+    await sendContactMail({ name, email, subject: `Membership (${role})`, message });
+  }
 
   return { ok: true } as const;
 }

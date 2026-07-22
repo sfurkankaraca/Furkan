@@ -1,44 +1,164 @@
-import DotRing from "@/components/DotRing";
-import Section from "@/components/Section";
 import Link from "next/link";
+import {
+  ArrowRight,
+  Disc3,
+  Mic2,
+  SlidersHorizontal,
+  Sparkles,
+  UserRound,
+  Video,
+  Workflow,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageShell, PageHeader, ContentCard } from "@/components/layout/PageShell";
+import { PageHeroVideo } from "@/components/layout/PageHeroVideo";
+import { resolvePageHeroSources } from "@/lib/page-hero-videos";
+import { contactHref } from "@/lib/contact-href";
+import { resolveSiteImageUrl } from "@/lib/site-images/resolver";
+import { readSiteImageOverrides } from "@/lib/site-images/store";
 
-export const metadata = { title: "Collective | noqta" };
+export const metadata = {
+  title: "Noqta Collective — DJ ve Sanatçı Network",
+  description:
+    "DJ, prodüktör ve sanatçılar için iş birliği, set çekimi, içerik ve booking koordinasyonu. Türkiye genelinde noqta collective ağı.",
+  alternates: { canonical: "/collective" },
+};
 
-export default function CollectivePage() {
+const forDjs = [
+  { icon: Video, text: "Set çekimi ve içerik üretimi — görünürlüğünüzü büyütelim." },
+  { icon: Workflow, text: "Kariyer yönetimi ve release / gig takvimi ile net rota." },
+  { icon: UserRound, text: "Menejerlik ve booking görüşmelerinde temsil ve koordinasyon." },
+];
+
+const forProducers = [
+  { icon: Disc3, text: "Şarkılarınızı kurum içi playlist ve etkinlik kürasyonlarına önerelim." },
+  { icon: Mic2, text: "Label ve collective çatısı altında yayın, tanıtım ve network." },
+  { icon: SlidersHorizontal, text: "Klip / set çekimi, görsel kimlik ve dijital varlık paketi." },
+];
+
+export default async function CollectivePage() {
+  const heroSources = resolvePageHeroSources("collective");
+  const overrides = await readSiteImageOverrides();
+  const poster = resolveSiteImageUrl("collective_hero_poster", overrides) ?? "/og.png";
+
   return (
-    <Section title="Collective" description="a small circle for people who feel in loops.">
-      {/* Hero bloğu kaldırıldı */}
+    <main>
+      <PageHeroVideo
+        sources={heroSources}
+        poster={poster}
+        posterAlt="Noqta Collective — müzik ve sanatçı topluluğu arka plan görseli"
+      >
+        <div className="container mx-auto max-w-7xl px-4 py-14 md:py-20">
+          <div className="rounded-2xl border border-white/15 bg-black/45 p-6 backdrop-blur-md md:p-8">
+            <PageHeader
+              eyebrow={
+                <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/70">
+                  <Sparkles className="size-3.5 text-cyan-300" aria-hidden />
+                  Collective
+                </p>
+              }
+              title={<>Noqta Collective — DJ&apos;ler ve prodüktörler için ortak alan</>}
+              description="Sahne ötesi: içerik, kariyer ve iş birliği. Doğru sesi doğru projeyle buluşturuyoruz. Rolüne göre seçenekler aşağıda — tek mesajla başlayabilirsin."
+              actions={
+                <>
+                  <Button
+                    asChild
+                    size="lg"
+                    className="rounded-xl border-0 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-fuchsia-500/20 hover:from-fuchsia-500 hover:to-purple-500"
+                  >
+                    <Link
+                      href={contactHref(
+                        "Collective — İş birliği başvurusu",
+                        "Merhaba,\n\nRolüm: DJ / prodüktör / sanatçı (hangisi):\nŞehir:\nSoundcloud / Spotify / IG linkleri:\nKısa hedef (ör. set çekimi, label demo, menajerlik):\n\nNot:\n",
+                      )}
+                    >
+                      İş birliği için yaz
+                      <ArrowRight className="size-4" aria-hidden />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="rounded-xl border-white/20 bg-white/5 hover:bg-white/10">
+                    <Link href="/join">Kulüp üyeliği</Link>
+                  </Button>
+                </>
+              }
+            />
+          </div>
+        </div>
+        <PageShell withGlow={false}>
+        <div className="grid gap-14 md:gap-20">
+        <p className="text-sm text-white/60 max-w-2xl">
+          <Link href="/booking" className="text-cyan-300/90 hover:text-cyan-200 underline-offset-4 hover:underline">
+            DJ booking
+          </Link>{" "}
+          veya özel etkinlik müziği için de aynı ekiple hizalanabilirsin.
+        </p>
 
-      <div className="mt-10">
-        <h2 className="text-center text-2xl md:text-3xl font-semibold tracking-wide">MANIFESTO</h2>
-        <p className="text-center text-white/60 mt-2">ritme, birbirimize ve ana alan açıyoruz</p>
-
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            { t: "MÜZİK.", d: "Her şey onunla başlar, onunla biter.", g: "from-fuchsia-500 via-purple-500 to-cyan-400" },
-            { t: "KEŞİF.", d: "Bildiğini bırak, bilmediğine açıl.", g: "from-emerald-400 via-lime-400 to-teal-300" },
-            { t: "SAYGI.", d: "Alanını koru, enerjini paylaş.", g: "from-sky-400 via-blue-500 to-indigo-400" },
-            { t: "YÜZLEŞ.", d: "Kalabalığa dön, birlikte titre.", g: "from-rose-400 via-pink-500 to-fuchsia-400" },
-            { t: "ÖZGÜRLÜK.", d: "Telefon yok, maskeler yok, an var.", g: "from-amber-400 via-orange-500 to-yellow-300" },
-            { t: "İFADE.", d: "Kıyafetin, bedenin, hareketin → senin imzan.", g: "from-teal-300 via-cyan-400 to-sky-400" },
-            { t: "DANS.", d: "Kendini bırak, ritim seni alsın.", g: "from-purple-400 via-violet-500 to-fuchsia-400" },
-            { t: "KABİLE.", d: "Noqta’da yalnız değilsin, biz bir topluluğuz.", g: "from-green-400 via-emerald-500 to-teal-400" },
-          ].map((it, i) => (
-            <div key={i} className={`rounded-2xl p-[2px] bg-gradient-to-r ${it.g}`}>
-              <div className="rounded-[14px] bg-black p-5 h-full">
-                <div className="text-white font-semibold">{it.t}</div>
-                <div className="text-white/70 text-sm mt-1">{it.d}</div>
+        <section className="grid gap-6 lg:grid-cols-2" aria-labelledby="collective-roles">
+          <h2 id="collective-roles" className="sr-only">
+            Kimlere hitap ediyoruz
+          </h2>
+          <ContentCard>
+            <div className="flex items-center gap-3">
+              <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                <Disc3 className="size-5 text-fuchsia-300" aria-hidden />
               </div>
+              <h3 className="text-lg font-semibold text-white">DJ&apos;ler</h3>
             </div>
-          ))}
+            <p className="mt-3 text-sm leading-relaxed text-white/60">
+              Setinizi profesyonelce kayda almak, sosyal ve streaming stratejisini toparlamak veya temsilcilik istemeniz
+              fark etmez — süreci sizin adınıza yürütürüz.
+            </p>
+            <ul className="mt-5 grid gap-3">
+              {forDjs.map(({ icon: Icon, text }) => (
+                <li key={text} className="flex gap-3 text-sm text-white/75">
+                  <Icon className="mt-0.5 size-4 shrink-0 text-cyan-300/80" aria-hidden />
+                  {text}
+                </li>
+              ))}
+            </ul>
+            <Button asChild variant="secondary" className="mt-6 w-full rounded-xl bg-white/10 text-white hover:bg-white/15">
+              <Link href={contactHref("Collective — DJ iş birliği", "Merhaba, DJ olarak collective ile çalışmak istiyorum.\n\nSet örnekleri:\nHedeflerim:\n")}>
+                DJ olarak başvur
+                <ArrowRight className="size-4 opacity-70" aria-hidden />
+              </Link>
+            </Button>
+          </ContentCard>
+
+          <ContentCard>
+            <div className="flex items-center gap-3">
+              <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/5">
+                <SlidersHorizontal className="size-5 text-cyan-300" aria-hidden />
+              </div>
+              <h3 className="text-lg font-semibold text-white">Prodüktör & sanatçı</h3>
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-white/60">
+              Parçalarınızı doğru playlist ve sahnelere taşımak, noqta ekosisteminde görünür olmak veya label / yayın
+              hattında ilerlemek için yanınızdayız.
+            </p>
+            <ul className="mt-5 grid gap-3">
+              {forProducers.map(({ icon: Icon, text }) => (
+                <li key={text} className="flex gap-3 text-sm text-white/75">
+                  <Icon className="mt-0.5 size-4 shrink-0 text-fuchsia-300/80" aria-hidden />
+                  {text}
+                </li>
+              ))}
+            </ul>
+            <Button asChild variant="secondary" className="mt-6 w-full rounded-xl bg-white/10 text-white hover:bg-white/15">
+              <Link
+                href={contactHref(
+                  "Collective — Prodüktör / sanatçı iş birliği",
+                  "Merhaba, prodüktör/sanatçı olarak collective ile çalışmak istiyorum.\n\nDemo / yayın linkleri:\nPlaylist önerisi veya label hedefi:\n",
+                )}
+              >
+                Prodüktör / sanatçı olarak başvur
+                <ArrowRight className="size-4 opacity-70" aria-hidden />
+              </Link>
+            </Button>
+          </ContentCard>
+        </section>
         </div>
-        <div className="mt-8 flex justify-center">
-          <Button asChild className="rounded-xl">
-            <Link href="/join">Klube Katıl</Link>
-          </Button>
-        </div>
-      </div>
-    </Section>
+      </PageShell>
+      </PageHeroVideo>
+    </main>
   );
 }

@@ -1,180 +1,128 @@
-"use client";
+export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import EventCard from "@/components/EventCard";
-import { useState, useEffect } from "react";
+import { ArrowRight, GraduationCap, Music2, Zap } from "lucide-react";
+import HeroSection from "@/components/HeroSection";
+import { getPrisma } from "@/lib/prisma";
 
-export default function Home() {
-  const [events, setEvents] = useState([
-    {
-      id: "private-meteor-party-2025-08-12",
-      title: "Private Meteor Party",
-      date: "2025-08-12T21:00:00+03:00",
-      city: "Kayseri",
-      venue: "Somewhere near Felahiye",
-      ctaUrl: "/events/apply",
-      image: "/events/perseid.jpeg",
-    },
-  ]);
+const PROGRAMS = [
+  {
+    icon: GraduationCap,
+    label: "DJ Eğitimi",
+    accent: "text-fuchsia-600 bg-fuchsia-50 border-fuchsia-100",
+    courses: ["DJliğe Giriş", "İleri Seviye DJlik"],
+    desc: "Temelinden profesyonele, sahneye hazır bir müzisyen ol.",
+  },
+  {
+    icon: Music2,
+    label: "Müzik Prodüksiyonu",
+    accent: "text-violet-600 bg-violet-50 border-violet-100",
+    courses: ["Prodüksiyona Giriş"],
+    desc: "Kendi sesini bul; DAW, mixing ve mastering ile prodüksiyon öğren.",
+  },
+  {
+    icon: Zap,
+    label: "Workshoplar",
+    accent: "text-emerald-600 bg-emerald-50 border-emerald-100",
+    courses: ["Set Hazırlama", "DJlik Deneyimi", "Müzik Prodüksiyonu"],
+    desc: "Tek günlük yoğun workshoplarla odaklı pratik yap.",
+  },
+];
 
-  useEffect(() => {
-    const fetchLatestEvents = async () => {
-      try {
-        const response = await fetch("/api/events");
-        if (response.ok) {
-          const latestEvents = await response.json();
-          setEvents(latestEvents);
-          localStorage.setItem("noqta-events", JSON.stringify(latestEvents));
-          return;
-        }
-      } catch {}
-      const storedEvents = localStorage.getItem("noqta-events");
-      if (storedEvents) {
-        try {
-          setEvents(JSON.parse(storedEvents));
-        } catch {}
-      }
-    };
-    fetchLatestEvents();
-  }, []);
-
-  const upcoming = events.filter(
-    (e) => !e.date || new Date(e.date).getTime() >= Date.now()
-  );
+export default async function HomePage() {
+  const prisma = getPrisma();
+  const heroAssets = prisma
+    ? await prisma.siteAsset.findMany({
+        where: { category: "hero" },
+        orderBy: { createdAt: "asc" },
+      })
+    : [];
+  const heroImages = heroAssets.length > 0 ? heroAssets.map((a) => a.url) : ["/1.JPG"];
 
   return (
     <main>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <video
-            className="w-full h-full object-cover"
-            src="/hero.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/og.png"
-          />
-          <div className="absolute inset-0 bg-black/55" />
-        </div>
-        <div className="container mx-auto max-w-7xl px-4 py-20 md:py-28">
-          <div className="grid place-items-center text-center gap-6">
-            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight">
-              noqta
-            </h1>
-            <p className="text-lg text-white/80 max-w-xl">
-              DJ eğitimi, elektronik müzik topluluğu ve etkinlik deneyimi.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Button asChild className="rounded-xl">
-                <Link href="/events">Etkinlikleri Keşfet</Link>
-              </Button>
-              <Button asChild variant="outline" className="rounded-xl">
-                <Link href="/academy">Academy</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection heroImages={heroImages} />
 
-      {/* Navigation cards */}
-      <section className="py-10">
-        <div className="container mx-auto max-w-7xl px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {[
-              { href: "/academy", title: "Academy", desc: "DJ ve prodüksiyon eğitimi — atölyeler ve birebir dersler." },
-              { href: "/collective", title: "Collective", desc: "Topluluğa katıl, sahne kazan, üretimini paylaş." },
-              { href: "/events", title: "Etkinlikler", desc: "Noqta etkinliklerini keşfet ve topluluğu sahada gör." },
-            ].map((c) => (
-              <Link
-                key={c.href}
-                href={c.href}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition block"
+      {/* ── PROGRAMLAR ── */}
+      <section id="programs" className="scroll-mt-16 bg-background py-20 md:py-28">
+        <div className="container mx-auto max-w-6xl px-6">
+          <div className="mb-14 max-w-xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground mb-3">
+              Eğitim Programları
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              Ne öğrenmek istiyorsun?
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground leading-relaxed">
+              DJ&apos;likten prodüksiyona, tek günlük workshoplardan uzun soluklu eğitimlere — hepsini bir çatı altında bulursun.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {PROGRAMS.map((p) => (
+              <div
+                key={p.label}
+                className="group rounded-2xl border border-border bg-card p-6 transition hover:shadow-md hover:border-foreground/20"
               >
-                <div className="text-xl font-medium">{c.title}</div>
-                <div className="text-white/60 mt-1 text-sm">{c.desc}</div>
-              </Link>
+                <div className={`inline-flex rounded-xl border p-2.5 mb-5 ${p.accent}`}>
+                  <p.icon className="size-5" aria-hidden />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">{p.label}</h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+                <ul className="mt-4 space-y-1.5">
+                  {p.courses.map((c) => (
+                    <li key={c} className="flex items-center gap-2 text-sm text-foreground/80">
+                      <span className="size-1.5 rounded-full bg-foreground/30 shrink-0" />
+                      {c}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Upcoming events */}
-      <section className="py-12 md:py-16">
-        <div className="container mx-auto max-w-5xl px-4">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl md:text-3xl font-semibold">Yaklaşan Etkinlikler</h2>
-            <Link href="/events" className="text-sm text-white/70 hover:text-white">
-              Tümü
-            </Link>
-          </div>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
-            {upcoming.map((ev) => (
-              <EventCard key={ev.id} event={ev as any} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Past events */}
-      <section className="py-8 md:py-12">
-        <div className="container mx-auto max-w-5xl px-4">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl md:text-3xl font-semibold">Geçmiş Etkinlikler</h2>
-            <Link href="/events" className="text-sm text-white/70 hover:text-white">
-              Tümü
-            </Link>
-          </div>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
-            {events
-              .filter((e) => e.date && new Date(e.date).getTime() < Date.now())
-              .slice(0, 3)
-              .map((ev) => (
-                <EventCard key={ev.id} event={ev as any} />
-              ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Academy CTA */}
-      <section className="py-10 md:py-14">
-        <div className="container mx-auto max-w-7xl px-4 grid md:grid-cols-2 gap-6 items-center">
-          <div>
-            <h3 className="text-2xl md:text-3xl font-semibold">Academy</h3>
-            <p className="text-white/70 mt-2">
-              DJ ve prodüksiyon için pratik odaklı atölyeler, birebir dersler ve paylaşımlar.
-            </p>
-            <div className="mt-4">
-              <Link href="/academy" className="underline">
-                Detaylar
-              </Link>
-            </div>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-            <div className="text-white/80">Yakında atölyeler ve kayıt bağlantıları burada.</div>
-          </div>
-        </div>
-      </section>
-
-      {/* noqt.events CTA */}
-      <section className="py-10">
-        <div className="container mx-auto max-w-3xl px-4">
-          <div className="rounded-2xl border border-white/15 bg-white/[0.07] px-6 py-7 text-center">
-            <p className="text-sm text-white/60 mb-4">
-              Düğün, organizasyon veya özel etkinlik için profesyonel DJ hizmeti mi arıyorsunuz?
-            </p>
+          <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-8 border-t border-border">
             <a
-              href="https://www.noqt.events"
+              href="https://labs.noqta.club/register"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90"
+              className="shrink-0 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-sm font-semibold text-background transition hover:opacity-90"
             >
-              noqt.events'i ziyaret et
-              <span aria-hidden>↗</span>
+              Detaylar için kaydol, seni arayalım
+              <ArrowRight className="size-4" aria-hidden />
             </a>
+            <Link
+              href="/academy"
+              className="shrink-0 inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
+            >
+              Tüm programlar
+            </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ── noqt.events cross-link ── */}
+      <section className="bg-muted/40 border-t border-border py-14">
+        <div className="container mx-auto max-w-6xl px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground mb-2">
+              Profesyonel DJ Hizmeti
+            </p>
+            <h2 className="text-xl font-semibold text-foreground">
+              Düğün, kurumsal etkinlik veya özel parti mi?
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Booking ve DJ hizmeti için noqt.events&apos;i ziyaret et.
+            </p>
+          </div>
+          <a
+            href="https://www.noqt.events"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 inline-flex items-center gap-2 rounded-full border border-border bg-background px-7 py-3 text-sm font-semibold text-foreground transition hover:bg-muted"
+          >
+            noqt.events ↗
+          </a>
         </div>
       </section>
     </main>

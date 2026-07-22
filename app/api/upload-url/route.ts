@@ -1,47 +1,57 @@
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+import { handleUpload } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 
-const BLOB_API = "https://api.vercel.com/v2/blob";
+const blobToken =
+  process.env.BLOB_READ_WRITE_TOKEN ||
+  process.env.VERCEL_BLOB_RW_TOKEN ||
+  process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
 
-async function handleGenerate(request: Request) {
-  const token = process.env.BLOB_READ_WRITE_TOKEN || process.env.VERCEL_BLOB_RW_TOKEN || process.env.VERCEL_BLOB_READ_WRITE_TOKEN;
-  if (!token) {
+export async function POST(request: Request) {
+  const host = request.headers.get("host");
+  const origin = request.headers.get("origin");
+  // Yalnızca aynı origin'den gelen istekleri kabul et (temel CSRF/abuse freni).
+  if (host && origin) {
+    try {
+      const originHost = new URL(origin).host;
+      if (originHost !== host) {
+        return NextResponse.json({ error: "Geçersiz origin" }, { status: 403 });
+      }
+    } catch {
+      return NextResponse.json({ error: "Geçersiz origin" }, { status: 403 });
+    }
+  }
+  if (!blobToken) {
     return NextResponse.json({ error: "BLOB_READ_WRITE_TOKEN eksik (Vercel Env)" }, { status: 500 });
   }
-
-  // İsteğin body’sinden metadata al
-  let filename = `upload-${Date.now()}`;
-  let contentType: string | undefined = undefined;
   try {
-    if (request.method === "POST") {
-      const body = await request.json().catch(() => ({}));
-      if (typeof body?.filename === "string" && body.filename.trim()) filename = body.filename.trim();
-      if (typeof body?.contentType === "string" && body.contentType.trim()) contentType = body.contentType.trim();
-    }
-  } catch {}
-
-  const gen = await fetch(`${BLOB_API}/generate-upload-url`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ access: "public", filename, contentType }),
-    cache: "no-store",
-  });
-
-  const text = await gen.text();
-  if (!gen.ok) {
-    return NextResponse.json({ error: `Blob API hata: ${gen.status} ${text}` }, { status: 500 });
-  }
-  try {
-    const json = JSON.parse(text);
-    return NextResponse.json({ url: json.url });
-  } catch {
-    return NextResponse.json({ error: `Blob API beklenmeyen yanıt: ${text}` }, { status: 500 });
+    const body = await request.json();
+    const jsonResponse = await handleUpload({
+      token: blobToken,
+      request,
+      body,
+      onBeforeGenerateToken: async (pathname) => {
+        const normalizedPath = (pathname || "").replace(/^\/+/, "");
+        // Rastgele dosya yazımını engelle: tüm yüklemeler uploads/ altında olmalı.
+        if (!normalizedPath.startsWith("uploads/")) {
+          throw new Error("Geçersiz upload yolu");
+        }
+        return {
+          allowedContentTypes: ["image/*", "video/*"],
+          maximumSizeInBytes: 1024 * 1024 * 500, // 500MB
+        };
+      },
+      onUploadCompleted: async () => {
+        // Bu projede callback sonrası ek işlem yok.
+      },
+    });
+    return NextResponse.json(jsonResponse);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Upload URL oluşturulamadı";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-export async function GET(request: Request) { return handleGenerate(request); }
-export async function POST(request: Request) { return handleGenerate(request); }
 
 

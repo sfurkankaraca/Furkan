@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Section from "@/components/Section";
+import { ContentCard, PageHeader, PageShell } from "@/components/layout/PageShell";
 
 export default function ApplyDj101Page() {
   const [busy, setBusy] = useState(false);
@@ -48,9 +48,12 @@ export default function ApplyDj101Page() {
   }
 
   return (
-    <Section title="DJ 101 Başvuru" description="Kısa formu doldur, seni arayalım.">
-      <form onSubmit={submit} className="grid gap-4 max-w-2xl mx-auto">
-        <input type="hidden" name="kind" value={kind} />
+    <PageShell>
+      <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-start md:gap-12">
+        <PageHeader title="DJ 101 Başvuru" description="Kısa formu doldur, seni arayalım." />
+        <ContentCard className="p-6 md:p-8">
+          <form onSubmit={submit} className="grid gap-4 max-w-2xl mx-auto">
+            <input type="hidden" name="kind" value={kind} />
 
         <div className="grid gap-4 md:grid-cols-2">
           <label className="grid gap-2">
@@ -182,8 +185,10 @@ export default function ApplyDj101Page() {
             {done ? "Gönderildi" : busy ? "Gönderiliyor..." : "Başvur"}
           </button>
         </div>
-      </form>
-    </Section>
+          </form>
+        </ContentCard>
+      </div>
+    </PageShell>
   );
 }
 

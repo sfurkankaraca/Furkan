@@ -1,0 +1,76 @@
+/**
+ * Furkan Karaca — biyografi ve portfolyo.
+ * - Uzun metin: `FURKAN_BIO_LONG_PARAGRAPHS` (/furkan-karaca)
+ * - Sayfa eşlemesi: booking → kısa (3), b2b → kurumsal (1), academy → öğrenci (2), biz-kimiz → orta (4)
+ */
+
+export const FURKAN_KARACA = {
+  name: "Furkan Karaca",
+  profileHref: "/furkan-karaca",
+} as const;
+
+/** Profil / kart görseli: https… veya /yol.jpg — boşsa “FK” monogram */
+export const FURKAN_PROFILE_IMAGE_URL = "";
+
+/** Portfolyo grid — sonra genişlet */
+export const FURKAN_PORTFOLIO_IMAGES: readonly { src: string; alt: string }[] = [];
+
+/** (3) Kısa bio — booking */
+export const FURKAN_BIO_KISA =
+  "Furkan Karaca, müzisyen, yapımcı, ses mühendisi, DJ, eğitmen ve mentordur. Müziğe 8 yaşında bağlama ile başlayan Karaca; yıllar içinde trombon, bas gitar, elektro gitar, vokal, prodüksiyon, ses ve sahne alanlarında çok yönlü bir deneyim geliştirdi. İstanbul Bilgi Üniversitesi Müzik Bölümü’nü %100 bursla kazandı; farklı sahnelerde müzisyen ve sesçi olarak, stüdyo tarafında ise prodüktör, kayıt ses mühendisi ve vokal koçu olarak çalıştı. 2022 yılında yayımladığı ilk albümündeki bestelerinden biri olan “Her Şey Biter De”, Sertab Erener tarafından yeniden yorumlandı. Şarkı, 2025 yılında farklı söz ve yapısal düzenlemelerle “Böyledir Benim Ayrılıklarım” adıyla yayımlandı. Bu gelişme, Karaca’nın besteci kimliğinin daha geniş bir alanda karşılık bulduğunu gösteren dikkat çekici adımlardan biri oldu. 2023 ile 2026 yılları arasında Jolly Joker Kayseri’de tonmaister ve resident DJ olarak görev aldı. 29 Eylül 2025’te kurduğu noqt ile müzik üretimi, eğitim ve yaratıcı ekosistem geliştirme alanlarında çalışmalarını sürdürmektedir.";
+
+/** (1) Mekan / kurumsal — b2b */
+export const FURKAN_BIO_KURUMSAL_PARAGRAPHS: readonly string[] = [
+  "Furkan Karaca, müzisyen, yapımcı, ses mühendisi, DJ ve yaratıcı proje geliştiricisidir. Müziğe 8 yaşında bağlama ile başlayan Karaca; ilerleyen yıllarda trombon, bas gitar, elektro gitar ve vokal alanlarında da aktif olarak üretim yaptı. Bursa Işıklar Askeri Hava Lisesi’nde okul bandosu ve orkestralarda edindiği deneyimin ardından, kariyer yönünü müzikten yana seçerek bestecilik, sahne ve prodüksiyon alanlarına odaklandı.",
+  "2020 yılında İstanbul Bilgi Üniversitesi Müzik Bölümü’nü %100 bursla kazandı. İstanbul’da Karaköy, Kadıköy ve Beşiktaş başta olmak üzere farklı sahnelerde gitarist, vokalist, bas gitarist ve sesçi olarak yer aldı; home stüdyosunda ise pop, alternatif, arabesk, rock, hip-hop ve akustik gibi farklı türlerde üretim yapan sanatçılarla prodüktör, vokal koçu ve kayıt ses mühendisi olarak çalıştı. Çetin Çetintaş ile yürüttüğü mantra projelerinde kayıt ve prodüksiyon süreçlerini üstlenerek festival ve retreat sahnelerinde de görev aldı.",
+  "Pandemi döneminde yönettiği Spotify playlistleri on binlerce organik takipçiye ulaşan Karaca, bu süreçte güçlü kürasyonun, dinleyici alışkanlıklarının ve atmosfer kurmanın önemine odaklandı. Bu bakış açısı, DJ’liğe ve müzik seçkisine yaklaşımını da şekillendirdi. Onun için performans, yalnızca müzik çalmak değil; mekânın kimliğine, akışına ve kitlesine uygun bir atmosfer kurmaktır.",
+  "Yıllar içinde düğünlerden açılışlara, mezuniyetlerden festivallere, defilelerden konserlere; bar, kafe, beach, otel ve kulüp gibi çok farklı alanlarda yerli ve yabancı dinleyicilere yönelik performanslar sergiledi. 2023 ile 2026 yılları arasında Jolly Joker Kayseri’de tonmaister ve resident DJ olarak görev aldı; burada Ogün Sanlısoy, Deniz Tekin, Tuna Kiremitçi, Umut Kaya, Sufle ve Emre Fel gibi isimlerle çalışma deneyimi edindi.",
+  "Sahne tarafının yanında etkinlik operasyonu alanında da deneyim sahibidir. Pozitif bünyesinde Cappadox etkinliğinde üç yıl görev almış; Kapadokya’nın farklı bölgelerine yayılan etkinliklerde ulaşım-dolaşım ekibi ve kapı operasyonlarında yer almıştır. Bu çok yönlü deneyim, ona yalnızca sahneyi değil, etkinliğin bütün deneyimini ve sahne arkasındaki işleyişi de doğru okuma becerisi kazandırmıştır.",
+  "2022 yılında yayımladığı ilk albümündeki bestelerinden biri olan “Her Şey Biter De”, Sertab Erener tarafından yeniden yorumlandı. Şarkı, 2025 yılında farklı söz ve yapısal düzenlemelerle “Böyledir Benim Ayrılıklarım” adıyla yayımlandı. Bu gelişme, Karaca’nın besteci kimliğinin daha geniş bir alanda karşılık bulduğunu gösteren dikkat çekici adımlardan biri oldu.",
+  "29 Eylül 2025’te kurduğu noqt ile müzik, etkinlik, eğitim ve yaratıcı üretim alanlarını daha sürdürülebilir bir yapı içinde bir araya getirmeyi hedeflemektedir.",
+];
+
+/** (2) Öğrenci — academy */
+export const FURKAN_BIO_ACADEMY_STUDENT_PARAGRAPHS: readonly string[] = [
+  "Furkan Karaca, müzisyen, yapımcı, ses mühendisi, DJ, eğitmen ve mentordur. Müziğe 8 yaşında bağlama ile başlayan Karaca; yıllar içinde trombon, bas gitar, elektro gitar, vokal, prodüksiyon, ses mühendisliği ve DJ’lik gibi birçok farklı alanda aktif olarak üretim yaptı. Bu çok yönlü geçmiş, onun müziğe yalnızca tek bir açıdan değil; sahne, stüdyo, teknik bilgi ve yaratıcı ifade taraflarını birlikte gören bir yerden yaklaşmasını sağladı.",
+  "Bursa Işıklar Askeri Hava Lisesi’nde okul bandosunda trombon çaldı, orkestralarda bas gitarist olarak yer aldı, alternatif rock grubunda gitar çalıp vokalistlik yaptı. Daha sonra askerlik kariyeri yerine müziği seçerek kendi yolunu çizdi. 2020 yılında İstanbul Bilgi Üniversitesi Müzik Bölümü’nü %100 bursla kazandı; İstanbul’da farklı sahnelerde müzisyen ve sesçi olarak çalışırken, aynı zamanda home stüdyosunda farklı türlerde üretim yapan sanatçılarla prodüktör, kayıt ses mühendisi ve vokal koçu olarak çalıştı.",
+  "Yıllar boyunca hem sahnede hem stüdyoda birçok farklı rolde yer alması, eğitim yaklaşımını da belirledi. Furkan Karaca için eğitim yalnızca teknik bilgi anlatmak değildir; öğrenciyi gerçek sektöre hazırlamak, müzikal bakışını geliştirmek, yaratıcı cesaretini artırmak ve profesyonel hayata daha sağlam adımlarla girmesini sağlamaktır. Türkiye’de müzik eğitimi ile gerçek sektör ihtiyaçları arasında ciddi bir boşluk olduğuna inanır; bu nedenle eğitimlerinde teoriyi, pratiği, sahne deneyimini, üretim disiplinini ve kariyer farkındalığını birlikte ele alır.",
+  "Telli, üflemeli, vurmalı ve tuşlu birçok enstrümanı kendi kayıtlarında kullanabilecek düzeyde çalabilen; yıllardır ses, sahne ve prodüksiyon alanlarında çalışan Karaca, öğrencilerine yalnızca bilgi değil, gerçek deneyim aktarmayı hedefler. 2023 ile 2026 yılları arasında Jolly Joker Kayseri’de tonmaister ve resident DJ olarak görev aldı; bu dönemde farklı sanatçılarla sahne pratiğini sürdürdü.",
+  "2022 yılında yayımladığı ilk albümündeki bestelerinden biri olan “Her Şey Biter De”, Sertab Erener tarafından yeniden yorumlandı. Şarkı, 2025 yılında farklı söz ve yapısal düzenlemelerle “Böyledir Benim Ayrılıklarım” adıyla yayımlandı. Bu gelişme, Karaca’nın besteci kimliğinin daha geniş bir alanda karşılık bulduğunu gösteren dikkat çekici adımlardan biri oldu.",
+  "29 Eylül 2025’te kurduğu noqt ile, yetenekli insanların kendilerini geliştirebilecekleri, ifade edebilecekleri ve profesyonel alana daha doğru şekilde hazırlanabilecekleri bir yapı kurmayı hedeflemektedir.",
+];
+
+/** (4) Orta — biz kimiz / site */
+export const FURKAN_BIO_ORTA_PARAGRAPHS: readonly string[] = [
+  "Furkan Karaca, 1996 Kayseri doğumlu müzisyen, yapımcı, ses mühendisi, DJ, eğitmen ve A&R odaklı yaratıcı geliştiricidir. Müziğe 8 yaşında bağlama ile başladı; ilerleyen yıllarda trombon, bas gitar, elektro gitar ve vokal alanlarında da aktif olarak üretim yaptı. 2020 yılında İstanbul Bilgi Üniversitesi Müzik Bölümü’nü %100 bursla kazandı. İstanbul’da farklı sahnelerde gitarist, vokalist, bas gitarist ve sesçi olarak yer alırken; home stüdyosunda poptan rock’a, arabeskten hip-hop’a farklı türlerde çalışan sanatçılarla prodüktör, kayıt ses mühendisi ve vokal koçu olarak çalıştı.",
+  "Pandemi döneminde yönettiği Spotify playlistleri on binlerce organik takipçiye ulaştı; bu süreç, onun kürasyon, keşif ve dinleyici davranışları üzerine güçlü bir bakış geliştirmesini sağladı. 2022 yılında yayımladığı ilk albümündeki bestelerinden biri olan “Her Şey Biter De”, Sertab Erener tarafından yeniden yorumlandı. Şarkı, 2025 yılında farklı söz ve yapısal düzenlemelerle “Böyledir Benim Ayrılıklarım” adıyla yayımlandı. Bu gelişme, Karaca’nın besteci kimliğinin daha geniş bir alanda karşılık bulduğunu gösteren dikkat çekici adımlardan biri oldu.",
+  "Yıllardır sahnede vokalistlikten enstrümanistliğe, tonmaisterlikten DJ’liğe kadar farklı rollerde yer alan Karaca; düğün, festival, konser, kulüp, otel, beach, kafe ve özel etkinlikler dahil birçok farklı alanda performans sergiledi. 2023 ile 2026 yılları arasında Jolly Joker Kayseri’de tonmaister ve resident DJ olarak görev aldı. 29 Eylül 2025’te kurduğu noqt ile sanatsal üretimi daha sürdürülebilir kılacak bir müzik ekosistemi inşa etmeye odaklanmaktadır.",
+];
+
+/** Uzun biyografi — /furkan-karaca */
+export const FURKAN_BIO_LONG_PARAGRAPHS: readonly string[] = [
+  "Furkan Karaca, 1996 yılında Kayseri’de doğdu. Müziğe 8 yaşında bağlama ile başladı. İlk yıllarında kısa ve uzun sap bağlama çalarken, 2010 yılında Bursa Işıklar Askeri Hava Lisesi’ni kazanarak yatılı eğitime başladı. Bursa’daki bu dönem, müzikle ilişkisini derinleştiren ve yönünü belirleyen önemli bir kırılma noktası oldu. Okul bandosunda yaklaşık üç buçuk yıl trombon çaldı; aynı zamanda okulun Jazz Before Flight isimli orkestrasında bas gitarist olarak yer aldı. Bunun yanında sınıf arkadaşlarıyla kurduğu alternatif rock grubunda elektro gitar çaldı ve vokalistlik yaptı.",
+  "2014 yılında askerlik kariyeri yerine müziği seçerek Kayseri’ye döndü. Bu karar, yalnızca mesleki değil, yaratıcı kimliği açısından da belirleyici bir dönüm noktasıydı. Kayseri’ye döndükten sonra bestecilik, söz yazarlığı ve canlı performanslara yoğunlaştı; farklı türlerde deneysel şarkılar yazarak kendi ifade alanını oluşturmaya başladı. 2019 yılında akustik demo kayıtlarını dijital platformlarda yayımladı.",
+  "Pandemi döneminde Spotify üzerinde oluşturduğu playlistlerle dikkat çekti. Rap, Anadolu rock ve rock odaklı listeleri on binlerce organik takipçiye ulaştı. Bu süreçte yalnızca müzik seçkisi hazırlamadı; dinleyici davranışlarını, keşif kültürünü ve güçlü kürasyonun nasıl bir bağ kurduğunu yakından gözlemledi. Playlistlerinde yer almak isteyen 1000’den fazla bağımsız sanatçıyla temas kurması, ona hem sanatçı hikâyelerini hem de müzik ekosisteminin yapısal ihtiyaçlarını daha yakından görme imkânı verdi. Bu deneyim zamanla DJ’liğe yaklaşımını da dönüştürdü; DJ’liği belirli bir türün sınırları içinde değil, güçlü bir kürasyon, akış ve atmosfer kurma pratiği olarak düşünmeye başladı.",
+  "2020 yılında İstanbul Bilgi Üniversitesi Müzik Bölümü’nü %100 bursla kazandı ve İstanbul’a taşındı. Üniversite yıllarında okulun YouTube kanalı RGB için yürütülen Duo isimli müzik projesinde iki yıl boyunca ses ve koordinasyon tarafında aktif görev aldı. Bu dönem, farklı müzisyenlerle bir araya geldiği, birlikte üretim yaptığı ve müzikal perspektifini genişlettiği önemli bir gelişim alanı oldu.",
+  "İstanbul’da Karaköy, Kadıköy ve Beşiktaş başta olmak üzere farklı sahnelerde gitarist, vokalist, bas gitarist ve sesçi olarak yer aldı. Home stüdyosunda ise pop, alternatif, arabesk, rock, hip-hop ve akustik gibi farklı türlerde üretim yapan sanatçılarla prodüktör, vokal koçu ve kayıt ses mühendisi olarak çalıştı. Çetin Çetintaş ile gerçekleştirilen mantra projelerinde kayıt ve prodüksiyon süreçlerini üstlendi; bu iş birlikleri kapsamında farklı retreat ve festival alanlarında mantra konserlerinde yer aldı.",
+  "2022 yılında yayımladığı ilk albümündeki bestelerinden biri olan “Her Şey Biter De”, Sertab Erener tarafından yeniden yorumlandı. Şarkı, 2025 yılında farklı söz ve yapısal düzenlemelerle “Böyledir Benim Ayrılıklarım” adıyla yayımlandı. Bu gelişme, Karaca’nın besteci kimliğinin daha geniş bir alanda karşılık bulduğunu gösteren dikkat çekici adımlardan biri oldu.",
+  "Furkan Karaca’nın üretim anlayışında türlerden çok anlatım biçimi belirleyicidir. Onun için önemli olan, ne anlatmak istediği ve bunu sanatsal olarak en güçlü, en bütünlüklü şekilde nasıl sunabileceğidir. Bu nedenle çalışmalarında tek bir role ya da türe sıkışmak yerine; müzik, video ve sahne tarafını birbirini tamamlayan bir atmosfer içinde düşünür. Konsept odaklı, çok yönlü, atmosfer kuran ve canlı, organik, elektronik öğeleri bir araya getiren üretimler, yaratıcı yaklaşımının merkezinde yer alır.",
+  "Yıllar içinde sahnede vokalistlikten enstrümanistliğe, tonmaisterlikten DJ’liğe kadar birçok farklı rolde yer aldı. Düğünlerden açılışlara, mezuniyetlerden festivallere, defilelerden konserlere; bar, kafe, beach, otel ve kulüp gibi çok farklı mekânlarda yerli ve yabancı dinleyicilere performans sergiledi. Bu çok katmanlı sahne deneyimi, ona kitle okuma, enerji yönetimi ve dinleyiciyle bağ kurma konusunda güçlü bir pratik kazandırdı. 2023 ile 2026 yılları arasında Jolly Joker Kayseri’de tonmaister ve resident DJ olarak görev aldı; bu süreçte Ogün Sanlısoy, Deniz Tekin, Tuna Kiremitçi, Umut Kaya, Sufle ve Emre Fel gibi isimlerle çalışma deneyimi edindi.",
+  "Sahne ve prodüksiyon tarafının yanında etkinlik organizasyonu ve operasyon süreçlerinde de aktif rol aldı. Pozitif bünyesinde Cappadox etkinliğinde üç yıl görev yaptı; Kapadokya’nın farklı bölgelerine yayılan etkinliklerde ulaşım-dolaşım ekibinde ve kapı sorumlusu olarak çalıştı. Bu deneyim, ona büyük ölçekli organizasyonların sahne arkası işleyişini, ekip koordinasyonunu ve etkinlik deneyiminin operasyonel tarafını yakından tanıma fırsatı sundu.",
+  "Karaca, üretimin yanında eğitim, mentorluk ve kariyer gelişimi alanlarında da aktif olarak çalışmaktadır. Türkiye’de müzik eğitimi ile gerçek sektör ihtiyaçları arasında belirgin bir kopukluk olduğuna inanır. Bu nedenle teknik bilgi kadar sahne pratiğini, üretim disiplinini, yaratıcı düşünceyi ve sektör gerçeklerini merkeze alan bir yaklaşımı savunur. A&R bakış açısıyla, yetenekli ve tutkulu sanatçı adaylarının daha sağlıklı, hızlı ve sürdürülebilir şekilde profesyonel alana kazandırılması gerektiğini düşünür.",
+  "29 Eylül 2025’te kurduğu noqt, bu yaklaşımın doğal bir uzantısıdır. noqt; sanatsal üretimi sürdürülebilir kılmanın yollarını arayan, sanatçının üretmeye devam edebilmesi için topluluk, dinleyici ve markalar arasında daha işlevsel bağlar kurmayı hedefleyen müzik odaklı bir yapıdır. Aynı zamanda yetenekli insanların kendilerini geliştirebilecekleri, ifade edebilecekleri, kariyerlerini başlatıp yürütebilecekleri alanlar açmayı hedefleyen; topluluğun, dayanışmanın ve ortak üretimin gücüne inanan bir kuluçka modeli olarak şekillenmektedir.",
+  "Bugün Furkan Karaca; müzisyen, yapımcı, ses mühendisi, DJ, eğitmen, mentor ve A&R odaklı yaratıcı geliştirici olarak üretimlerine devam etmektedir.",
+];
+
+export type FurkanBioPageKey = "booking" | "b2b" | "academy" | "about";
+
+export const FURKAN_BIO_BY_PAGE: Record<
+  FurkanBioPageKey,
+  { roleLabel: string; paragraphs: readonly string[] }
+> = {
+  booking: { roleLabel: "Kurucu · DJ", paragraphs: [FURKAN_BIO_KISA] },
+  b2b: { roleLabel: "Kurucu", paragraphs: FURKAN_BIO_KURUMSAL_PARAGRAPHS },
+  academy: { roleLabel: "Ana eğitmen", paragraphs: FURKAN_BIO_ACADEMY_STUDENT_PARAGRAPHS },
+  about: { roleLabel: "Kurucu", paragraphs: FURKAN_BIO_ORTA_PARAGRAPHS },
+};

@@ -1,0 +1,179 @@
+export type BlogCategory = "dj" | "egitim" | "booking" | "b2b" | "produksiyon" | "sahne";
+
+export type BlogPostMeta = {
+  slug: string;
+  title: string;
+  description: string;
+  publishedAt: string;
+  category: BlogCategory;
+  /** Arayüz etiketi */
+  categoryLabel: string;
+  keywords: string[];
+};
+
+export const BLOG_POSTS: readonly BlogPostMeta[] = [
+  {
+    slug: "dugun-ve-kurumsal-etkinlik-icin-dj-secimi",
+    title: "Düğün ve kurumsal etkinlik için DJ seçimi: nelere dikkat edilmeli?",
+    description:
+      "Düğün DJ’i ile kurumsal gece DJ’i aynı mı? Mekân, süre, müzik zevki ve teknik ihtiyaçlara göre doğru DJ ve müzik kürasyonu nasıl seçilir?",
+    publishedAt: "2026-04-08",
+    category: "booking",
+    categoryLabel: "Booking & etkinlik",
+    keywords: [
+      "düğün DJ",
+      "kurumsal etkinlik DJ",
+      "DJ seçimi",
+      "etkinlik müziği",
+      "profesyonel DJ",
+    ],
+  },
+  {
+    slug: "etkinlik-muzigi-brif-rehberi",
+    title: "Etkinlik müziği brifi nasıl yazılır? Organizatör ve marka rehberi",
+    description:
+      "Net bir müzik brifi neden önemli? Hedef kitle, tempo, yasaklar ve özel anlar için pratik şablon ve ipuçları.",
+    publishedAt: "2026-04-08",
+    category: "booking",
+    categoryLabel: "Booking & etkinlik",
+    keywords: ["etkinlik müziği brifi", "DJ brif", "kurumsal etkinlik müziği", "düğün müzik listesi"],
+  },
+  {
+    slug: "dj-olarak-sahneye-cikmak-ilk-adimlar",
+    title: "DJ olarak sahneye çıkmak: ilk adımlar ve kulüp kültürü",
+    description:
+      "Evde mix’ten canlı performansa geçiş, kulüp dinleyicisiyle çalışma ve sürdürülebilir bir DJ pratiği için yol haritası.",
+    publishedAt: "2026-04-08",
+    category: "dj",
+    categoryLabel: "DJ & performans",
+    keywords: ["DJ olmak", "kulüp DJ", "canlı DJ performansı", "elektronik müzik sahne"],
+  },
+  {
+    slug: "dj-egitimi-pratik-ve-akademi",
+    title: "DJ eğitimi: nereden başlanır? Kurs, pratik ve Academy yaklaşımı",
+    description:
+      "DJ öğrenmek için ekipman, yazılım ve kulak eğitimini bir arada düşünmek gerekir. Noqta Academy ve pratik odaklı öğrenme.",
+    publishedAt: "2026-04-08",
+    category: "egitim",
+    categoryLabel: "Eğitim",
+    keywords: ["DJ eğitimi", "DJ kursu", "DJ öğrenmek", "prodüksiyon eğitimi", "Academy"],
+  },
+  {
+    slug: "marka-etkinliginde-muzik-deneyim-tasarimi",
+    title: "Marka etkinliğinde müzik ve deneyim tasarımı: B2B perspektifi",
+    description:
+      "Lansman, sponsorluk ve marka gecelerinde müzik; sadece arka plan değil deneyimin parçasıdır. Kimlik, tempo ve güvenlik.",
+    publishedAt: "2026-04-08",
+    category: "b2b",
+    categoryLabel: "İş birlikleri",
+    keywords: ["marka etkinliği", "B2B etkinlik", "deneyim tasarımı", "kurumsal DJ", "sponsorluk etkinliği"],
+  },
+  {
+    slug: "turkiye-genelinde-dj-booking-sureci",
+    title: "Türkiye genelinde DJ booking: süreç, teknik gereksinimler ve planlama",
+    description:
+      "Şehirler arası DJ performansında ulaşım, sahne kurulumu, süre ve sözleşme hatları. Organizatör ve sanatçı için net çerçeve.",
+    publishedAt: "2026-04-08",
+    category: "booking",
+    categoryLabel: "Booking & etkinlik",
+    keywords: ["DJ booking", "Türkiye DJ", "etkinlik organizasyonu", "canlı performans planlama"],
+  },
+  {
+    slug: "dj-nasil-olunur-2026-rehberi",
+    title: "DJ Nasıl Olunur? Sıfırdan Başlayanlar İçin 2026 Rehberi",
+    description: "Ekipman seçiminden ilk setine, pratik rutininden sahneye çıkmaya kadar DJ'liğe başlamak için bilmen gereken her şey — gerçekçi bir yol haritası.",
+    publishedAt: "2026-07-22",
+    category: "dj",
+    categoryLabel: "DJ & performans",
+    keywords: [],
+  },
+  {
+    slug: "baslangic-icin-dj-controller-onerileri",
+    title: "Başlangıç İçin DJ Controller Önerileri (2026)",
+    description: "İlk DJ controller'ını alırken nelere bakmalısın? Bütçe bantlarına göre öneriler, yazılım uyumu ve 'büyüyünce ne olacak' sorusunun cevabı.",
+    publishedAt: "2026-07-22",
+    category: "dj",
+    categoryLabel: "DJ & performans",
+    keywords: [],
+  },
+  {
+    slug: "rekordbox-serato-traktor-karsilastirmasi",
+    title: "rekordbox mu, Serato mu, Traktor mu? DJ Yazılımı Karşılaştırması",
+    description: "Üç büyük DJ yazılımının güçlü ve zayıf yönleri, hangi DJ profiline hangisinin uyduğu ve kulüp standardı gerçeği.",
+    publishedAt: "2026-07-22",
+    category: "dj",
+    categoryLabel: "DJ & performans",
+    keywords: [],
+  },
+  {
+    slug: "beatmatching-nedir-nasil-ogrenilir",
+    title: "Beatmatching Nedir? Kulaktan Miks Yapmayı Öğrenme Rehberi",
+    description: "Sync tuşu varken beatmatching öğrenmeye değer mi? Evet — işte nedeni ve adım adım kulaktan beatmatching çalışma yöntemi.",
+    publishedAt: "2026-07-22",
+    category: "dj",
+    categoryLabel: "DJ & performans",
+    keywords: [],
+  },
+  {
+    slug: "ilk-dj-setini-hazirlama-rehberi",
+    title: "İlk DJ Setini Hazırlama Rehberi: Seçkiden Kayda",
+    description: "İyi bir DJ seti rastgele iyi parçalar dizmek değildir. Enerji eğrisi, parça seçimi, geçiş planı ve kayıt için pratik bir çerçeve.",
+    publishedAt: "2026-07-22",
+    category: "dj",
+    categoryLabel: "DJ & performans",
+    keywords: [],
+  },
+  {
+    slug: "muzik-produksiyonuna-nereden-baslanir",
+    title: "Müzik Prodüksiyonuna Nereden Başlanır? İlk Adım Rehberi",
+    description: "DAW seçimi, minimum ekipman, ilk parçanı bitirmenin yolu ve yeni başlayanların en sık düştüğü tuzaklar.",
+    publishedAt: "2026-07-22",
+    category: "produksiyon",
+    categoryLabel: "Prodüksiyon",
+    keywords: [],
+  },
+  {
+    slug: "ableton-mu-fl-studio-mu",
+    title: "Ableton mu, FL Studio mu? Elektronik Müzik İçin DAW Karşılaştırması",
+    description: "İki dev DAW'ın iş akışı farkları, güçlü yönleri, fiyatlandırması ve hangi üretici profiline hangisinin uyduğu.",
+    publishedAt: "2026-07-22",
+    category: "produksiyon",
+    categoryLabel: "Prodüksiyon",
+    keywords: [],
+  },
+  {
+    slug: "house-techno-melodic-techno-farklari",
+    title: "House, Techno, Melodic Techno: Türleri Ayırt Etme Rehberi",
+    description: "\"Bu house mu techno mu?\" tartışmasına son: türlerin kökenleri, ayırt edici özellikleri ve dinleyerek öğrenme listesi.",
+    publishedAt: "2026-07-22",
+    category: "sahne",
+    categoryLabel: "Sahne & kültür",
+    keywords: [],
+  },
+  {
+    slug: "istanbulda-elektronik-muzik-mekanlari",
+    title: "İstanbul'da Elektronik Müzik: Sahneyi Tanıma Rehberi",
+    description: "İstanbul'un elektronik müzik sahnesi nasıl işliyor? Mekan tipleri, semt semt sahne haritası ve geceye çıkmadan bilmen gerekenler.",
+    publishedAt: "2026-07-22",
+    category: "sahne",
+    categoryLabel: "Sahne & kültür",
+    keywords: [],
+  },
+  {
+    slug: "turkiyede-elektronik-muzik-festivalleri",
+    title: "Türkiye'de Elektronik Müzik Festivalleri Rehberi",
+    description: "Türkiye'nin elektronik müzik festival haritası: formatlar, sezon takvimi, bilet stratejisi ve ilk festival deneyimi için ipuçları.",
+    publishedAt: "2026-07-22",
+    category: "sahne",
+    categoryLabel: "Sahne & kültür",
+    keywords: [],
+  },
+] as const;
+
+export function blogPostBySlug(slug: string): BlogPostMeta | undefined {
+  return BLOG_POSTS.find((p) => p.slug === slug);
+}
+
+export function blogSlugs(): string[] {
+  return BLOG_POSTS.map((p) => p.slug);
+}

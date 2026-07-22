@@ -4,14 +4,15 @@ export const tr = {
     collective: "Collective",
     academy: "Academy",
     b2b: "B2B",
+    radio: "Radio",
     contact: "İletişim",
   },
   home: {
     title: "We are noqta.",
-    subtitle: "Kendini döngülerde hissedenler için bir sound collective.",
+    subtitle: "Elektronik müzik ve etkinlikler etrafında toplanan bir ekip.",
     ctaEvents: "Etkinlikler",
     ctaContact: "Bize yaz",
-    teaser: "We are noqta / A sound collective for people who feel in loops.",
+    teaser: "Etkinlik · Academy · Radio · topluluk — Kayseri’den Türkiye’ye.",
   },
   contact: {
     title: "İletişim",

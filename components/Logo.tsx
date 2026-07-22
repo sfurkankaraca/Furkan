@@ -1,18 +1,14 @@
-export default function Logo({ size = 64 }: { size?: number }) {
+import Image from "next/image";
+
+export default function Logo({ size = 40, invert = false }: { size?: number; invert?: boolean }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" aria-label="noqta logo" role="img">
-      <circle
-        cx="50"
-        cy="50"
-        r="34"
-        fill="none"
-        stroke="white"
-        strokeWidth="4"
-        strokeLinecap="round"
-        strokeDasharray="190 18"
-        strokeDashoffset="6"
-      />
-      <circle cx="50" cy="50" r="6" fill="white" />
-    </svg>
+    <Image
+      src="/noqt-logo-transparent.png"
+      alt="noqt"
+      width={size * 2.5}
+      height={size}
+      className={`object-contain shrink-0${invert ? " invert" : ""}`}
+      priority
+    />
   );
 }
