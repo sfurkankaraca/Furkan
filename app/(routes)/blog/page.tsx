@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS, type BlogCategory, type BlogPostMeta } from "@/lib/blog/registry";
 import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
+import { NewsletterSignup } from "@/components/blog/NewsletterSignup";
 import { SERIES, SERIES_ORDER, postsInSeries } from "@/lib/blog/series";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -141,6 +142,11 @@ export default function BlogIndexPage() {
           ))}
         </section>
       ) : null}
+
+      {/* Bülten */}
+      <div className="border-b border-foreground/10 py-10">
+        <NewsletterSignup source="journal-index" />
+      </div>
 
       {/* Devam eden diziler */}
       <section aria-labelledby="diziler" className="border-b border-foreground/10 py-10">

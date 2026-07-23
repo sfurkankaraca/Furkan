@@ -108,6 +108,8 @@ const tmpWorkshopApplicationsFile = "/tmp/workshop-applications.json";
 const tmpContactInquiriesFile = "/tmp/contact-inquiries.json";
 const clubApplicationsFile = path.join(dataDir, "noqta-club-applications.json");
 const tmpClubApplicationsFile = "/tmp/noqta-club-applications.json";
+const subscribersFile = path.join(dataDir, "subscribers.json");
+const tmpSubscribersFile = "/tmp/subscribers.json";
 /** Vercel Blob — tek dosya; sunucusuz ortamda /tmp yerine kalıcı saklama */
 const clubApplicationsBlobPath = "noqta-club-applications.json";
 
@@ -229,6 +231,29 @@ async function writeJson<T>(file: string, rows: T[], blobPrefix?: string, tmpFil
 
 export async function readMembers(): Promise<Member[]> {
   return readJson<Member>(membersFile, "members.json", tmpMembersFile);
+}
+
+export type Subscriber = {
+  id: string;
+  email: string;
+  /** Nereden abone oldu: journal, footer, vb. */
+  source?: string;
+  createdAt: string;
+};
+
+export async function readSubscribers(): Promise<Subscriber[]> {
+  return readJson<Subscriber>(subscribersFile, "subscribers.json", tmpSubscribersFile);
+}
+
+/** Bültene ekler. Zaten kayıtlıysa "already" döner, yeni ise "added". */
+export async function addSubscriber(email: string, source?: string): Promise<"added" | "already"> {
+  const clean = email.trim().toLowerCase();
+  const rows = await readSubscribers();
+  if (rows.some((s) => s.email === clean)) return "already";
+  const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  rows.unshift({ id, email: clean, source, createdAt: new Date().toISOString() });
+  await writeJson(subscribersFile, rows, "subscribers.json", tmpSubscribersFile);
+  return "added";
 }
 
 export async function addMember(row: Omit<Member, "id" | "createdAt">) {

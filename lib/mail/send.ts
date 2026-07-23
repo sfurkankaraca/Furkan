@@ -548,3 +548,38 @@ export async function sendTicketPurchasedMail(input: {
   });
   return { ok: res.ok };
 }
+
+export async function sendNewsletterWelcomeMail(input: { email: string; source?: string }) {
+  const fromAddress = process.env.RESEND_FROM || "noqta <onboarding@resend.dev>";
+  const subject = "noqta journal'a hoş geldin";
+  const html = `
+    <p>Merhaba,</p>
+    <p><b>noqta journal</b> bültenine kaydoldun. Elektronik müzik dünyasından haberler,
+    türün efsaneleri, sahne yazıları ve rehberleri artık e-postana göndereceğiz.</p>
+    <p><a href="https://noqta.club/blog">Journal'a göz at →</a></p>
+    <p style="color:#888;font-size:12px">Bu e-postayı beklemiyorsan görmezden gelebilirsin.</p>
+  `;
+  const text = [
+    "Merhaba,",
+    "noqta journal bültenine kaydoldun. Elektronik müzik dünyasından haberler, efsaneler, sahne yazıları ve rehberler artık e-postana gelecek.",
+    "Journal: https://noqta.club/blog",
+  ].join("\n");
+
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[newsletter]", input.email, input.source);
+    return { ok: true };
+  }
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [input.email],
+      bcc: adminActivityBcc([input.email]),
+      subject,
+      html,
+      text,
+    }),
+  });
+  return { ok: res.ok };
+}

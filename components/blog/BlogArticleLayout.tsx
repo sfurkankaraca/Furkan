@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import type { BlogPostMeta } from "@/lib/blog/registry";
 import { BlogCoverArt, BlogCoverCredit } from "@/components/blog/BlogCoverArt";
+import { NewsletterSignup } from "@/components/blog/NewsletterSignup";
 import { seriesOf, episodeNumber, postsInSeries } from "@/lib/blog/series";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -140,6 +141,11 @@ export function BlogArticleLayout({
             ) : null}
           </section>
         ) : null}
+
+        {/* Bülten */}
+        <div className="mx-auto mt-16 max-w-[42rem]">
+          <NewsletterSignup source={`article:${post.slug}`} />
+        </div>
 
         {/* Alt bant */}
         <aside className="mx-auto mt-16 max-w-[42rem] border-t border-foreground/15 pt-8">
