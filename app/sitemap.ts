@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { blogSlugs } from "@/lib/blog/registry";
+import { artistSlugs } from "@/lib/artists/registry";
 import { CITY_DJ_ROUTE_SLUGS_LIST } from "@/lib/city-dj-pages/registry";
 import { SITE_URL } from "@/lib/site-url";
 
@@ -24,6 +25,12 @@ const PATHS: { path: string; changeFrequency: MetadataRoute.ChangeFrequency; pri
     path: `/blog/${slug}`,
     changeFrequency: "monthly" as const,
     priority: 0.76,
+  })),
+  { path: "/sanatcilar", changeFrequency: "weekly", priority: 0.8 },
+  ...artistSlugs().map((slug) => ({
+    path: `/sanatcilar/${slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
   })),
   { path: "/contact", changeFrequency: "monthly", priority: 0.8 },
   { path: "/events", changeFrequency: "weekly", priority: 0.85 },
