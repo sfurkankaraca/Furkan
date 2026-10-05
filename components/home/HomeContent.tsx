@@ -16,9 +16,9 @@ const PROGRAMS = [
     href: "/academy/labs",
     icon: GraduationCap,
     title: "Labs",
-    desc: "Haftalık ilerleyen dersler; DJ101 ve Prodüksiyon101 müfredatları. Başvur, labs.noqta.club'da takip et.",
+    desc: "Haftalık ilerleyen dersler; DJ101 ve Prodüksiyon101 müfredatları. Başvur, labs.noqt.club'da takip et.",
     accent: "bg-sky-50 text-sky-600 border-sky-100",
-    external: "https://labs.noqta.club",
+    external: "https://labs.noqt.club",
   },
   {
     href: "/academy/games",

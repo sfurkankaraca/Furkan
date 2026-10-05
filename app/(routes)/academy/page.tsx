@@ -6,6 +6,8 @@ import Image from "next/image";
 import { ArrowRight, Check, GraduationCap, Music2, Zap } from "lucide-react";
 import { PageShell, ContentCard, PageBlockTitle } from "@/components/layout/PageShell";
 import { FurkanBioCard } from "@/components/people/FurkanBioCard";
+import { AcademyPricing } from "@/components/academy/AcademyPricing";
+import { AcademyInstagramFeed } from "@/components/academy/AcademyInstagramFeed";
 import { ACADEMY_FAQ_ITEMS } from "@/lib/academy-faq";
 import { SITE_URL } from "@/lib/site-url";
 import { getPrisma } from "@/lib/prisma";
@@ -13,10 +15,12 @@ import { getPrisma } from "@/lib/prisma";
 export const metadata: Metadata = {
   title: "Academy — DJ ve Prodüksiyon Eğitimleri | NOQT DJ Akademi",
   description:
-    "DJliğe Giriş, İleri Seviye DJlik, Müzik Prodüksiyonu ve workshoplar. Kayseri ve Nevşehir'de pratik odaklı eğitim.",
+    "1'e 1 DJ eğitimi 12.000₺'den, her Pazar DJ Workshop 1.000₺. Öğrencilere %50 indirim. Kayseri ve Nevşehir'de pratik odaklı eğitim.",
   alternates: { canonical: `${SITE_URL}/academy` },
   keywords: [
     "DJ eğitimi Kayseri",
+    "DJ eğitimi fiyatları",
+    "birebir DJ dersi",
     "DJ kursu",
     "müzik prodüksiyonu eğitimi",
     "DJ workshop",
@@ -69,24 +73,6 @@ const PROGRAMS = [
       "İlk parçanı bitirme",
     ],
     who: "Kendi müziğini üretmek isteyen, prodüksiyona yeni başlayanlar.",
-  },
-];
-
-const WORKSHOPS = [
-  {
-    label: "Set Hazırlama Workshop",
-    desc: "Tek günde eksiksiz bir DJ seti oluştur; parça seçimi, yapı ve geçiş pratiği.",
-    duration: "Tam gün",
-  },
-  {
-    label: "DJlik Deneyimi Workshop",
-    desc: "DJ'liği ilk kez dene; ekipman başında uygulamalı giriş, bir günde ne olduğunu anla.",
-    duration: "Yarım gün",
-  },
-  {
-    label: "Müzik Prodüksiyonu Workshop",
-    desc: "Bir DAW oturumunda temel ritim ve melodi yazımına odaklanan yoğun atölye.",
-    duration: "Tam gün",
   },
 ];
 
@@ -144,13 +130,19 @@ export default async function AcademyPage() {
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <a
-                href="https://labs.noqta.club/register"
+                href="https://labs.noqt.club/register"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-white lg:bg-foreground px-7 py-3 text-sm font-semibold text-foreground lg:text-background transition hover:opacity-90"
               >
                 Detaylar için kaydol, seni arayalım
                 <ArrowRight className="size-4" aria-hidden />
+              </a>
+              <a
+                href="#fiyatlar"
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 lg:border-border bg-white/10 lg:bg-muted/50 px-7 py-3 text-sm font-medium text-white lg:text-foreground backdrop-blur-sm transition hover:bg-white/20 lg:hover:bg-muted"
+              >
+                Fiyatları gör
               </a>
               <a
                 href="https://wa.me/905417997973?text=Merhaba%2C+NOQT+Academy+hakk%C4%B1nda+bilgi+almak+istiyorum."
@@ -167,6 +159,8 @@ export default async function AcademyPage() {
 
       <PageShell>
         <div className="grid gap-16 md:gap-20">
+
+          <AcademyPricing />
 
           {/* Eğitim Programları */}
           <section aria-labelledby="courses-heading">
@@ -197,28 +191,7 @@ export default async function AcademyPage() {
             </div>
           </section>
 
-          {/* Workshoplar */}
-          <section aria-labelledby="workshops-heading">
-            <PageBlockTitle
-              sectionId="workshops-heading"
-              title="Workshoplar"
-              description="Tek günlük yoğun atölyelerle odaklı pratik. Başlangıç seviyesine de uygundur."
-            />
-            <div className="grid gap-4 md:grid-cols-3">
-              {WORKSHOPS.map((w) => (
-                <div
-                  key={w.label}
-                  className="rounded-2xl border border-border bg-card p-5 transition hover:border-foreground/20 hover:shadow-sm"
-                >
-                  <span className="inline-block rounded-full border border-border bg-muted px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground mb-3">
-                    {w.duration}
-                  </span>
-                  <h3 className="text-sm font-semibold text-foreground">{w.label}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          <AcademyInstagramFeed />
 
           {/* Eğitmen */}
           <section aria-label="Eğitmen">
@@ -290,7 +263,7 @@ export default async function AcademyPage() {
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
-                  href="https://labs.noqta.club/register"
+                  href="https://labs.noqt.club/register"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-xl bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-90"

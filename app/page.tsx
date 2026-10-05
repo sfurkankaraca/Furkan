@@ -83,7 +83,7 @@ export default async function HomePage() {
 
           <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-8 border-t border-border">
             <a
-              href="https://labs.noqta.club/register"
+              href="https://labs.noqt.club/register"
               target="_blank"
               rel="noopener noreferrer"
               className="shrink-0 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-sm font-semibold text-background transition hover:opacity-90"

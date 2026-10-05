@@ -50,8 +50,8 @@ export default function LabsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <NeonCard title="DJ 101 (Temel Seviye DJ’lik Eğitimi)">
-          <Bullets items={["8 Haftalık grup dersleri", "Haftada 1 gün — 2 saat", "Eğitim Ücreti: 20.000₺ + KDV (Kredi Kartı Geçerlidir)"]} />
-          <p>Noqta club üyelerine özel %50’ye varan indirim ve avantajlar için <a href="/join" className="underline underline-offset-2 hover:text-white">noqta.club/join</a> adresinden başvurabilirsin.</p>
+          <Bullets items={["8 Haftalık grup dersleri", "Haftada 1 gün — 2 saat"]} />
+          <p>Güncel ücretler ve öğrenci indirimi için <a href="/academy#fiyatlar" className="underline underline-offset-2 hover:text-white">noqt.club/academy#fiyatlar</a> sayfasına göz at.</p>
           <p>Bu program sonunda temel teknikleri bilmen, kendi müzik seçkini düzenleyebilmen ve sahnede performans sergileyebilmen amaçlanır.</p>
           <div className="mt-3">
             <div className="text-white text-sm font-medium">Haftalık Ders Konuları</div>
@@ -60,14 +60,14 @@ export default function LabsPage() {
             </ol>
           </div>
           <div className="pt-2">
-            <a href="https://labs.noqta.club/register" target="_blank" rel="noopener noreferrer" className="inline-block rounded-xl bg-white text-black px-3 py-1.5 text-sm font-medium">Detaylar için kaydol, seni arayalım</a>
+            <a href="https://labs.noqt.club/register" target="_blank" rel="noopener noreferrer" className="inline-block rounded-xl bg-white text-black px-3 py-1.5 text-sm font-medium">Detaylar için kaydol, seni arayalım</a>
           </div>
         </NeonCard>
 
         <NeonCard title="Music Production 101" gradient="from-emerald-400 via-lime-400 to-teal-300">
           <Bullets items={["Logic Pro ile müzik prodüksiyon", "Ableton ile müzik prodüksiyon"]} />
           <div className="pt-2">
-            <a href="https://labs.noqta.club/register" target="_blank" rel="noopener noreferrer" className="inline-block rounded-xl bg-white text-black px-3 py-1.5 text-sm font-medium">Detaylar için kaydol, seni arayalım</a>
+            <a href="https://labs.noqt.club/register" target="_blank" rel="noopener noreferrer" className="inline-block rounded-xl bg-white text-black px-3 py-1.5 text-sm font-medium">Detaylar için kaydol, seni arayalım</a>
           </div>
         </NeonCard>
       </div>

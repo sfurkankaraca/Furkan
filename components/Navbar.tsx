@@ -304,7 +304,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="https://labs.noqta.club"
+            href="https://labs.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-1.5 text-xs font-semibold text-foreground/70 hover:border-foreground/30 hover:text-foreground transition ml-1"
@@ -375,7 +375,7 @@ export default function Navbar() {
                     </Link>
                   ))}
                   <a
-                    href="https://labs.noqta.club"
+                    href="https://labs.noqt.club"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}

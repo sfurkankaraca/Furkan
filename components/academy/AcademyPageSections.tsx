@@ -123,7 +123,7 @@ export function AcademyPageSections({
         />
         <div className="grid gap-5 lg:grid-cols-2">
           <a
-            href="https://labs.noqta.club"
+            href="https://labs.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
             className="group relative flex flex-col rounded-2xl border border-fuchsia-200 bg-gradient-to-br from-fuchsia-50 via-background to-purple-50 p-6 transition duration-300 hover:border-fuchsia-300 hover:shadow-md md:p-7"
@@ -131,7 +131,7 @@ export function AcademyPageSections({
             <GraduationCap className="size-9 text-fuchsia-600" aria-hidden />
             <h3 className="mt-4 text-xl font-semibold text-foreground">Labs</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              labs.noqta.club üzerinde modüller, konu anlatımları, quiz ve pratik ödevlerle teoriyi netleştirir; ilerlemeni
+              labs.noqt.club üzerinde modüller, konu anlatımları, quiz ve pratik ödevlerle teoriyi netleştirir; ilerlemeni
               birlikte takip ederiz.
             </p>
             <ul className="mt-4 grid gap-2 text-sm text-muted-foreground">
@@ -146,7 +146,7 @@ export function AcademyPageSections({
               </li>
             </ul>
             <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-fuchsia-600">
-              labs.noqta.club
+              labs.noqt.club
               <ArrowRight className="size-4 transition group-hover:translate-x-0.5" aria-hidden />
             </span>
           </a>
