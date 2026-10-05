@@ -1,4 +1,4 @@
-import { ArrowRight, Clock, GraduationCap, Headphones, Instagram, MessageCircle, Phone, Trophy } from "lucide-react";
+import { ArrowRight, Clock, GraduationCap, Headphones, Instagram, MessageCircle, Phone, Trophy, Users } from "lucide-react";
 import {
   ACADEMY_CONTACT,
   LABS_REGISTER_URL,
@@ -19,7 +19,7 @@ export function AcademyPricing() {
         </h2>
         <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700 ring-1 ring-emerald-200">
           <GraduationCap className="size-4" aria-hidden />
-          Öğrencilere tüm programlarda %50 indirim
+          Üniversite öğrencilerine tüm programlarda %50 indirim
         </p>
       </div>
 
@@ -56,7 +56,7 @@ export function AcademyPricing() {
                 <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{formatTry(pkg.price)}</p>
                 <p className="text-xs text-muted-foreground">Peşin</p>
                 <p className="mt-3 text-sm text-emerald-700">
-                  Öğrenciye <span className="font-semibold">{formatTry(studentPrice(pkg.price))}</span>
+                  Üniversite öğrencisine <span className="font-semibold">{formatTry(studentPrice(pkg.price))}</span>
                 </p>
                 <a
                   href={`${LABS_REGISTER_URL}?program=dj_private&paket=${pkg.lessonHours}`}
@@ -87,10 +87,16 @@ export function AcademyPricing() {
               <p className="text-sm text-muted-foreground">{SUNDAY_WORKSHOP.tagline}</p>
             </div>
           </div>
-          <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-foreground">
-            <Clock className="size-4 text-violet-600" aria-hidden />
-            {SUNDAY_WORKSHOP.schedule}
-          </p>
+          <div className="flex flex-wrap gap-2">
+            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-foreground">
+              <Clock className="size-4 text-violet-600" aria-hidden />
+              {SUNDAY_WORKSHOP.schedule}
+            </p>
+            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-sm font-medium text-foreground">
+              <Users className="size-4 text-violet-600" aria-hidden />
+              {SUNDAY_WORKSHOP.format}
+            </p>
+          </div>
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -101,7 +107,7 @@ export function AcademyPricing() {
                 <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">{formatTry(opt.price)}</p>
               </div>
               <p className="text-right text-sm text-emerald-700">
-                Öğrenciye
+                Üniversite öğrencisine
                 <br />
                 <span className="font-semibold">{formatTry(studentPrice(opt.price))}</span>
               </p>

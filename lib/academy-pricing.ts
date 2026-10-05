@@ -1,5 +1,5 @@
 // Academy fiyatları — tek kaynak. Instagram reklamları noqt.club/academy#fiyatlar'a yönlenir.
-// Öğrenci indirimi tüm kalemlerde %50.
+// Üniversite öğrencisi indirimi tüm kalemlerde %50.
 
 export const STUDENT_DISCOUNT = 0.5;
 
@@ -11,6 +11,7 @@ export const PRIVATE_DJ_PACKAGES = [
 
 export const SUNDAY_WORKSHOP = {
   schedule: "Her Pazar 14.00 – 16.00",
+  format: "Gruplar halinde · 60 dakika",
   tagline: "Her hafta yeni bir mix challenge",
   options: [
     { label: "Tek seferlik katılım", price: 1000 },

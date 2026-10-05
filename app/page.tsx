@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { ArrowRight, GraduationCap, Music2, Zap } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
+import { LabsShowcase } from "@/components/home/LabsShowcase";
 import { getPrisma } from "@/lib/prisma";
 
 const PROGRAMS = [
@@ -10,8 +11,8 @@ const PROGRAMS = [
     icon: GraduationCap,
     label: "DJ Eğitimi",
     accent: "text-fuchsia-600 bg-fuchsia-50 border-fuchsia-100",
-    courses: ["DJliğe Giriş", "İleri Seviye DJlik"],
-    desc: "Temelinden profesyonele, sahneye hazır bir müzisyen ol.",
+    courses: ["1'e 1 DJ Eğitimi · 12.000₺'den", "DJliğe Giriş → İleri Seviye"],
+    desc: "Birebir ders ve etüt saatleriyle temelinden sahneye.",
   },
   {
     icon: Music2,
@@ -24,8 +25,8 @@ const PROGRAMS = [
     icon: Zap,
     label: "Workshoplar",
     accent: "text-emerald-600 bg-emerald-50 border-emerald-100",
-    courses: ["Set Hazırlama", "DJlik Deneyimi", "Müzik Prodüksiyonu"],
-    desc: "Tek günlük yoğun workshoplarla odaklı pratik yap.",
+    courses: ["Her Pazar 14.00 – 16.00", "Gruplar halinde · 60 dakika · Her hafta yeni mix challenge", "Tek seferlik 1.000₺ · Aylık 3.000₺"],
+    desc: "Haftalık DJ Workshop'ta düzenli pratik yap.",
   },
 ];
 
@@ -92,14 +93,17 @@ export default async function HomePage() {
               <ArrowRight className="size-4" aria-hidden />
             </a>
             <Link
-              href="/academy"
+              href="/academy#fiyatlar"
               className="shrink-0 inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
             >
-              Tüm programlar
+              Fiyatları gör
             </Link>
+            <p className="text-sm text-emerald-700">Üniversite öğrencilerine %50 indirim</p>
           </div>
         </div>
       </section>
+
+      <LabsShowcase />
 
       {/* ── noqt.events cross-link ── */}
       <section className="bg-muted/40 border-t border-border py-14">

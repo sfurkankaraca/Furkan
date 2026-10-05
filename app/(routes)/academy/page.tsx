@@ -15,7 +15,7 @@ import { getPrisma } from "@/lib/prisma";
 export const metadata: Metadata = {
   title: "Academy — DJ ve Prodüksiyon Eğitimleri | NOQT DJ Akademi",
   description:
-    "1'e 1 DJ eğitimi 12.000₺'den, her Pazar DJ Workshop 1.000₺. Öğrencilere %50 indirim. Kayseri ve Nevşehir'de pratik odaklı eğitim.",
+    "1'e 1 DJ eğitimi 12.000₺'den, her Pazar DJ Workshop 1.000₺. Üniversite öğrencilerine %50 indirim. Kayseri ve Nevşehir'de pratik odaklı eğitim.",
   alternates: { canonical: `${SITE_URL}/academy` },
   keywords: [
     "DJ eğitimi Kayseri",

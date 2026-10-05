@@ -51,7 +51,7 @@ export default function LabsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <NeonCard title="DJ 101 (Temel Seviye DJ’lik Eğitimi)">
           <Bullets items={["8 Haftalık grup dersleri", "Haftada 1 gün — 2 saat"]} />
-          <p>Güncel ücretler ve öğrenci indirimi için <a href="/academy#fiyatlar" className="underline underline-offset-2 hover:text-white">noqt.club/academy#fiyatlar</a> sayfasına göz at.</p>
+          <p>Güncel ücretler ve üniversite öğrencisi indirimi için <a href="/academy#fiyatlar" className="underline underline-offset-2 hover:text-white">noqt.club/academy#fiyatlar</a> sayfasına göz at.</p>
           <p>Bu program sonunda temel teknikleri bilmen, kendi müzik seçkini düzenleyebilmen ve sahnede performans sergileyebilmen amaçlanır.</p>
           <div className="mt-3">
             <div className="text-white text-sm font-medium">Haftalık Ders Konuları</div>
