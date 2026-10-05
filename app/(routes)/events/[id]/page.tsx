@@ -7,7 +7,7 @@ import type { PublicEvent } from "@/lib/event-types";
 import { getEventById } from "@/lib/server/events-store";
 import EventDetailClient from "./EventDetailClient";
 
-const SITE = "https://noqta.club";
+const SITE = "https://noqt.club";
 
 function metaTitle(e: PublicEvent): string {
   const suffix = " | noqta";

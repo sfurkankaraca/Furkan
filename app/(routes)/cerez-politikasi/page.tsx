@@ -6,7 +6,7 @@ import { resolveRandomHeroSources } from "@/lib/page-hero-videos";
 export const metadata: Metadata = {
   title: "Çerez Politikası | noqta",
   description:
-    "noqta.club çerez ve benzeri teknolojilere ilişkin bilgilendirme taslağı. Analitik ve tercih çerezleri netleştikçe güncellenecek.",
+    "noqt.club çerez ve benzeri teknolojilere ilişkin bilgilendirme taslağı. Analitik ve tercih çerezleri netleştikçe güncellenecek.",
   robots: { index: false, follow: true },
 };
 

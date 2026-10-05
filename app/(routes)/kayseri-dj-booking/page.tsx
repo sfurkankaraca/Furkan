@@ -17,7 +17,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "Noqta Club",
-  provider: { "@type": "Organization", name: "noqta", url: "https://noqta.club" },
+  provider: { "@type": "Organization", name: "noqta", url: "https://noqt.club" },
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kayseri",

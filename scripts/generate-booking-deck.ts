@@ -34,7 +34,7 @@ const BODY_TOP = 1.38;
 const FOOTER_Y = 6.78;
 
 const WHATSAPP_LINE = "WhatsApp: +90 541 799 79 73";
-const SITE = "noqta.club/booking";
+const SITE = "noqt.club/booking";
 
 const LOGO_WORDMARK = path.join(process.cwd(), "public", "noqta-wordmark.png");
 
@@ -630,7 +630,7 @@ async function main() {
       fontFace: FONT,
     });
     s.addText(
-      "Yerel sayfalar: Kayseri DJ · Nevşehir & Kapadokya · Ankara kurumsal — noqta.club üzerinden.",
+      "Yerel sayfalar: Kayseri DJ · Nevşehir & Kapadokya · Ankara kurumsal — noqt.club üzerinden.",
       {
         x: PAD_X + 0.45,
         y: BODY_TOP + 1.85,

@@ -10,7 +10,7 @@ import { teklifHref } from "@/lib/teklif-href";
 import { CityDjPageSections } from "./CityDjPageSections";
 
 const WHATSAPP_BASE = "https://wa.me/905417997973?text=";
-const SITE = "https://noqta.club";
+const SITE = "https://noqt.club";
 const ORG_ID = `${SITE}/#organization`;
 
 export function CityDjLanding({ routeSlug }: { routeSlug: CityDjRouteSlug }) {

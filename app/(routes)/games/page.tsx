@@ -23,7 +23,7 @@ export default function GamesPage() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <a
-            href="https://quiz.noqta.club"
+            href="https://quiz.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
             className="group rounded-2xl border border-border bg-card p-6 transition hover:border-emerald-200 hover:shadow-sm"
@@ -35,11 +35,11 @@ export default function GamesPage() {
             </div>
             <div className="text-lg font-semibold text-foreground">Genre Quiz</div>
             <div className="mt-2 text-sm text-muted-foreground">Müziğin türünü tahmin et.</div>
-            <span className="mt-4 block text-sm text-emerald-600 group-hover:text-emerald-700 transition">quiz.noqta.club →</span>
+            <span className="mt-4 block text-sm text-emerald-600 group-hover:text-emerald-700 transition">quiz.noqt.club →</span>
           </a>
 
           <a
-            href="https://bpmguess.noqta.club"
+            href="https://bpmguess.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
             className="group rounded-2xl border border-border bg-card p-6 transition hover:border-fuchsia-200 hover:shadow-sm"
@@ -49,7 +49,7 @@ export default function GamesPage() {
             </div>
             <div className="text-lg font-semibold text-foreground">BPM Guess</div>
             <div className="mt-2 text-sm text-muted-foreground">Tempoyu kulakla yakalayıp BPM tahmin et.</div>
-            <span className="mt-4 block text-sm text-fuchsia-600 group-hover:text-fuchsia-700 transition">bpmguess.noqta.club →</span>
+            <span className="mt-4 block text-sm text-fuchsia-600 group-hover:text-fuchsia-700 transition">bpmguess.noqt.club →</span>
           </a>
         </div>
       </div>

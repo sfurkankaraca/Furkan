@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { CityDjRouteSlug } from "./types";
 import { getCityDjContent } from "./registry";
 
-const SITE = "https://noqta.club";
+const SITE = "https://noqt.club";
 const OG_IMAGE = `${SITE}/og.png`;
 
 export function cityDjMetadata(slug: CityDjRouteSlug): Metadata {

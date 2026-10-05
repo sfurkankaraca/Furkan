@@ -28,9 +28,9 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: FURKAN_KARACA.name,
-  url: "https://noqta.club/furkan-karaca",
+  url: "https://noqt.club/furkan-karaca",
   jobTitle: ["Müzisyen", "Yapımcı", "Ses mühendisi", "DJ", "Eğitmen"],
-  worksFor: { "@type": "Organization", name: "noqt", url: "https://noqta.club" },
+  worksFor: { "@type": "Organization", name: "noqt", url: "https://noqt.club" },
 };
 
 export default async function FurkanKaracaPage() {

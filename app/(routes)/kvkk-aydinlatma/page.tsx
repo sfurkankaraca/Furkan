@@ -7,7 +7,7 @@ import { resolveRandomHeroSources } from "@/lib/page-hero-videos";
 export const metadata: Metadata = {
   title: "KVKK Aydınlatma Metni | noqta",
   description:
-    "6698 sayılı KVKK kapsamında noqta.club aydınlatma metni özeti. Kulüp başvuruları için ayrı metin bağlantısı.",
+    "6698 sayılı KVKK kapsamında noqt.club aydınlatma metni özeti. Kulüp başvuruları için ayrı metin bağlantısı.",
   robots: { index: false, follow: true },
 };
 
