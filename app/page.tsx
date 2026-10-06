@@ -58,6 +58,13 @@ export default async function HomePage() {
     <main>
       <HeroSection heroImages={heroImages} />
 
+      {/* ── INSTAGRAM ── */}
+      <div className="bg-background py-16 md:py-20">
+        <div className="container mx-auto max-w-6xl px-6">
+          <AcademyInstagramFeed />
+        </div>
+      </div>
+
       {/* ── PROGRAMLAR ── */}
       <section id="programs" className="scroll-mt-16 bg-background py-20 md:py-28">
         <div className="container mx-auto max-w-6xl px-6">
@@ -99,6 +106,16 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <LabsShowcase />
+
+      {/* ── EĞİTMEN ── */}
+      <section className="bg-background py-20 md:py-24">
+        <div className="container mx-auto grid max-w-6xl gap-16 px-6">
+          <FurkanBioCard className="mx-auto max-w-3xl" variant="academy" />
+
+        </div>
+      </section>
+
       {/* ── FİYATLAR (reklam linkleri: /#fiyatlar, eski /academy#fiyatlar da buraya yönlenir) ── */}
       <div className="border-t border-border bg-background py-20 md:py-24">
         <div className="container mx-auto max-w-6xl px-6">
@@ -106,20 +123,9 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ── INSTAGRAM ── */}
-      <div className="border-t border-border bg-background py-20 md:py-24">
+      {/* ── SSS ── */}
+      <section className="bg-background pb-20 md:pb-24">
         <div className="container mx-auto max-w-6xl px-6">
-          <AcademyInstagramFeed />
-        </div>
-      </div>
-
-      <LabsShowcase />
-
-      {/* ── EĞİTMEN + SSS ── */}
-      <section className="bg-background py-20 md:py-24">
-        <div className="container mx-auto grid max-w-6xl gap-16 px-6">
-          <FurkanBioCard className="mx-auto max-w-3xl" variant="academy" />
-
           <div aria-labelledby="faq-heading" className="mx-auto w-full max-w-3xl">
             <h2 id="faq-heading" className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
               Sık sorulanlar
