@@ -19,6 +19,25 @@ export const SUNDAY_WORKSHOP = {
   ],
 } as const;
 
+// Kredi kartına taksit — komisyon oranları kart sahibine yansır (%).
+export const INSTALLMENT_CARDS = [
+  "Halkbank Paraf",
+  "Akbank Axess",
+  "Anadolubank",
+  "Yapı Kredi World",
+  "Garanti BBVA Bonus",
+  "DenizBank Bonus",
+] as const;
+
+export const INSTALLMENT_RATES = [
+  { months: 2, rate: 7.49 },
+  { months: 3, rate: 9.29 },
+  { months: 4, rate: 11.29 },
+  { months: 6, rate: 14.99 },
+  { months: 9, rate: 20.49 },
+  { months: 12, rate: 25.99 },
+] as const;
+
 export const ACADEMY_CONTACT = {
   phoneDisplay: "0541 733 55 14",
   phoneHref: "tel:+905417335514",

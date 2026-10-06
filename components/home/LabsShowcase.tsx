@@ -46,7 +46,7 @@ export function LabsShowcase() {
       <div className="container mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-2xl">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-background/60">
-            <Sparkles className="size-3.5" aria-hidden />
+            <Sparkles className="size-3.5 text-noqt-lime" aria-hidden />
             noqt labs
           </p>
           <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Dersten sonra da çalışmaya devam et</h2>
@@ -63,7 +63,7 @@ export function LabsShowcase() {
                 <h3 className="text-xl font-semibold">{c.name}</h3>
                 <span
                   className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
-                    c.live ? "bg-emerald-400/15 text-emerald-300" : "bg-background/10 text-background/60"
+                    c.live ? "bg-noqt-lime text-black" : "bg-background/10 text-background/60"
                   }`}
                 >
                   {c.status} · {c.modules} modül
@@ -73,7 +73,7 @@ export function LabsShowcase() {
               <ul className="mt-5 flex-1 space-y-2">
                 {c.topics.map((t) => (
                   <li key={t} className="flex items-start gap-2 text-sm text-background/85">
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-fuchsia-400" />
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-noqt-lime" />
                     {t}
                   </li>
                 ))}
@@ -86,7 +86,7 @@ export function LabsShowcase() {
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map(({ icon: Icon, title, desc }) => (
             <div key={title} className="rounded-2xl border border-background/10 p-5">
-              <Icon className="size-5 text-fuchsia-300" aria-hidden />
+              <Icon className="size-5 text-noqt-sky" aria-hidden />
               <p className="mt-3 text-sm font-semibold">{title}</p>
               <p className="mt-1 text-sm leading-relaxed text-background/60">{desc}</p>
             </div>
@@ -98,7 +98,7 @@ export function LabsShowcase() {
             href="https://labs.noqt.club/register"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-background px-6 py-2.5 text-sm font-semibold text-foreground transition hover:opacity-90"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-noqt-lime px-6 py-2.5 text-sm font-semibold text-black transition hover:brightness-95"
           >
             Labs&apos;a kayıt ol
             <ArrowRight className="size-4" aria-hidden />

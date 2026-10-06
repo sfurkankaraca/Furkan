@@ -11,7 +11,7 @@ const PROGRAMS = [
     icon: GraduationCap,
     label: "DJ Eğitimi",
     accent: "text-fuchsia-600 bg-fuchsia-50 border-fuchsia-100",
-    courses: ["1'e 1 DJ Eğitimi · 12.000₺'den", "DJliğe Giriş → İleri Seviye"],
+    courses: ["1'e 1 DJ Eğitimi · 12.000₺ + KDV'den", "DJliğe Giriş → İleri Seviye"],
     desc: "Birebir ders ve etüt saatleriyle temelinden sahneye.",
   },
   {
@@ -25,7 +25,7 @@ const PROGRAMS = [
     icon: Zap,
     label: "Workshoplar",
     accent: "text-emerald-600 bg-emerald-50 border-emerald-100",
-    courses: ["Her Pazar 14.00 – 16.00", "Gruplar halinde · 60 dakika · Her hafta yeni mix challenge", "Tek seferlik 1.000₺ · Aylık 3.000₺"],
+    courses: ["Her Pazar 14.00 – 16.00", "Gruplar halinde · 60 dakika · Her hafta yeni mix challenge", "Tek seferlik 1.000₺ · Aylık 3.000₺ (+ KDV)"],
     desc: "Haftalık DJ Workshop'ta düzenli pratik yap.",
   },
 ];
@@ -98,7 +98,8 @@ export default async function HomePage() {
             >
               Fiyatları gör
             </Link>
-            <p className="text-sm text-emerald-700">Üniversite öğrencilerine %50 indirim</p>
+            <p className="rounded-full bg-noqt-sky px-3 py-1 text-sm font-semibold text-black">Üniversite öğrencilerine %50 indirim</p>
+            <p className="rounded-full bg-noqt-lime px-3 py-1 text-sm font-semibold text-black">Kredi kartına 12 aya varan taksit</p>
           </div>
         </div>
       </section>

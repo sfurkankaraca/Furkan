@@ -17,7 +17,7 @@ export const ACADEMY_FAQ_ITEMS = [
   },
   {
     q: "Ücretler ne kadar? Üniversite öğrencilerine indirim var mı?",
-    a: "1'e 1 DJ Eğitimi peşin 12.000₺ (4 saat ders + 4 saat etüt), 20.000₺ (8+8) ve 28.000₺ (12+12). Her Pazar 14.00–16.00 arası gruplar halinde yapılan 60 dakikalık DJ Workshop tek seferlik 1.000₺, aylık 3.000₺. Üniversite öğrencilerine tüm programlarda %50 indirim uygulanır.",
+    a: "Fiyatlara KDV dahil değildir. 1'e 1 DJ Eğitimi peşin 12.000₺ + KDV (4 saat ders + 4 saat etüt), 20.000₺ + KDV (8+8) ve 28.000₺ + KDV (12+12). Her Pazar 14.00–16.00 arası gruplar halinde yapılan 60 dakikalık DJ Workshop tek seferlik 1.000₺ + KDV, aylık 3.000₺ + KDV. Paraf, Axess, Anadolubank, World ve Bonus kartlarına 12 aya varan taksit imkânı var. Üniversite öğrencilerine tüm programlarda %50 indirim uygulanır.",
   },
   {
     q: "Başvuru süreci nasıl işliyor?",
