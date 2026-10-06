@@ -1,6 +1,6 @@
 /**
  * Kullanım (web dizininden): pnpm exec tsx scripts/set-user-password.ts <email> <parola>
- * Örnek: pnpm exec tsx scripts/set-user-password.ts test@noqta.club 'yeniParola'
+ * Örnek: pnpm exec tsx scripts/set-user-password.ts test@noqt.club 'yeniParola'
  */
 import path from "node:path";
 import { config } from "dotenv";

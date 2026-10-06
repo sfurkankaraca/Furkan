@@ -43,7 +43,7 @@ export async function sendContactMail(input: {
   }
 
   const fromAddress = process.env.RESEND_FROM || "noqta <onboarding@resend.dev>";
-  const toAddress = "hi@noqta.club"; // force target
+  const toAddress = "hi@noqt.club"; // force target
   const bccList = adminActivityBcc([toAddress], process.env.RESEND_BCC);
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -123,7 +123,7 @@ export async function sendEventApplicationMail(input: EventApplicationPayload) {
   const fromAddress = "noqta <onboarding@resend.dev>";
   // İstenen hedef Gmail; opsiyonel env ile değiştirilebilir
   const toPrimary = process.env.EVENTS_TO?.trim() || adminActivityRecipients()[0];
-  const bccSecondary = process.env.EVENTS_BCC?.trim() || "hi@noqta.club";
+  const bccSecondary = process.env.EVENTS_BCC?.trim() || "hi@noqt.club";
 
   const subject = `[apply] ${input.eventTitle || input.eventId} — ${input.name}`;
 
@@ -200,7 +200,7 @@ export async function sendAdminEventMail(input: AdminEventMailPayload) {
   }
   const fromAddress = "noqta <onboarding@resend.dev>";
   const toAddress = process.env.EVENTS_TO?.trim() || adminActivityRecipients()[0];
-  const bccAddress = process.env.EVENTS_BCC?.trim() || "hi@noqta.club";
+  const bccAddress = process.env.EVENTS_BCC?.trim() || "hi@noqt.club";
   const subject = `[admin] Yeni Etkinlik Talebi — ${input.title}`;
   const html = `
     <h2>Yeni Etkinlik</h2>
@@ -267,7 +267,7 @@ export async function sendWorkshopApplicationMail(input: WorkshopApplicationMail
   }
   const fromAddress = "noqta <onboarding@resend.dev>";
   const toPrimary = process.env.EVENTS_TO?.trim() || adminActivityRecipients()[0];
-  const bccSecondary = process.env.EVENTS_BCC?.trim() || "hi@noqta.club";
+  const bccSecondary = process.env.EVENTS_BCC?.trim() || "hi@noqt.club";
   const subject = `[workshop] ${input.kind} — ${input.name}`;
 
   const rows = Object.entries(input.answers).map(([k, v]) => `<tr><td><b>${escapeHtml(k)}</b></td><td>${escapeHtml(String(v))}</td></tr>`).join("");
@@ -341,7 +341,7 @@ export async function sendNoqtaClubApplicationMail(input: NoqtaClubApplicationMa
   }
 
   const fromAddress = "noqta <onboarding@resend.dev>";
-  const toPrimary = process.env.NOQTACLUB_TO?.trim() || "hi@noqta.club";
+  const toPrimary = process.env.NOQTACLUB_TO?.trim() || "hi@noqt.club";
   const subject = `[club] Yeni başvuru — ${input.name}`;
 
   const html = `
