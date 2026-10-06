@@ -307,9 +307,9 @@ export default function Navbar() {
             href="https://labs.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-1.5 text-xs font-semibold text-foreground/70 hover:border-foreground/30 hover:text-foreground transition ml-1"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-noqt-lime px-3 py-1.5 text-xs font-bold text-black shadow-[0_0_14px_rgba(221,247,106,0.75)] ring-1 ring-black/10 transition hover:shadow-[0_0_22px_rgba(221,247,106,0.95)] hover:brightness-105"
           >
-            <span className="opacity-70">⚗️</span> Labs
+            <span>⚗️</span> Labs
           </a>
 
           {isLoggedIn ? (
@@ -379,7 +379,7 @@ export default function Navbar() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-sm text-foreground/80 hover:bg-foreground/5 inline-flex items-center gap-2"
+                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-noqt-lime px-3 py-2.5 text-sm font-bold text-black shadow-[0_0_14px_rgba(221,247,106,0.6)]"
                   >
                     <span>⚗️</span> Labs
                   </a>
