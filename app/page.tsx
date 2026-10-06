@@ -58,13 +58,6 @@ export default async function HomePage() {
     <main>
       <HeroSection heroImages={heroImages} />
 
-      {/* ── INSTAGRAM ── */}
-      <div className="bg-background py-16 md:py-20">
-        <div className="container mx-auto max-w-6xl px-6">
-          <AcademyInstagramFeed />
-        </div>
-      </div>
-
       {/* ── PROGRAMLAR ── */}
       <section id="programs" className="scroll-mt-16 bg-background py-20 md:py-28">
         <div className="container mx-auto max-w-6xl px-6">
@@ -115,6 +108,13 @@ export default async function HomePage() {
 
         </div>
       </section>
+
+      {/* ── INSTAGRAM ── */}
+      <div className="border-t border-border bg-background py-16 md:py-20">
+        <div className="container mx-auto max-w-6xl px-6">
+          <AcademyInstagramFeed />
+        </div>
+      </div>
 
       {/* ── FİYATLAR (reklam linkleri: /#fiyatlar, eski /academy#fiyatlar da buraya yönlenir) ── */}
       <div className="border-t border-border bg-background py-20 md:py-24">
