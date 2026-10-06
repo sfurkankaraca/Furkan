@@ -47,7 +47,7 @@ export const ACADEMY_CONTACT = {
   instagramHref: "https://ig.me/m/noqtacademy",
 } as const;
 
-export const LABS_REGISTER_URL = "https://labs.noqt.club/register";
+export const LABS_REGISTER_URL = "https://academy.noqt.club/register";
 
 export function formatTry(amount: number) {
   return `${amount.toLocaleString("tr-TR")}₺`;

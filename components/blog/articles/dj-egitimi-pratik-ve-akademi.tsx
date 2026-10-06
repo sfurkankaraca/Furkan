@@ -26,7 +26,7 @@ export function ArticleDjEgitimiPratikVeAkademi() {
       <p>
         Academy çatısı altında workshop ve lab içerikleri, hem başlangıç hem ileri seviye katmanlar sunar. Oyunlaştırılmış
         pratik için{" "}
-        <Link href="https://labs.noqt.club/#oyunlar" className="text-foreground underline-offset-4 hover:underline">
+        <Link href="https://academy.noqt.club/#oyunlar" className="text-foreground underline-offset-4 hover:underline">
           Games
         </Link>{" "}
         bölümüne de bakabilirsiniz. Güncel program ve başvuru için{" "}

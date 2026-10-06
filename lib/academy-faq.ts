@@ -21,7 +21,7 @@ export const ACADEMY_FAQ_ITEMS = [
   },
   {
     q: "Başvuru süreci nasıl işliyor?",
-    a: "Kısa bir başvuru veya iletişim mesajı yeter. İlgi alanını görüp uygun Labs / Games / workshop yönlendirmesini yaparız; sonraki adımları net şekilde paylaşırız.",
+    a: "Kısa bir başvuru veya iletişim mesajı yeter. İlgi alanını görüp uygun eğitim, workshop veya academy.noqt.club yönlendirmesini yaparız; sonraki adımları net şekilde paylaşırız.",
   },
   {
     q: "Hangi programla başlamam gerektiğini bilmiyorsam ne yapmalıyım?",

@@ -8,7 +8,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
       { label: "Eğitimler", href: "/#programs" },
       { label: "Fiyatlar", href: "/#fiyatlar" },
       { label: "Pazar DJ Workshop", href: "/#fiyatlar" },
-      { label: "labs.noqt.club", href: "https://labs.noqt.club", external: true },
+      { label: "academy.noqt.club", href: "https://academy.noqt.club", external: true },
     ],
   },
   {
@@ -17,7 +17,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
       { label: "Etkinlikler", href: "/events" },
       { label: "Sanatçılar", href: "/sanatcilar" },
       { label: "Journal", href: "/blog" },
-      { label: "Oyunlar (Labs)", href: "https://labs.noqt.club/#oyunlar", external: true },
+      { label: "Oyunlar (Academy)", href: "https://academy.noqt.club/#oyunlar", external: true },
     ],
   },
   {

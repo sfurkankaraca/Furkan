@@ -302,12 +302,12 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="https://labs.noqt.club"
+            href="https://academy.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
             className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-noqt-lime px-3.5 py-1.5 font-labs text-xs font-bold uppercase tracking-[0.22em] text-black shadow-[0_0_14px_rgba(221,247,106,0.75)] ring-1 ring-black/10 transition hover:shadow-[0_0_22px_rgba(221,247,106,0.95)] hover:brightness-105"
           >
-            Labs
+            Academy
           </a>
 
           {isLoggedIn ? (
@@ -367,13 +367,13 @@ export default function Navbar() {
                     </Link>
                   ))}
                   <a
-                    href="https://labs.noqt.club"
+                    href="https://academy.noqt.club"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
                     className="mt-1 inline-flex items-center gap-2 rounded-xl bg-noqt-lime px-3 py-2.5 font-labs text-sm font-bold uppercase tracking-[0.22em] text-black shadow-[0_0_14px_rgba(221,247,106,0.6)]"
                   >
-                    Labs
+                    Academy
                   </a>
                 </div>
 

@@ -36,9 +36,11 @@ const nextConfig: NextConfig = {
       { source: "/academy",                       destination: "/",                            permanent: true },
       { source: "/academy/labs",                  destination: "/#labs",                       permanent: true },
       { source: "/academy/workshops",             destination: "/#fiyatlar",                   permanent: true },
-      { source: "/academy/games",                 destination: "https://labs.noqt.club/#oyunlar", permanent: true },
-      // Oyunlar labs.noqt.club'a taşındı
-      { source: "/games",                         destination: "https://labs.noqt.club/#oyunlar", permanent: true },
+      { source: "/academy/games",                 destination: "https://academy.noqt.club/#oyunlar", permanent: true },
+      // Oyunlar academy.noqt.club'a taşındı
+      // Eski Labs sayfası → academy.noqt.club
+      { source: "/labs",                          destination: "https://academy.noqt.club",   permanent: true },
+      { source: "/games",                         destination: "https://academy.noqt.club/#oyunlar", permanent: true },
     ];
   },
   async headers() {

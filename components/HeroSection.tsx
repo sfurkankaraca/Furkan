@@ -88,7 +88,7 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <a
-              href="https://labs.noqt.club/register"
+              href="https://academy.noqt.club/register"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-noqt-lime px-7 py-3 text-sm font-semibold text-black shadow-[0_0_24px_rgba(221,247,106,0.45)] transition hover:brightness-95"

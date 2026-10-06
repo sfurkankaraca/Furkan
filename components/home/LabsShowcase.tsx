@@ -1,6 +1,6 @@
 import { ArrowRight, CalendarCheck, CheckCircle2, Gamepad2, Presentation, Sparkles } from "lucide-react";
 
-// İçerik labs.noqt.club'daki gerçek müfredattan (dj101/public/sunum/*.default.json) alındı.
+// İçerik academy.noqt.club'daki gerçek müfredattan (dj101/public/sunum/*.default.json) alındı.
 // Modül eklenince sayılar burada da güncellenmeli.
 const COURSES = [
   {
@@ -47,11 +47,11 @@ export function LabsShowcase() {
         <div className="mb-12 max-w-2xl">
           <p className="mb-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-background/60">
             <Sparkles className="size-3.5 text-noqt-lime" aria-hidden />
-            noqt labs
+            noqt academy
           </p>
           <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Dersten sonra da çalışmaya devam et</h2>
           <p className="mt-3 text-base leading-relaxed text-background/70">
-            labs.noqt.club, NOQT Academy&apos;nin online ders platformu. Modül modül ilerleyen kurslar, quizler, pratik
+            academy.noqt.club, NOQT Academy&apos;nin online ders platformu. Modül modül ilerleyen kurslar, quizler, pratik
             ödevler ve kulak oyunları tek yerde.
           </p>
         </div>
@@ -95,21 +95,21 @@ export function LabsShowcase() {
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <a
-            href="https://labs.noqt.club/register"
+            href="https://academy.noqt.club/register"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full bg-noqt-lime px-6 py-2.5 text-sm font-semibold text-black transition hover:brightness-95"
           >
-            Labs&apos;a kayıt ol
+            Academy&apos;ye kayıt ol
             <ArrowRight className="size-4" aria-hidden />
           </a>
           <a
-            href="https://labs.noqt.club"
+            href="https://academy.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full border border-background/25 px-6 py-2.5 text-sm font-medium transition hover:bg-background/10"
           >
-            labs.noqt.club&apos;u keşfet ↗
+            academy.noqt.club&apos;u keşfet ↗
           </a>
         </div>
       </div>
