@@ -98,8 +98,10 @@ export default async function ArtistsPage() {
         ))}
 
         {/* Listelen CTA kartı */}
-        <Link
-          href="/join"
+        <a
+          href="https://www.noqt.events/basvuru/sanatci"
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex flex-col items-start justify-center rounded-2xl border border-dashed border-foreground/25 p-6 transition hover:border-foreground/50"
         >
           <span className="text-2xl font-black text-foreground/40">+</span>
@@ -108,7 +110,7 @@ export default async function ArtistsPage() {
             DJ ya da prodüktörsen profilini oluştur, sahneye ve booking'e görün.
           </p>
           <span className="mt-3 text-sm font-semibold underline-offset-4 group-hover:underline">Başvur →</span>
-        </Link>
+        </a>
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
