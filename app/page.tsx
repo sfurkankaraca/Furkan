@@ -4,20 +4,21 @@ import Link from "next/link";
 import { ArrowRight, GraduationCap, Music2, Zap } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
 import { LabsShowcase } from "@/components/home/LabsShowcase";
+import { AcademyInstagramFeed } from "@/components/academy/AcademyInstagramFeed";
 import { getPrisma } from "@/lib/prisma";
 
 const PROGRAMS = [
   {
     icon: GraduationCap,
     label: "DJ Eğitimi",
-    accent: "text-fuchsia-600 bg-fuchsia-50 border-fuchsia-100",
+    accent: "text-noqt-lime-ink bg-noqt-lime/15 border-noqt-lime/60",
     courses: ["1'e 1 DJ Eğitimi · 12.000₺ + KDV'den", "DJliğe Giriş → İleri Seviye"],
     desc: "Birebir ders ve etüt saatleriyle temelinden sahneye.",
   },
   {
     icon: Music2,
     label: "Müzik Prodüksiyonu",
-    accent: "text-violet-600 bg-violet-50 border-violet-100",
+    accent: "text-noqt-lime-ink bg-noqt-lime/15 border-noqt-lime/60",
     courses: ["Prodüksiyona Giriş"],
     desc: "Kendi sesini bul; DAW, mixing ve mastering ile prodüksiyon öğren.",
   },
@@ -103,6 +104,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── INSTAGRAM ── */}
+      <div className="border-t border-border bg-background py-20 md:py-24">
+        <div className="container mx-auto max-w-6xl px-6">
+          <AcademyInstagramFeed />
+        </div>
+      </div>
 
       <LabsShowcase />
 

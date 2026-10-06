@@ -10,7 +10,7 @@ const PROGRAMS = [
     icon: GraduationCap,
     title: "Academy",
     desc: "DJ ve müzik prodüksiyon eğitimi — birebir rehberlik, pratik odaklı müfredat.",
-    accent: "bg-fuchsia-50 text-fuchsia-600 border-fuchsia-100",
+    accent: "bg-noqt-lime/15 text-noqt-lime-ink border-noqt-lime/60",
   },
   {
     href: "/academy/labs",

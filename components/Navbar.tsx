@@ -101,7 +101,7 @@ function MobileAccountLinks({ onNavigate }: { onNavigate: () => void }) {
     <div className="grid gap-1">
       {user?.email ? <p className="px-3 py-1 text-xs text-muted-foreground truncate">{user.email}</p> : null}
       {club?.subscriptionActive ? (
-        <p className="px-3 pb-1 text-[11px] font-medium text-fuchsia-600">Kulüp üyeliği aktif</p>
+        <p className="px-3 pb-1 text-[11px] font-medium text-noqt-lime-ink">Kulüp üyeliği aktif</p>
       ) : null}
 
       {needsOnboarding ? (
@@ -113,7 +113,7 @@ function MobileAccountLinks({ onNavigate }: { onNavigate: () => void }) {
           <Link href="/account/profil" onClick={onNavigate} className={cn(linkClass, "flex items-center justify-between gap-2")}>
             <span>Profil</span>
             {club?.subscriptionActive ? (
-              <span className="rounded-full bg-fuchsia-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-fuchsia-200 shrink-0">üye</span>
+              <span className="rounded-full bg-noqt-lime/20 px-1.5 py-0.5 text-[10px] font-semibold text-noqt-lime shrink-0">üye</span>
             ) : null}
           </Link>
           <Link href="/account/biletlerim" onClick={onNavigate} className={linkClass}>
@@ -123,7 +123,7 @@ function MobileAccountLinks({ onNavigate }: { onNavigate: () => void }) {
       )}
 
       {club?.applicationApproved ? (
-        <Link href="/account/club" onClick={onNavigate} className={cn(linkClass, "text-fuchsia-100")}>
+        <Link href="/account/club" onClick={onNavigate} className={cn(linkClass, "text-noqt-lime")}>
           Noqta Club{club.subscriptionActive ? " +" : ""}
         </Link>
       ) : null}
@@ -177,7 +177,7 @@ function UserAccountDropdown({
         className={cn(
           navLinkClass,
           "inline-flex items-center gap-2 pr-2",
-          club?.subscriptionActive && "ring-1 ring-fuchsia-500/35",
+          club?.subscriptionActive && "ring-1 ring-noqt-lime/35",
         )}
         aria-expanded={open}
         aria-haspopup="menu"
@@ -193,7 +193,7 @@ function UserAccountDropdown({
           <div className="border-b border-border px-3 py-2 mb-1">
             <div className="text-xs text-muted-foreground truncate">{user?.email}</div>
             {club?.subscriptionActive ? (
-              <div className="mt-1 text-[11px] font-medium text-fuchsia-600">Kulüp üyeliği aktif</div>
+              <div className="mt-1 text-[11px] font-medium text-noqt-lime-ink">Kulüp üyeliği aktif</div>
             ) : null}
           </div>
 
@@ -220,7 +220,7 @@ function UserAccountDropdown({
               >
                 <span>Profil</span>
                 {club?.subscriptionActive ? (
-                  <span className="ml-auto rounded-full bg-fuchsia-500/20 px-1.5 py-0.5 text-[10px] font-semibold text-fuchsia-200">
+                  <span className="ml-auto rounded-full bg-noqt-lime/20 px-1.5 py-0.5 text-[10px] font-semibold text-noqt-lime">
                     üye
                   </span>
                 ) : null}
@@ -241,14 +241,14 @@ function UserAccountDropdown({
           {club?.applicationApproved ? (
             <Link
               href="/account/club"
-              className={cn(itemClass, "text-fuchsia-100/95")}
+              className={cn(itemClass, "text-noqt-lime/95")}
               onClick={() => {
                 setOpen(false);
                 onNavigate?.();
               }}
             >
               Noqta Club
-              {club.subscriptionActive ? <span className="ml-auto text-xs text-fuchsia-300/80">+</span> : null}
+              {club.subscriptionActive ? <span className="ml-auto text-xs text-noqt-lime/80">+</span> : null}
             </Link>
           ) : null}
 
@@ -307,9 +307,9 @@ export default function Navbar() {
             href="https://labs.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-noqt-lime px-3 py-1.5 text-xs font-bold text-black shadow-[0_0_14px_rgba(221,247,106,0.75)] ring-1 ring-black/10 transition hover:shadow-[0_0_22px_rgba(221,247,106,0.95)] hover:brightness-105"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-noqt-lime px-3.5 py-1.5 font-labs text-xs font-bold uppercase tracking-[0.22em] text-black shadow-[0_0_14px_rgba(221,247,106,0.75)] ring-1 ring-black/10 transition hover:shadow-[0_0_22px_rgba(221,247,106,0.95)] hover:brightness-105"
           >
-            <span>⚗️</span> Labs
+            Labs
           </a>
 
           {isLoggedIn ? (
@@ -379,9 +379,9 @@ export default function Navbar() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-noqt-lime px-3 py-2.5 text-sm font-bold text-black shadow-[0_0_14px_rgba(221,247,106,0.6)]"
+                    className="mt-1 inline-flex items-center gap-2 rounded-xl bg-noqt-lime px-3 py-2.5 font-labs text-sm font-bold uppercase tracking-[0.22em] text-black shadow-[0_0_14px_rgba(221,247,106,0.6)]"
                   >
-                    <span>⚗️</span> Labs
+                    Labs
                   </a>
                 </div>
 

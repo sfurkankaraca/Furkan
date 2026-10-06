@@ -47,7 +47,7 @@ export default function KayseriDjBookingPage() {
           }
           description="Düğün/nişan/kına, açılış, marka lansmanı ve özel etkinliklerde Kayseri’de başlayıp Türkiye geneline uzanan DJ booking hizmeti."
           actions={
-            <Button asChild size="lg" className="rounded-xl bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white">
+            <Button asChild size="lg" className="rounded-xl bg-gradient-to-r from-noqt-lime to-noqt-lime text-black">
               <Link
                 href={contactHref(
                   "Kayseri DJ Booking — Teklif talebi",
@@ -74,7 +74,7 @@ export default function KayseriDjBookingPage() {
                 "Özel etkinlik müzik hizmeti: timeline + teknik uyum",
               ].map((t) => (
                 <li key={t} className="flex gap-2">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400" aria-hidden />
+                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gradient-to-r from-noqt-lime to-noqt-sky" aria-hidden />
                   {t}
                 </li>
               ))}

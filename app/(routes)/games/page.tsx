@@ -42,14 +42,14 @@ export default function GamesPage() {
             href="https://bpmguess.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
-            className="group rounded-2xl border border-border bg-card p-6 transition hover:border-fuchsia-200 hover:shadow-sm"
+            className="group rounded-2xl border border-border bg-card p-6 transition hover:border-noqt-lime/60 hover:shadow-sm"
           >
-            <div className="inline-flex rounded-xl bg-fuchsia-50 border border-fuchsia-100 p-2.5 mb-4">
-              <Gauge className="size-6 text-fuchsia-600" aria-hidden />
+            <div className="inline-flex rounded-xl bg-noqt-lime/15 border border-noqt-lime/60 p-2.5 mb-4">
+              <Gauge className="size-6 text-noqt-lime-ink" aria-hidden />
             </div>
             <div className="text-lg font-semibold text-foreground">BPM Guess</div>
             <div className="mt-2 text-sm text-muted-foreground">Tempoyu kulakla yakalayıp BPM tahmin et.</div>
-            <span className="mt-4 block text-sm text-fuchsia-600 group-hover:text-fuchsia-700 transition">bpmguess.noqt.club →</span>
+            <span className="mt-4 block text-sm text-noqt-lime-ink group-hover:text-noqt-lime-ink transition">bpmguess.noqt.club →</span>
           </a>
         </div>
       </div>

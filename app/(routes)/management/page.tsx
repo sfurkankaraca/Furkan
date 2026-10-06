@@ -19,7 +19,7 @@ export default function ManagementPage() {
           }
           title={
             <>
-              <span className="bg-gradient-to-r from-fuchsia-300 via-purple-200 to-cyan-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky bg-clip-text text-transparent">
                 Kariyer
               </span>{" "}
               ve yayın stratejisi
@@ -31,7 +31,7 @@ export default function ManagementPage() {
             <Button
               asChild
               size="lg"
-              className="rounded-xl border-0 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-fuchsia-500/20 hover:from-fuchsia-500 hover:to-purple-500"
+              className="rounded-xl border-0 bg-gradient-to-r from-noqt-lime to-noqt-lime text-black shadow-lg shadow-noqt-lime/20 hover:from-noqt-lime hover:to-noqt-lime"
             >
               <Link
                 href={contactHref(

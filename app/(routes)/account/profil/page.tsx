@@ -222,7 +222,7 @@ export default function AccountProfilPage() {
                     onClick={() => toggleGenre(g)}
                     className={`rounded-full px-3 py-1.5 text-xs font-medium border transition ${
                       genres.has(g)
-                        ? "bg-fuchsia-600 border-fuchsia-400 text-white"
+                        ? "bg-noqt-lime border-noqt-lime text-black"
                         : "border-white/20 text-white/80 hover:bg-white/10"
                     }`}
                   >

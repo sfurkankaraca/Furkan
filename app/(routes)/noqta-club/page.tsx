@@ -218,7 +218,7 @@ export default async function NoqtaClubLandingPage() {
                 <h3 className="text-xl md:text-2xl font-semibold text-white">Neler yaparız?</h3>
                 <ul className="grid gap-3 text-sm text-white/75">
                   <li className="flex gap-3">
-                    <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-500" aria-hidden />
+                    <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-noqt-lime to-noqt-lime" aria-hidden />
                     Buluşmalar, jam’ler ve paylaşılan sahneler
                   </li>
                   <li className="flex gap-3">
@@ -226,7 +226,7 @@ export default async function NoqtaClubLandingPage() {
                     Üyelere yönelik içerik ve davetler (zamanla büyüyen alan)
                   </li>
                   <li className="flex gap-3">
-                    <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-sky-400 to-indigo-400" aria-hidden />
+                    <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-sky-400 to-noqt-sky" aria-hidden />
                     Farklı katılım seviyeleri — kendine uygun olanı seç
                   </li>
                 </ul>

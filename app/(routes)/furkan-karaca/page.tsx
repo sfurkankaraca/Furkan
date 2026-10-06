@@ -48,7 +48,7 @@ export default async function FurkanKaracaPage() {
   );
 
   return (
-    <PageShell withGlow={false}>
+    <PageShell withGlow={false} className="dark bg-background text-foreground">
       <div className="mx-auto max-w-3xl grid gap-12 md:gap-16 pb-16">
         <header className="grid gap-6">
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
@@ -59,14 +59,14 @@ export default async function FurkanKaracaPage() {
               </div>
             ) : (
               <div
-                className="flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-gradient-to-br from-fuchsia-500/25 to-cyan-500/20 text-2xl font-semibold text-white/85 sm:h-44 sm:w-44"
+                className="flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-gradient-to-br from-noqt-lime/25 to-noqt-sky/20 text-2xl font-semibold text-white/85 sm:h-44 sm:w-44"
                 aria-hidden
               >
                 FK
               </div>
             )}
             <div className="min-w-0 flex-1 text-center sm:text-left">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-300/85">noqt kurucusu</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-noqt-lime/85">noqt kurucusu</p>
               <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white md:text-4xl">{FURKAN_KARACA.name}</h1>
               <p className="mt-3 text-sm leading-relaxed text-white/65 md:text-base">
                 Müzisyen, yapımcı, ses mühendisi, DJ, eğitmen, mentor ve A&R odaklı yaratıcı geliştirici.

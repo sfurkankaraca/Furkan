@@ -31,7 +31,7 @@ export function BookingServiceOverview() {
               className={cn(
                 "rounded-2xl border bg-white/[0.03] text-left transition duration-300",
                 expanded
-                  ? "border-fuchsia-400/40 bg-white/[0.07] shadow-lg shadow-fuchsia-950/20"
+                  ? "border-noqt-lime/40 bg-white/[0.07] shadow-lg shadow-noqt-lime/10"
                   : "border-white/10 hover:border-white/18 hover:bg-white/[0.05]",
               )}
             >

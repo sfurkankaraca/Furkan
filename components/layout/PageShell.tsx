@@ -14,7 +14,7 @@ export function PageShell({
     <div className={cn("relative overflow-x-clip overflow-y-visible", className)}>
       {withGlow ? (
         <div
-          className="pointer-events-none absolute -top-40 left-1/2 h-[28rem] w-[min(100%,56rem)] -translate-x-1/2 rounded-full bg-gradient-to-b from-fuchsia-500/10 via-purple-500/8 to-transparent blur-3xl"
+          className="pointer-events-none absolute -top-40 left-1/2 h-[28rem] w-[min(100%,56rem)] -translate-x-1/2 rounded-full bg-gradient-to-b from-noqt-lime/10 via-noqt-lime/8 to-transparent blur-3xl"
           aria-hidden
         />
       ) : null}

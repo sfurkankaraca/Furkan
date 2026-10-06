@@ -264,7 +264,7 @@ function AccountClubPageInner() {
                         type="button"
                         onClick={() => setSelectedPackageId(pkg.id)}
                         className={`rounded-xl border p-3 text-left transition ${
-                          active ? "border-fuchsia-400/55 bg-fuchsia-500/10" : "border-white/15 bg-white/[0.03] hover:border-white/25"
+                          active ? "border-noqt-lime/55 bg-noqt-lime/10" : "border-white/15 bg-white/[0.03] hover:border-white/25"
                         }`}
                       >
                         <div className="text-sm font-medium text-white">{pkg.name}</div>
@@ -304,7 +304,7 @@ function AccountClubPageInner() {
             <ContentCard className="p-6 md:p-8 bg-zinc-950/30">
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="text-lg font-medium text-white">Hoş geldin</span>
-                <span className="rounded-full bg-fuchsia-500/20 text-fuchsia-200 text-xs font-medium px-2.5 py-0.5 border border-fuchsia-500/35">
+                <span className="rounded-full bg-noqt-lime/20 text-noqt-lime text-xs font-medium px-2.5 py-0.5 border border-noqt-lime/35">
                   Aktif üye
                 </span>
               </div>
@@ -349,7 +349,7 @@ function AccountClubPageInner() {
                           {p.linkUrl ? (
                             <Link
                               href={p.linkUrl}
-                              className="inline-block mt-3 text-sm text-fuchsia-300 underline"
+                              className="inline-block mt-3 text-sm text-noqt-lime underline"
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -370,7 +370,7 @@ function AccountClubPageInner() {
                     <ul className="grid gap-3">
                       {dash.events.map((e) => (
                         <li key={e.id}>
-                          <Link href={`/events/${e.id}`} className="text-fuchsia-300 hover:underline text-sm font-medium">
+                          <Link href={`/events/${e.id}`} className="text-noqt-lime hover:underline text-sm font-medium">
                             {e.title}
                           </Link>
                           <span className="text-white/45 text-sm ml-2">

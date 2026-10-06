@@ -53,7 +53,7 @@ export default async function OnlyMembersPage() {
             </p>
             <Link
               href="/account/club"
-              className="w-fit rounded-xl bg-fuchsia-600 text-white px-4 py-2.5 text-sm font-medium hover:bg-fuchsia-500"
+              className="w-fit rounded-xl bg-noqt-lime text-black px-4 py-2.5 text-sm font-medium hover:bg-noqt-lime"
             >
               Abonelik ve üye paneli
             </Link>
@@ -69,7 +69,7 @@ export default async function OnlyMembersPage() {
             >
               Club paneline git
             </Link>
-            <Link href="/events" className="w-fit text-sm text-fuchsia-300 underline">
+            <Link href="/events" className="w-fit text-sm text-noqt-lime underline">
               Tüm etkinlikler
             </Link>
           </>

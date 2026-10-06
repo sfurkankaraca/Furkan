@@ -47,7 +47,7 @@ export default function KayseriEtkinlikOrganizasyonuPage() {
           }
           description="Kayseri’de etkinlik organizasyonunu; müzik akışı, DJ booking ve sahne koordinasyonu ile uçtan uca kurguluyoruz."
           actions={
-            <Button asChild size="lg" className="rounded-xl bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white">
+            <Button asChild size="lg" className="rounded-xl bg-gradient-to-r from-noqt-lime to-noqt-lime text-black">
               <Link
                 href={contactHref(
                   "Kayseri Etkinlik Organizasyonu — Teklif talebi",
@@ -74,7 +74,7 @@ export default function KayseriEtkinlikOrganizasyonuPage() {
                 "Türkiye geneli lojistik + teknik uyum",
               ].map((t) => (
                 <li key={t} className="flex gap-2">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400" aria-hidden />
+                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gradient-to-r from-noqt-lime to-noqt-sky" aria-hidden />
                   {t}
                 </li>
               ))}

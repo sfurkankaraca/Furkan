@@ -42,7 +42,7 @@ export default async function CollectivePage() {
   const poster = resolveSiteImageUrl("collective_hero_poster", overrides) ?? "/og.png";
 
   return (
-    <main>
+    <main className="dark bg-background text-foreground">
       <PageHeroVideo
         sources={heroSources}
         poster={poster}
@@ -64,7 +64,7 @@ export default async function CollectivePage() {
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-xl border-0 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-fuchsia-500/20 hover:from-fuchsia-500 hover:to-purple-500"
+                    className="rounded-xl border-0 bg-gradient-to-r from-noqt-lime to-noqt-lime text-black shadow-lg shadow-noqt-lime/20 hover:from-noqt-lime hover:to-noqt-lime"
                   >
                     <Link
                       href={contactHref(
@@ -100,7 +100,7 @@ export default async function CollectivePage() {
           <ContentCard>
             <div className="flex items-center gap-3">
               <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/5">
-                <Disc3 className="size-5 text-fuchsia-300" aria-hidden />
+                <Disc3 className="size-5 text-noqt-lime" aria-hidden />
               </div>
               <h3 className="text-lg font-semibold text-white">DJ&apos;ler</h3>
             </div>
@@ -138,7 +138,7 @@ export default async function CollectivePage() {
             <ul className="mt-5 grid gap-3">
               {forProducers.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex gap-3 text-sm text-white/75">
-                  <Icon className="mt-0.5 size-4 shrink-0 text-fuchsia-300/80" aria-hidden />
+                  <Icon className="mt-0.5 size-4 shrink-0 text-noqt-lime/80" aria-hidden />
                   {text}
                 </li>
               ))}

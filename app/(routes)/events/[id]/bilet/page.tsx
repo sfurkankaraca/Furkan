@@ -168,7 +168,7 @@ export default function EventTicketPage() {
       <TicketShell>
         <div className="grid gap-5 p-6 md:p-8">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-wider text-fuchsia-300/90">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-noqt-lime/90">
               Bilet
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight">{event.title}</h1>
@@ -288,7 +288,7 @@ export default function EventTicketPage() {
 
           <div className="mt-5 grid gap-5">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-wider text-fuchsia-300/90">
+              <p className="text-[11px] font-medium uppercase tracking-wider text-noqt-lime/90">
                 Sipariş özeti
               </p>
               <h1 className="mt-1 text-xl font-semibold leading-snug tracking-tight md:text-2xl">
@@ -426,7 +426,7 @@ export default function EventTicketPage() {
             className={cn(
               "flex cursor-pointer gap-3 rounded-xl border p-3 text-left transition",
               acceptedDistanceContract
-                ? "border-fuchsia-500/35 bg-fuchsia-500/10"
+                ? "border-noqt-lime/35 bg-noqt-lime/10"
                 : "border-white/10 bg-white/[0.02] hover:border-white/15",
             )}
           >
@@ -434,14 +434,14 @@ export default function EventTicketPage() {
               type="checkbox"
               checked={acceptedDistanceContract}
               onChange={(e) => setAcceptedDistanceContract(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/30 bg-black accent-fuchsia-500"
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/30 bg-black accent-noqt-lime"
             />
             <span className="text-xs leading-relaxed text-white/70">
               <Link
                 href="/mesafeli-satis-sozlesmesi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-fuchsia-300/95 underline-offset-2 hover:underline"
+                className="font-medium text-noqt-lime/95 underline-offset-2 hover:underline"
               >
                 Mesafeli Satış Sözleşmesi
               </Link>
@@ -450,7 +450,7 @@ export default function EventTicketPage() {
                 href="/teslimat-ve-iade-sartlari"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-fuchsia-300/95 underline-offset-2 hover:underline"
+                className="font-medium text-noqt-lime/95 underline-offset-2 hover:underline"
               >
                 teslimat ve iade şartlarını
               </Link>{" "}

@@ -203,7 +203,7 @@ export function EventsSiteClient() {
                     />
                   </Link>
                   <div className="flex flex-col justify-center gap-4 p-6 md:p-8 lg:col-span-5">
-                    <p className="text-xs font-medium uppercase tracking-wider text-fuchsia-600">
+                    <p className="text-xs font-medium uppercase tracking-wider text-noqt-lime-ink">
                       {spotlight.date
                         ? new Date(spotlight.date).toLocaleDateString("tr-TR", {
                             weekday: "long",

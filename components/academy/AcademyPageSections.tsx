@@ -73,7 +73,7 @@ function MediaStrip({ urls }: { urls: (string | null)[] }) {
               />
             ) : null}
             <div
-              className={`absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/5 ${src ? "pointer-events-none mix-blend-soft-light" : ""}`}
+              className={`absolute inset-0 bg-gradient-to-br from-noqt-lime/10 via-transparent to-noqt-sky/5 ${src ? "pointer-events-none mix-blend-soft-light" : ""}`}
               aria-hidden
             />
             <div className="absolute inset-0 flex items-end p-3">
@@ -108,7 +108,7 @@ export function AcademyPageSections({
               key={text}
               className="flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 transition duration-300 hover:border-foreground/20 hover:bg-muted/50"
             >
-              <Icon className="mt-0.5 size-5 shrink-0 text-fuchsia-600" aria-hidden />
+              <Icon className="mt-0.5 size-5 shrink-0 text-noqt-lime-ink" aria-hidden />
               <p className="text-sm leading-snug text-foreground">{text}</p>
             </div>
           ))}
@@ -126,9 +126,9 @@ export function AcademyPageSections({
             href="https://labs.noqt.club"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative flex flex-col rounded-2xl border border-fuchsia-200 bg-gradient-to-br from-fuchsia-50 via-background to-purple-50 p-6 transition duration-300 hover:border-fuchsia-300 hover:shadow-md md:p-7"
+            className="group relative flex flex-col rounded-2xl border border-noqt-lime/60 bg-gradient-to-br from-noqt-lime/15 via-background to-noqt-lime/15 p-6 transition duration-300 hover:border-noqt-lime hover:shadow-md md:p-7"
           >
-            <GraduationCap className="size-9 text-fuchsia-600" aria-hidden />
+            <GraduationCap className="size-9 text-noqt-lime-ink" aria-hidden />
             <h3 className="mt-4 text-xl font-semibold text-foreground">Labs</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               labs.noqt.club üzerinde modüller, konu anlatımları, quiz ve pratik ödevlerle teoriyi netleştirir; ilerlemeni
@@ -136,16 +136,16 @@ export function AcademyPageSections({
             </p>
             <ul className="mt-4 grid gap-2 text-sm text-muted-foreground">
               <li className="flex gap-2">
-                <span className="text-fuchsia-500">·</span> Modüler içerik + quiz + ödev — sağlam temel
+                <span className="text-noqt-lime-ink">·</span> Modüler içerik + quiz + ödev — sağlam temel
               </li>
               <li className="flex gap-2">
-                <span className="text-fuchsia-500">·</span> Gelişim takibi ve düzenli geri bildirim
+                <span className="text-noqt-lime-ink">·</span> Gelişim takibi ve düzenli geri bildirim
               </li>
               <li className="flex gap-2">
-                <span className="text-fuchsia-500">·</span> DJ ve prodüksiyonu aynı çizgide ele alma
+                <span className="text-noqt-lime-ink">·</span> DJ ve prodüksiyonu aynı çizgide ele alma
               </li>
             </ul>
-            <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-fuchsia-600">
+            <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-noqt-lime-ink">
               labs.noqt.club
               <ArrowRight className="size-4 transition group-hover:translate-x-0.5" aria-hidden />
             </span>
@@ -193,13 +193,13 @@ export function AcademyPageSections({
                 icon: BookMarked,
                 title: "Online Labs",
                 body: "Modüller, anlatımlar, quiz ve ödevlerle teoriyi oturtur; ilerlemeni görünür kılarız.",
-                accent: "text-fuchsia-600",
+                accent: "text-noqt-lime-ink",
               },
               {
                 icon: LineChart,
                 title: "Gelişim takibi",
                 body: "Öğrenci yolculuğunu birlikte izleriz; eksikleri erken yakalayıp doğru pratikle kapatırsın.",
-                accent: "text-violet-600",
+                accent: "text-noqt-lime-ink",
               },
               {
                 icon: Gamepad2,
@@ -267,9 +267,9 @@ export function AcademyPageSections({
           ].map((s, i) => (
             <li
               key={s.t}
-              className="rounded-2xl border border-border bg-card p-4 transition duration-300 hover:border-violet-300 hover:bg-violet-50/30"
+              className="rounded-2xl border border-border bg-card p-4 transition duration-300 hover:border-noqt-lime hover:bg-noqt-lime/30"
             >
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-violet-600">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-noqt-lime-ink">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <p className="mt-1 text-sm font-medium text-foreground">{s.t}</p>

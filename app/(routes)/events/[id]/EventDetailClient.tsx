@@ -168,7 +168,7 @@ export default function EventDetailClient() {
     ticketEnabled && canBuyTicketWithClub ? (
     <Link
       href={`/events/${id}/bilet`}
-      className="inline-flex rounded-full p-[2px] bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 shadow-lg shadow-fuchsia-500/20"
+      className="inline-flex rounded-full p-[2px] bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky shadow-lg shadow-noqt-lime/20"
     >
       <span className="px-5 py-2.5 rounded-full bg-black text-white text-sm font-medium">
         {locale === "en" ? "Buy ticket" : "Bilet al"}
@@ -192,7 +192,7 @@ export default function EventDetailClient() {
   ) : !isPastEvent ? (
     <a
       href={event.ctaUrl || "/events/apply"}
-      className="inline-flex rounded-full p-[2px] bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400"
+      className="inline-flex rounded-full p-[2px] bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky"
     >
       <span className="px-5 py-2.5 rounded-full bg-black text-white text-sm font-medium">
         {locale === "en" ? "RSVP" : "Etkinliğe başvur"}
@@ -233,7 +233,7 @@ export default function EventDetailClient() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
             </>
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-950/50 via-zinc-950 to-cyan-950/40" />
+            <div className="absolute inset-0 bg-gradient-to-br from-noqt-lime/10 via-zinc-950 to-noqt-sky/10" />
           )}
         </div>
 
@@ -248,7 +248,7 @@ export default function EventDetailClient() {
                 </span>
               ) : null}
               {priceLabel ? (
-                <span className="rounded-full border border-fuchsia-400/40 bg-fuchsia-500/15 px-3 py-1 text-fuchsia-100">
+                <span className="rounded-full border border-noqt-lime/40 bg-noqt-lime/15 px-3 py-1 text-noqt-lime">
                   {priceLabel}
                 </span>
               ) : null}
@@ -271,7 +271,7 @@ export default function EventDetailClient() {
       {/* Özet kartlar */}
       <div className="grid sm:grid-cols-3 gap-3">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-4 flex gap-3 items-start">
-          <div className="rounded-lg bg-white/10 p-2 text-fuchsia-300">
+          <div className="rounded-lg bg-white/10 p-2 text-noqt-lime">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -330,7 +330,7 @@ export default function EventDetailClient() {
             {event.genres.map((g) => (
               <span
                 key={g}
-                className="rounded-full border border-fuchsia-500/35 bg-fuchsia-500/10 px-3 py-1 text-xs text-fuchsia-100/95"
+                className="rounded-full border border-noqt-lime/35 bg-noqt-lime/10 px-3 py-1 text-xs text-noqt-lime/95"
               >
                 {g}
               </span>
@@ -359,14 +359,14 @@ export default function EventDetailClient() {
                       <div className="w-full h-full grid place-items-center text-xs text-white/40">◆</div>
                     )}
                   </div>
-                  {a.slot ? <div className="text-[10px] md:text-xs text-fuchsia-300/80 mt-2 uppercase tracking-wide">{a.slot}</div> : null}
+                  {a.slot ? <div className="text-[10px] md:text-xs text-noqt-lime/80 mt-2 uppercase tracking-wide">{a.slot}</div> : null}
                   <div className="text-sm font-medium text-white mt-1 line-clamp-2">{a.name}</div>
                 </>
               );
               return (
                 <div
                   key={`${a.name}-${i}`}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center hover:border-fuchsia-500/30 transition-colors"
+                  className="rounded-2xl border border-white/10 bg-white/5 p-3 text-center hover:border-noqt-lime/30 transition-colors"
                 >
                   {a.href ? (
                     <a href={a.href} target="_blank" rel="noopener noreferrer" className="block">
@@ -402,7 +402,7 @@ export default function EventDetailClient() {
               <div className="min-w-0">
                 <div className="text-xs text-white/50 uppercase">{locale === "en" ? "Organizer" : "Organizatör"}</div>
                 {event.organizer?.href ? (
-                  <a href={event.organizer.href} className="font-medium text-white hover:text-fuchsia-200 truncate block" target="_blank" rel="noopener noreferrer">
+                  <a href={event.organizer.href} className="font-medium text-white hover:text-noqt-lime truncate block" target="_blank" rel="noopener noreferrer">
                     {event.organizer?.name || "—"}
                   </a>
                 ) : (
@@ -532,7 +532,7 @@ export default function EventDetailClient() {
             <button
               type="button"
               onClick={() => setShowMemoryForm(true)}
-              className="inline-flex rounded-full p-[2px] bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400"
+              className="inline-flex rounded-full p-[2px] bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky"
             >
               <span className="px-4 py-2 rounded-full bg-black text-white text-sm">
                 {locale === "en" ? "Leave a memory" : "Anı bırak"}

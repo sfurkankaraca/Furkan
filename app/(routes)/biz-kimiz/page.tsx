@@ -144,7 +144,7 @@ export default async function BizKimizPage() {
 
             <ul className="mt-6 grid gap-3 text-sm text-white/75">
               <li className="flex gap-3">
-                <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-fuchsia-500 to-purple-500" aria-hidden />
+                <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-noqt-lime to-noqt-lime" aria-hidden />
                 Sahne ve etkinlik kürasyonu
               </li>
               <li className="flex gap-3">
@@ -152,7 +152,7 @@ export default async function BizKimizPage() {
                 İçerik üretimi ve dijital varlık
               </li>
               <li className="flex gap-3">
-                <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-sky-400 to-indigo-400" aria-hidden />
+                <span className="w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-sky-400 to-noqt-sky" aria-hidden />
                 Topluluk ve DJ ağı
               </li>
             </ul>
@@ -187,7 +187,7 @@ export default async function BizKimizPage() {
             <div className="mt-6 grid gap-3">
               <div className="rounded-xl border border-white/10 bg-black/20 p-4 transition duration-300 hover:border-white/16 hover:bg-black/30">
                 <div className="flex items-center gap-3">
-                  <GraduationCap className="size-5 text-fuchsia-300" aria-hidden />
+                  <GraduationCap className="size-5 text-noqt-lime" aria-hidden />
                   <h3 className="font-medium text-white">Academy</h3>
                 </div>
                 <p className="mt-2 text-sm text-white/70">
@@ -247,7 +247,7 @@ export default async function BizKimizPage() {
           </h2>
           <ul className="grid gap-3 max-w-2xl text-sm text-white/75">
             <li className="flex gap-3 items-start">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-fuchsia-400" aria-hidden />
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-noqt-lime" aria-hidden />
               <span>
                 Net iletişim: gereksiz jargon yok; kutlama, kurumsal gece veya marka işi fark etmeksizin beklentiyi baştan
                 yazıyoruz.
@@ -264,7 +264,7 @@ export default async function BizKimizPage() {
               </span>
             </li>
             <li className="flex gap-3 items-start">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-purple-400" aria-hidden />
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-noqt-lime" aria-hidden />
               <span>Tek gecelik işler de yapıyoruz ama kalıcı ilişkiyi ve tekrarlayan güveni önemsiyoruz.</span>
             </li>
           </ul>

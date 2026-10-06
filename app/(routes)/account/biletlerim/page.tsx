@@ -78,7 +78,7 @@ export default async function BiletlerimPage({
                     <span className="text-white/80 font-mono">{t.code}</span>
                   </div>
                 </div>
-                <Link href={`/events/${t.eventId}`} className="text-sm text-fuchsia-300 hover:underline shrink-0">
+                <Link href={`/events/${t.eventId}`} className="text-sm text-noqt-lime hover:underline shrink-0">
                   Etkinlik
                 </Link>
               </li>

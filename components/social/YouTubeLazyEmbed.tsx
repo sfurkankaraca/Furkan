@@ -43,7 +43,7 @@ export function YouTubeLazyEmbed({ url, title = "YouTube video", className }: Pr
       type="button"
       onClick={() => setActive(true)}
       className={cn(
-        "group relative aspect-video w-full overflow-hidden rounded-2xl border border-white/12 bg-zinc-950 text-left shadow-lg outline-none transition hover:border-white/25 focus-visible:ring-2 focus-visible:ring-fuchsia-400/50",
+        "group relative aspect-video w-full overflow-hidden rounded-2xl border border-white/12 bg-zinc-950 text-left shadow-lg outline-none transition hover:border-white/25 focus-visible:ring-2 focus-visible:ring-noqt-lime/50",
         className,
       )}
       aria-label={`${title} oynat`}
@@ -53,7 +53,7 @@ export function YouTubeLazyEmbed({ url, title = "YouTube video", className }: Pr
         <img src={thumb} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
       ) : (
         <div
-          className="absolute inset-0 bg-gradient-to-br from-fuchsia-950/80 via-zinc-900 to-black"
+          className="absolute inset-0 bg-gradient-to-br from-noqt-lime/10 via-zinc-900 to-black"
           aria-hidden
         />
       )}

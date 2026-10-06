@@ -57,7 +57,7 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
               type="button"
               onClick={() => setCurrent(i)}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === current ? "bg-white scale-125" : "bg-white/40 hover:bg-white/70"
+                i === current ? "w-6 bg-noqt-lime" : "bg-white/40 hover:bg-white/70"
               }`}
               aria-label={`Fotoğraf ${i + 1}`}
             />
@@ -76,7 +76,11 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
             className="h-20 md:h-28 w-auto object-contain invert lg:invert-0 mb-2"
           />
           <h1 className="text-5xl font-bold tracking-tight text-white lg:text-foreground md:text-6xl leading-tight">
-            DJ Akademi
+            DJ{" "}
+            <span className="relative inline-block">
+              <span className="absolute inset-x-[-0.12em] bottom-[0.08em] hidden h-[0.42em] -rotate-1 rounded-sm bg-noqt-lime lg:block" aria-hidden />
+              <span className="relative text-noqt-lime lg:text-foreground">Akademi</span>
+            </span>
           </h1>
           <p className="mt-6 text-base leading-relaxed text-white/75 lg:text-muted-foreground max-w-md">
             Pratik odaklı DJ ve müzik prodüksiyon eğitimi.
@@ -87,7 +91,7 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
               href="https://labs.noqt.club/register"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-white lg:bg-foreground px-7 py-3 text-sm font-semibold text-foreground lg:text-background transition hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-noqt-lime px-7 py-3 text-sm font-semibold text-black shadow-[0_0_24px_rgba(221,247,106,0.45)] transition hover:brightness-95"
             >
               Detaylar için kaydol
               <ArrowRight className="size-4" aria-hidden />
@@ -104,12 +108,19 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
               WhatsApp
             </a>
             <Link
-              href="#programs"
+              href="/academy#fiyatlar"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 lg:border-border bg-white/10 lg:bg-muted/50 px-7 py-3 text-sm font-medium text-white lg:text-foreground backdrop-blur-sm transition hover:bg-white/20 lg:hover:bg-muted"
             >
-              Programlar
+              Fiyatlar
             </Link>
           </div>
+          <ul className="mt-8 flex flex-wrap gap-2 text-xs font-semibold">
+            <li className="rounded-full bg-white/90 px-3 py-1 text-black lg:bg-foreground lg:text-background">
+              1&apos;e 1 DJ Eğitimi · 12.000₺ + KDV&apos;den
+            </li>
+            <li className="rounded-full bg-noqt-sky px-3 py-1 text-black">Üniversite öğrencilerine %50</li>
+            <li className="rounded-full bg-noqt-lime px-3 py-1 text-black">12 aya varan taksit</li>
+          </ul>
         </div>
       </div>
     </section>

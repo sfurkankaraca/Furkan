@@ -82,7 +82,7 @@ export function B2BOfferFlow() {
             className={cn(
               "rounded-2xl border p-4 text-left transition duration-300 md:p-5",
               activeId === o.id
-                ? "border-fuchsia-400/45 bg-white/[0.08] shadow-sm shadow-fuchsia-500/10"
+                ? "border-noqt-lime/45 bg-white/[0.08] shadow-sm shadow-noqt-lime/10"
                 : "border-white/10 bg-white/[0.03] hover:border-white/18 hover:bg-white/[0.05] active:scale-[0.99]",
             )}
           >

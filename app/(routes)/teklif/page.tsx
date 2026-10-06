@@ -32,7 +32,7 @@ export default async function TeklifPage() {
   const poster = resolveSiteImageUrl("contact_hero_poster", overrides) ?? "/og.png";
 
   return (
-    <main>
+    <main className="dark bg-background text-foreground">
       <PageHeroVideo sources={resolveRandomHeroSources("/teklif")} poster={poster} posterAlt="Noqta teklif formu">
         <PageShell withGlow={false}>
           <ContentCard className="p-6 md:p-10">

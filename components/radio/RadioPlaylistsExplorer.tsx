@@ -206,7 +206,7 @@ export default function RadioPlaylistsExplorer({
             className={cn(
               "rounded-full border px-4 py-2 text-sm font-medium transition",
               filter === "all"
-                ? "border-transparent bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white"
+                ? "border-transparent bg-gradient-to-r from-noqt-lime to-noqt-lime text-black"
                 : "border-white/15 bg-white/5 text-white/75 hover:border-white/25 hover:bg-white/10",
             )}
           >
@@ -220,7 +220,7 @@ export default function RadioPlaylistsExplorer({
               className={cn(
                 "rounded-full border px-4 py-2 text-sm font-medium transition",
                 filter === c
-                  ? "border-transparent bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white"
+                  ? "border-transparent bg-gradient-to-r from-noqt-lime to-noqt-lime text-black"
                   : "border-white/15 bg-white/5 text-white/75 hover:border-white/25 hover:bg-white/10",
               )}
             >

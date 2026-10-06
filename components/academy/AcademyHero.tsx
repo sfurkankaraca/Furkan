@@ -47,7 +47,7 @@ export function AcademyHero() {
           </Button>
           <Button
             asChild
-            className="h-11 rounded-xl bg-fuchsia-600 text-white shadow-sm transition hover:bg-fuchsia-700 active:scale-[0.99]"
+            className="h-11 rounded-xl bg-noqt-lime text-black shadow-sm transition hover:bg-noqt-lime active:scale-[0.99]"
           >
             <Link href="#basvuru">Başvuru Yap</Link>
           </Button>

@@ -34,14 +34,14 @@ export async function FurkanBioCard({
           </div>
         ) : (
           <div
-            className="mx-auto flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl border border-border bg-gradient-to-br from-fuchsia-100 to-cyan-100 text-lg font-semibold text-foreground sm:mx-0 sm:h-32 sm:w-32"
+            className="mx-auto flex h-28 w-28 shrink-0 items-center justify-center rounded-2xl border border-border bg-gradient-to-br from-noqt-lime/15 to-noqt-sky/15 text-lg font-semibold text-foreground sm:mx-0 sm:h-32 sm:w-32"
             aria-hidden
           >
             FK
           </div>
         )}
         <div className="min-w-0 flex-1 text-center sm:text-left">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-fuchsia-600">{roleLabel}</p>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-noqt-lime-ink">{roleLabel}</p>
           <h2 className="mt-1.5 text-xl font-semibold tracking-tight text-foreground md:text-2xl">{FURKAN_KARACA.name}</h2>
           <div className="mt-3 grid gap-3 text-sm leading-relaxed text-muted-foreground md:text-[15px]">
             {paragraphs.map((p, i) => (
@@ -50,7 +50,7 @@ export async function FurkanBioCard({
           </div>
           <Link
             href={FURKAN_KARACA.profileHref}
-            className="mt-4 inline-flex text-sm font-medium text-fuchsia-600 hover:text-fuchsia-700 underline-offset-4 hover:underline"
+            className="mt-4 inline-flex text-sm font-medium text-noqt-lime-ink hover:text-noqt-lime-ink underline-offset-4 hover:underline"
           >
             Tam biyografi ve portfolyo →
           </Link>

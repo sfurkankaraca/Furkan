@@ -165,7 +165,7 @@ export function CityDjLanding({ routeSlug }: { routeSlug: CityDjRouteSlug }) {
               {c.hero.bullets.map((line) => (
                 <li key={line} className="flex gap-3 md:justify-center">
                   <span
-                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400"
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-noqt-lime to-noqt-sky"
                     aria-hidden
                   />
                   <span>{line}</span>

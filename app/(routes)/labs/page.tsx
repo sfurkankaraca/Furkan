@@ -6,7 +6,7 @@ export const metadata = { title: "Labs | noqta" };
 
 function NeonCard({ title, desc }: { title: string; desc: string }) {
   return (
-    <div className="inline-flex rounded-2xl p-[2px] bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400">
+    <div className="inline-flex rounded-2xl p-[2px] bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky">
       <div className="rounded-[14px] bg-white/5 hover:bg-white/10 transition p-4 w-full">
         <div className="text-white text-lg font-medium">{title}</div>
         <p className="text-white/75 mt-1 text-sm">{desc}</p>
@@ -18,7 +18,7 @@ function NeonCard({ title, desc }: { title: string; desc: string }) {
 export default function LabsPage() {
   const whatsappHref = `https://wa.me/905417997973?text=${encodeURIComponent("Hi, I’d like to learn more about Labs / workshops.")}`;
   return (
-    <div>
+    <div className="dark bg-background text-foreground">
       <PageShell>
         <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-start md:gap-12">
           <PageHeader

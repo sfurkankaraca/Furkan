@@ -65,7 +65,7 @@ export default async function ContactPage({
   }
 
   return (
-    <main>
+    <main className="dark bg-background text-foreground">
       <PageHeroVideo
         sources={resolveRandomHeroSources("/contact")}
         poster={contactPoster}

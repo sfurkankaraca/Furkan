@@ -75,7 +75,7 @@ export function B2BPageSections({
               <ul className="mt-4 grid gap-2 text-sm text-white/55">
                 {s.benefits.map((b) => (
                   <li key={b} className="flex gap-2">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-fuchsia-400/80" aria-hidden />
+                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-noqt-lime/80" aria-hidden />
                     {b}
                   </li>
                 ))}
@@ -118,7 +118,7 @@ export function B2BPageSections({
           {B2B_VALUE.items.map((v) => (
             <div
               key={v.title}
-              className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent p-5 transition duration-300 hover:border-fuchsia-500/25 hover:from-white/[0.07]"
+              className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent p-5 transition duration-300 hover:border-noqt-lime/25 hover:from-white/[0.07]"
             >
               <h3 className="text-base font-semibold text-white">{v.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/60">{v.text}</p>
@@ -143,7 +143,7 @@ export function B2BPageSections({
       </Section>
 
       <Section id="noqta-x-marka">
-        <ContentCard className="border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-950/20 via-transparent to-cyan-950/10 p-6 md:p-8">
+        <ContentCard className="border-noqt-lime/20 bg-gradient-to-br from-noqt-lime/10 via-transparent to-noqt-sky/10 p-6 md:p-8">
           <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">{B2B_PARTNERSHIP.title}</h2>
           <div className="mt-4 grid gap-4 text-sm leading-relaxed text-white/70 md:text-base">
             {B2B_PARTNERSHIP.paragraphs.map((p, idx) => (
@@ -187,7 +187,7 @@ export function B2BPageSections({
               className="relative border-l border-white/10 pl-6 pb-8 last:pb-0 md:pl-8"
             >
               <span
-                className="absolute -left-[5px] top-1.5 flex h-2.5 w-2.5 rounded-full bg-gradient-to-br from-fuchsia-400 to-cyan-400 ring-4 ring-black"
+                className="absolute -left-[5px] top-1.5 flex h-2.5 w-2.5 rounded-full bg-gradient-to-br from-noqt-lime to-noqt-sky ring-4 ring-black"
                 aria-hidden
               />
               <span className="text-xs font-medium uppercase tracking-wider text-white/40">Adım {i + 1}</span>

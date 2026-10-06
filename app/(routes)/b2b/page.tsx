@@ -75,7 +75,7 @@ export default async function B2BPage() {
   );
 
   return (
-    <main>
+    <main className="dark bg-background text-foreground">
       <PageHeroVideo
         sources={heroSources}
         poster={poster}
@@ -84,7 +84,7 @@ export default async function B2BPage() {
         <div className="container mx-auto max-w-4xl px-4 py-14 md:py-24">
           <div className="mx-auto text-center">
             <p className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/70">
-              <Sparkles className="size-3.5 text-fuchsia-300" aria-hidden />
+              <Sparkles className="size-3.5 text-noqt-lime" aria-hidden />
               {B2B_HERO.eyebrow}
             </p>
             <h1 className="mt-5 text-balance text-3xl font-semibold tracking-tight text-white md:text-5xl md:leading-[1.12]">
@@ -118,7 +118,7 @@ export default async function B2BPage() {
             <ul className="mx-auto mt-10 grid max-w-xl gap-3 text-left text-sm text-white/65 md:mx-auto md:max-w-2xl md:grid-cols-1 md:text-center">
               {B2B_HERO.bullets.map((line) => (
                 <li key={line} className="flex gap-3 md:justify-center">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400" aria-hidden />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-r from-noqt-lime to-noqt-sky" aria-hidden />
                   <span>{line}</span>
                 </li>
               ))}

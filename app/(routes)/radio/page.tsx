@@ -67,7 +67,7 @@ export default async function RadioPage() {
                 </p>
                 <h1 className="text-3xl font-semibold tracking-tight md:text-5xl md:leading-tight">Noqta Radio</h1>
                 <p className="max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
-                  <span className="bg-gradient-to-r from-fuchsia-300 via-purple-200 to-cyan-300 bg-clip-text text-transparent font-medium">
+                  <span className="bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky bg-clip-text text-transparent font-medium">
                     Türlere göre kürasyon
                   </span>{" "}
                   playlistleri: Tech House, Techno, R&amp;B, Rock ve daha fazlası. Her kart Spotify&apos;ya gider.

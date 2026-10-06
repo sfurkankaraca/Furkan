@@ -160,12 +160,12 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
                         <div className="w-full h-full grid place-items-center text-xs text-muted-foreground">◆</div>
                       )}
                     </div>
-                    {a.slot ? <div className="text-[10px] text-fuchsia-600 uppercase tracking-wide mb-0.5">{a.slot}</div> : null}
+                    {a.slot ? <div className="text-[10px] text-noqt-lime-ink uppercase tracking-wide mb-0.5">{a.slot}</div> : null}
                     <div className="text-xs font-medium text-foreground line-clamp-2">{a.name}</div>
                   </div>
                 );
                 return (
-                  <div key={`${a.name}-${i}`} className="rounded-2xl border border-border bg-card hover:border-fuchsia-200 transition-colors">
+                  <div key={`${a.name}-${i}`} className="rounded-2xl border border-border bg-card hover:border-noqt-lime/60 transition-colors">
                     {a.href ? <a href={a.href} target="_blank" rel="noopener noreferrer">{card}</a> : card}
                   </div>
                 );
@@ -249,7 +249,7 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
             <div className="font-medium text-foreground">{event.venue}</div>
             {event.venueAddress ? <p className="text-sm text-muted-foreground mt-1">{event.venueAddress}</p> : null}
             {mapQuery ? (
-              <a href={mapsHref(mapQuery)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-sm text-fuchsia-600 hover:text-fuchsia-700">
+              <a href={mapsHref(mapQuery)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-sm text-noqt-lime-ink hover:text-noqt-lime-ink">
                 {locale === "en" ? "Open in Google Maps" : "Google Haritalar'da aç"} ↗
               </a>
             ) : null}

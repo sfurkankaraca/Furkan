@@ -33,9 +33,9 @@ const PROGRAMS = [
     icon: GraduationCap,
     label: "DJliğe Giriş",
     category: "DJ Eğitimi",
-    accent: "text-fuchsia-600",
-    border: "border-fuchsia-200 hover:border-fuchsia-300",
-    bg: "from-fuchsia-50 via-background to-purple-50",
+    accent: "text-noqt-lime-ink",
+    border: "border-noqt-lime/60 hover:border-noqt-lime",
+    bg: "from-noqt-lime/15 via-background to-noqt-lime/15",
     items: [
       "Ekipman tanıma — mixer, controller, kulaklık",
       "Beatmatching ve tempoyla çalışma",
@@ -48,9 +48,9 @@ const PROGRAMS = [
     icon: GraduationCap,
     label: "İleri Seviye DJlik",
     category: "DJ Eğitimi",
-    accent: "text-violet-600",
-    border: "border-violet-200 hover:border-violet-300",
-    bg: "from-violet-50 via-background to-fuchsia-50",
+    accent: "text-noqt-lime-ink",
+    border: "border-noqt-lime/60 hover:border-noqt-lime",
+    bg: "from-noqt-lime/15 via-background to-noqt-lime/15",
     items: [
       "İleri geçiş teknikleri ve harmonic mixing",
       "Set yapısı, enerji yönetimi",
@@ -65,7 +65,7 @@ const PROGRAMS = [
     category: "Prodüksiyon Eğitimi",
     accent: "text-sky-600",
     border: "border-sky-200 hover:border-sky-300",
-    bg: "from-sky-50 via-background to-cyan-50",
+    bg: "from-sky-50 via-background to-noqt-sky/15",
     items: [
       "DAW kurulumu ve proje yönetimi",
       "Ritim, melodi ve armoni temelleri",
@@ -213,8 +213,8 @@ export default async function AcademyPage() {
                 { t: "Pratik & ilerleme", h: "Düzenli tekrar" },
                 { t: "Üret & paylaş", h: "Performans / çıktı" },
               ].map((s, i) => (
-                <li key={s.t} className="rounded-2xl border border-border bg-card p-4 transition hover:border-violet-300 hover:bg-violet-50/30">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-violet-600">
+                <li key={s.t} className="rounded-2xl border border-border bg-card p-4 transition hover:border-noqt-lime hover:bg-noqt-lime/30">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-noqt-lime-ink">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <p className="mt-1 text-sm font-medium text-foreground">{s.t}</p>

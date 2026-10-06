@@ -5,7 +5,7 @@ export const metadata = { title: "Labs | noqta" };
 function NeonCard({
   title,
   children,
-  gradient = "from-fuchsia-500 via-purple-500 to-cyan-400",
+  gradient = "from-noqt-lime via-noqt-lime to-noqt-sky",
 }: {
   title: string;
   children: React.ReactNode;

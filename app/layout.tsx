@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Inter } from "next/font/google";
+import { Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import { GoogleAdsGtag } from "@/components/GoogleAdsGtag";
@@ -12,6 +12,8 @@ import { AuthProvider } from "@/lib/auth-context";
 import { SITE_URL } from "@/lib/site-url";
 
 const inter = Inter({ subsets: ["latin"] });
+// Labs vurgusu (menü) için ayrı karakter
+const spaceMono = Space_Mono({ subsets: ["latin"], weight: "700", variable: "--font-space-mono" });
 const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
 export const metadata: Metadata = {
@@ -53,7 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="tr" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background text-foreground antialiased`}>
+      <body className={`${inter.className} ${spaceMono.variable} bg-background text-foreground antialiased`}>
         <GoogleAdsGtag />
         {plausibleDomain ? (
           <Script defer data-domain={plausibleDomain} src="https://plausible.io/js/script.js" />

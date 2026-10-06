@@ -127,7 +127,7 @@ export function OzelEtkinlikTeklifWizard({ action }: { action: typeof submitOzel
   return (
     <div className="mx-auto w-full max-w-xl">
       <div className="mb-8 flex items-center gap-2 text-white/80">
-        <Sparkles className="size-5 shrink-0 text-fuchsia-300" aria-hidden />
+        <Sparkles className="size-5 shrink-0 text-noqt-lime" aria-hidden />
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-white/45">Özel etkinlik</p>
           <h1 className="text-lg font-semibold tracking-tight text-white md:text-xl">Teklif talebi</h1>
@@ -166,7 +166,7 @@ export function OzelEtkinlikTeklifWizard({ action }: { action: typeof submitOzel
             </div>
             <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.08]">
               <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-400"
+                className="h-full rounded-full bg-gradient-to-r from-noqt-lime to-noqt-sky"
                 initial={false}
                 animate={{ width: `${progress}%` }}
                 transition={{ type: "spring", stiffness: 120, damping: 20 }}
@@ -238,7 +238,7 @@ function chipInputClass(active: boolean) {
   return cn(
     "rounded-2xl border px-4 py-3 text-left text-sm transition duration-200",
     active
-      ? "border-fuchsia-400/50 bg-white/[0.1] text-white shadow-md shadow-fuchsia-950/20"
+      ? "border-noqt-lime/50 bg-white/[0.1] text-white shadow-md shadow-noqt-lime/10"
       : "border-white/12 bg-white/[0.03] text-white/80 hover:border-white/22 hover:bg-white/[0.06]",
   );
 }
@@ -277,7 +277,7 @@ function StepFields({
                 <label className="flex cursor-pointer gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition hover:border-white/18">
                   <input
                     type="checkbox"
-                    className="mt-1 size-4 shrink-0 rounded border-white/30 bg-black accent-fuchsia-500"
+                    className="mt-1 size-4 shrink-0 rounded border-white/30 bg-black accent-noqt-lime"
                     checked={checked}
                     onChange={(e) => update(key, e.target.checked)}
                   />
@@ -306,7 +306,7 @@ function StepFields({
             type="date"
             value={v}
             onChange={(e) => update(step.field, e.target.value)}
-            className="w-full rounded-xl border border-white/18 bg-black/40 px-3 py-2.5 text-white outline-none focus:ring-2 focus:ring-fuchsia-500/35"
+            className="w-full rounded-xl border border-white/18 bg-black/40 px-3 py-2.5 text-white outline-none focus:ring-2 focus:ring-noqt-lime/35"
           />
         </label>
       </div>
@@ -327,7 +327,7 @@ function StepFields({
                 onChange={(e) => update(f.field, e.target.value)}
                 required={f.required}
                 placeholder={f.placeholder}
-                className="rounded-xl border border-white/18 bg-black/40 px-3 py-2.5 text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-fuchsia-500/35"
+                className="rounded-xl border border-white/18 bg-black/40 px-3 py-2.5 text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-noqt-lime/35"
               />
             </label>
           ))}
@@ -339,7 +339,7 @@ function StepFields({
   if (step.kind === "text") {
     const v = getStringField(answers, step.field);
     const fieldClass =
-      "w-full rounded-xl border border-white/18 bg-black/40 px-3 py-2.5 text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-fuchsia-500/35";
+      "w-full rounded-xl border border-white/18 bg-black/40 px-3 py-2.5 text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-noqt-lime/35";
     const optional = !step.required;
     return (
       <div>
@@ -415,7 +415,7 @@ function StepFields({
                 className={cn(
                   "rounded-full border px-3.5 py-2 text-xs font-medium transition",
                   on
-                    ? "border-fuchsia-400/55 bg-fuchsia-500/15 text-white"
+                    ? "border-noqt-lime/55 bg-noqt-lime/15 text-white"
                     : "border-white/14 bg-white/[0.04] text-white/70 hover:border-white/25",
                 )}
               >

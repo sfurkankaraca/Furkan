@@ -99,7 +99,7 @@ export function JoinPageClient({
                     return (
                       <div
                         key={t.id}
-                        className="snap-start min-w-[280px] w-[85%] sm:w-[320px] max-w-[360px] rounded-2xl p-[2px] bg-gradient-to-r from-fuchsia-500/50 via-purple-500/40 to-cyan-400/50"
+                        className="snap-start min-w-[280px] w-[85%] sm:w-[320px] max-w-[360px] rounded-2xl p-[2px] bg-gradient-to-r from-noqt-lime/50 via-noqt-lime/40 to-noqt-sky/50"
                       >
                         <div className="rounded-[14px] h-full bg-black/80 p-4 flex flex-col">
                           <div className="rounded-xl overflow-hidden mb-3 aspect-[16/10] bg-white/5">
@@ -169,7 +169,7 @@ export function JoinPageClient({
                   onClick={() => setRole(r.id as "dj" | "participant" | "student")}
                   className={`w-full inline-flex rounded-2xl p-[2px] ${
                     role === r.id
-                      ? "bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400"
+                      ? "bg-gradient-to-r from-noqt-lime via-noqt-lime to-noqt-sky"
                       : "bg-gradient-to-r from-white/20 via-white/10 to-white/20"
                   }`}
                 >

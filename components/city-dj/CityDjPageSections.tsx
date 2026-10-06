@@ -52,7 +52,7 @@ export function CityDjPageSections({ content }: { content: CityDjContent }) {
           {content.why.items.map((w) => (
             <div
               key={w.title}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition duration-300 hover:border-fuchsia-500/20 hover:bg-white/[0.05] md:p-5"
+              className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition duration-300 hover:border-noqt-lime/20 hover:bg-white/[0.05] md:p-5"
             >
               <h3 className="text-sm font-semibold text-white md:text-base">{w.title}</h3>
               <p className="mt-2 text-sm text-white/55 leading-relaxed">{w.text}</p>
@@ -142,7 +142,7 @@ export function CityDjPageSections({ content }: { content: CityDjContent }) {
           {content.process.steps.map((step, i) => (
             <li key={step.title} className="relative border-l border-white/10 pb-8 pl-6 last:pb-0 md:pl-8">
               <span
-                className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-gradient-to-br from-fuchsia-400 to-cyan-400 ring-4 ring-black"
+                className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-gradient-to-br from-noqt-lime to-noqt-sky ring-4 ring-black"
                 aria-hidden
               />
               <span className="text-xs font-medium uppercase tracking-wider text-white/40">Adım {i + 1}</span>

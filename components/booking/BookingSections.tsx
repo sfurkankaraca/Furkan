@@ -65,7 +65,7 @@ function MediaStrip({ urls }: { urls: (string | null)[] }) {
                 />
               ) : null}
               <div
-                className={`absolute inset-0 bg-gradient-to-br from-fuchsia-500/10 via-transparent to-cyan-500/10 opacity-80 transition group-hover:opacity-100 ${src ? "pointer-events-none mix-blend-soft-light" : ""}`}
+                className={`absolute inset-0 bg-gradient-to-br from-noqt-lime/10 via-transparent to-noqt-sky/10 opacity-80 transition group-hover:opacity-100 ${src ? "pointer-events-none mix-blend-soft-light" : ""}`}
                 aria-hidden
               />
               {!src ? (
@@ -129,9 +129,9 @@ export function BookingSections({ mediaImageUrls = [] }: { mediaImageUrls?: (str
           {processSteps.map((s, idx) => (
             <li
               key={s.title}
-              className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition duration-300 hover:border-fuchsia-500/25 hover:bg-white/[0.05]"
+              className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition duration-300 hover:border-noqt-lime/25 hover:bg-white/[0.05]"
             >
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-fuchsia-300/90">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-noqt-lime/90">
                 {String(idx + 1).padStart(2, "0")}
               </span>
               <p className="mt-1 text-sm font-medium text-white">{s.title}</p>

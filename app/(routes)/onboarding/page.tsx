@@ -117,7 +117,7 @@ export default function OnboardingPage() {
             {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className={`h-1 flex-1 rounded-full ${i <= step ? "bg-fuchsia-500" : "bg-white/10"}`}
+                className={`h-1 flex-1 rounded-full ${i <= step ? "bg-noqt-lime" : "bg-white/10"}`}
               />
             ))}
           </div>
@@ -137,7 +137,7 @@ export default function OnboardingPage() {
                     onClick={() => toggleGenre(g)}
                     className={`rounded-full px-3 py-1.5 text-xs font-medium border transition ${
                       s1.genres.has(g)
-                        ? "bg-fuchsia-600 border-fuchsia-400 text-white"
+                        ? "bg-noqt-lime border-noqt-lime text-black"
                         : "border-white/20 text-white/80 hover:bg-white/10"
                     }`}
                   >
@@ -328,7 +328,7 @@ export default function OnboardingPage() {
               />
               <span className="text-white/80">
                 Kişisel verilerimin etkinlik ve bilet hizmetleri kapsamında işlenmesini ve{" "}
-                <a href="/contact" className="text-fuchsia-300 underline">
+                <a href="/contact" className="text-noqt-lime underline">
                   iletişim
                 </a>{" "}
                 kanallarından bilgilendirilmemi kabul ediyorum.

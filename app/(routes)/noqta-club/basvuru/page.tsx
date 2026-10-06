@@ -149,7 +149,7 @@ export default function NoqtaClubApplyPage() {
   }
 
   return (
-    <PageShell withGlow={true}>
+    <PageShell withGlow={true} className="dark bg-background text-foreground">
       <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] md:items-start md:gap-12">
         <div className="grid gap-4">
           <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/70">
@@ -339,7 +339,7 @@ export default function NoqtaClubApplyPage() {
                 />
                 <span className="text-sm leading-relaxed">
                   Kişisel verilerimin işlenmesine izin veriyorum.{" "}
-                  <Link href="/kvkk/noqta-club" className="text-fuchsia-300 underline">
+                  <Link href="/kvkk/noqta-club" className="text-noqt-lime underline">
                     KVKK aydınlatma metni
                   </Link>{" "}
                 </span>

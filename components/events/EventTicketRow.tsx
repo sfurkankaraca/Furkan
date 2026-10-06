@@ -38,7 +38,7 @@ export function EventTicketRow({ event, archived }: { event: EventItem; archived
         "relative flex flex-col gap-4 rounded-2xl border p-4 transition sm:flex-row sm:items-stretch sm:gap-0 sm:p-0",
         archived
           ? "border-border bg-muted/20 opacity-90 hover:border-foreground/15"
-          : "border-border bg-card hover:border-fuchsia-300 hover:shadow-md",
+          : "border-border bg-card hover:border-noqt-lime hover:shadow-md",
       )}
     >
       <div
@@ -52,7 +52,7 @@ export function EventTicketRow({ event, archived }: { event: EventItem; archived
             <div className="flex flex-col items-center justify-center rounded-xl bg-muted px-3 py-2 text-center sm:bg-transparent sm:px-0 sm:py-0">
               <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{parts.dow}</span>
               <span className="text-2xl font-bold tabular-nums tracking-tight text-foreground sm:text-3xl">{parts.day}</span>
-              <span className="text-xs font-medium uppercase tracking-wider text-fuchsia-600">{parts.mon}</span>
+              <span className="text-xs font-medium uppercase tracking-wider text-noqt-lime-ink">{parts.mon}</span>
             </div>
             <p className="text-center text-[11px] tabular-nums text-muted-foreground sm:border-t sm:border-border sm:pt-2 sm:w-full">
               {parts.time}
@@ -66,7 +66,7 @@ export function EventTicketRow({ event, archived }: { event: EventItem; archived
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 sm:pl-5 sm:pr-4 sm:py-4">
-        <Link href={href} className="group/title min-w-0 flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/50 focus-visible:ring-offset-2 rounded-lg">
+        <Link href={href} className="group/title min-w-0 flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-noqt-lime/50 focus-visible:ring-offset-2 rounded-lg">
           <div className="flex items-start gap-3">
             <div className="relative mt-0.5 block h-14 w-20 shrink-0 overflow-hidden rounded-lg border border-border sm:h-16 sm:w-24">
               {event.image ? (
@@ -88,7 +88,7 @@ export function EventTicketRow({ event, archived }: { event: EventItem; archived
                 </span>
               ) : null}
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-balance text-base font-semibold text-foreground transition group-hover/title:text-fuchsia-600 sm:text-lg">
+                <h3 className="text-balance text-base font-semibold text-foreground transition group-hover/title:text-noqt-lime-ink sm:text-lg">
                   {event.title}
                 </h3>
                 {membersOnly ? (
