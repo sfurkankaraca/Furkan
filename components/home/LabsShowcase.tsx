@@ -19,7 +19,7 @@ const COURSES = [
   },
   {
     name: "Production 101",
-    status: "Yakında",
+    status: "Aktif",
     modules: 16,
     desc: "Fikirden export'a: DAW, ses tasarımı, aranjman ve mix.",
     topics: [
@@ -29,7 +29,7 @@ const COURSES = [
       "Aranjman ve mixing temelleri",
       "Export ve mastering temelleri",
     ],
-    live: false,
+    live: true,
   },
 ];
 
