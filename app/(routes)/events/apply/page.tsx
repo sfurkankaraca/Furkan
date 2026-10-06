@@ -58,7 +58,7 @@ export default function EventApplyPage() {
       <p>12 Ağustos Salı gecesi, Felahiye yakınlarında gerçekleştireceğimiz özel etkinlik için başvurunu bu form üzerinden yapabilirsin.</p>
       <p>Etkinlik ücretsiz olup. Katılım kontenjanla sınırlı, seni çağıramazsak üzülme, kaybol ve sıradaki etkinlik için sana mail atmamızı bekle.</p>
       <p>Konum bilgisi yalnızca başvurusu onaylanan kişilere iletilecektir.</p>
-      <p>Başvurunun geçerli olması için @noqtaverse ve @voilatoncafe resmi Instagram hesaplarını takip ettiğinden ve 18yaşından büyük olduğundan emin ol.</p>
+      <p>Başvurunun geçerli olması için @noqtclub ve @voilatoncafe resmi Instagram hesaplarını takip ettiğinden ve 18yaşından büyük olduğundan emin ol.</p>
     </>
   );
 

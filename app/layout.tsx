@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       "Elektronik müzik kolektifi: DJ performansı, etkinlik kürasyonu, Academy eğitimleri, Radio playlistleri ve marka iş birlikleri. Türkiye genelinde hizmet; operasyon merkezi Kayseri.",
     areaServed: { "@type": "Country", name: "Türkiye" },
     sameAs: [
-      "https://www.instagram.com/noqtaverse",
+      "https://www.instagram.com/noqtclub",
       "https://youtube.com/@noqtarecords",
       "https://open.spotify.com/user/31jte7ldctopxvipofwgucvts5sm",
     ],

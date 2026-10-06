@@ -144,13 +144,13 @@ export const B2B_PARTNERSHIP = {
 export const B2B_SOCIAL = {
   title: "Sahadan ve ekrandan",
   description:
-    "Yaklaşımımızı görmek için Instagram’da @noqtaverse içeriklerimize göz atın; aşağıdaki alan yakında referans görseller, iş birliği örnekleri ve kısa videolarla güncellenecek.",
+    "Yaklaşımımızı görmek için Instagram’da @noqtclub içeriklerimize göz atın; aşağıdaki alan yakında referans görseller, iş birliği örnekleri ve kısa videolarla güncellenecek.",
   placeholders: [
     { label: "Etkinlik görüntüleri", hint: "Yakında" },
     { label: "İçerik & reel örnekleri", hint: "Yakında" },
     { label: "İş birliği markaları / mekânlar", hint: "Logo bandı — yakında" },
   ] as const,
-  instagramUrl: "https://www.instagram.com/noqtaverse",
+  instagramUrl: "https://www.instagram.com/noqtclub",
 } as const;
 
 export const B2B_PROCESS = {

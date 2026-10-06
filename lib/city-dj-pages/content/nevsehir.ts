@@ -129,7 +129,7 @@ export const nevsehirCityDj: CityDjContent = {
       { label: "Sunset ve gece DJ performansı", hint: "Yakında" },
       { label: "Otel ve özel mekân referansları", hint: "Yakında" },
     ],
-    instagramUrl: "https://www.instagram.com/noqtaverse",
+    instagramUrl: "https://www.instagram.com/noqtclub",
   },
   process: {
     title: "Nasıl ilerliyoruz?",

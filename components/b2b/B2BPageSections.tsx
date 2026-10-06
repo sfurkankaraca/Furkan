@@ -162,7 +162,7 @@ export function B2BPageSections({
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/10"
           >
-            Instagram — @noqtaverse
+            Instagram — @noqtclub
           </Link>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
