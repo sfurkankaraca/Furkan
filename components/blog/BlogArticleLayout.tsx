@@ -154,7 +154,7 @@ export function BlogArticleLayout({
           </h2>
           <ul className="mt-4 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
             {[
-              { href: "/academy", label: "Academy — eğitim ve atölyeler" },
+              { href: "/#fiyatlar", label: "DJ Akademi — eğitimler ve fiyatlar" },
               { href: "/events", label: "Yaklaşan etkinlikler" },
               { href: "/booking", label: "DJ booking ve etkinlik müziği" },
               { href: "/blog", label: "Journal'daki tüm yazılar" },

@@ -5,9 +5,9 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
   {
     title: "Academy",
     links: [
-      { label: "Eğitimler", href: "/academy" },
-      { label: "Fiyatlar", href: "/academy#fiyatlar" },
-      { label: "Pazar DJ Workshop", href: "/academy#fiyatlar" },
+      { label: "Eğitimler", href: "/#programs" },
+      { label: "Fiyatlar", href: "/#fiyatlar" },
+      { label: "Pazar DJ Workshop", href: "/#fiyatlar" },
       { label: "labs.noqt.club", href: "https://labs.noqt.club", external: true },
     ],
   },

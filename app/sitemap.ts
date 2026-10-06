@@ -36,7 +36,6 @@ const PATHS: { path: string; changeFrequency: MetadataRoute.ChangeFrequency; pri
   { path: "/events", changeFrequency: "weekly", priority: 0.85 },
   { path: "/radio", changeFrequency: "weekly", priority: 0.75 },
   { path: "/collective", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/academy", changeFrequency: "weekly", priority: 0.85 },
   { path: "/noqta-club", changeFrequency: "weekly", priority: 0.85 },
   { path: "/hakkimizda", changeFrequency: "monthly", priority: 0.7 },
   { path: "/furkan-karaca", changeFrequency: "monthly", priority: 0.72 },

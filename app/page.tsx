@@ -1,11 +1,24 @@
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
-import { ArrowRight, GraduationCap, Music2, Zap } from "lucide-react";
+import type { Metadata } from "next";
+import { GraduationCap, Music2, Zap } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
 import { LabsShowcase } from "@/components/home/LabsShowcase";
 import { AcademyInstagramFeed } from "@/components/academy/AcademyInstagramFeed";
+import { AcademyPricing } from "@/components/academy/AcademyPricing";
+import { FurkanBioCard } from "@/components/people/FurkanBioCard";
+import { ACADEMY_FAQ_ITEMS } from "@/lib/academy-faq";
+import { SITE_URL } from "@/lib/site-url";
 import { getPrisma } from "@/lib/prisma";
+
+// /academy kaldırıldı (→ /); SEO başlığı ve açıklaması ana sayfaya taşındı.
+export const metadata: Metadata = {
+  title: "NOQT DJ Akademi — Kayseri DJ ve Prodüksiyon Eğitimi",
+  description:
+    "1'e 1 DJ eğitimi 12.000₺ + KDV'den, her Pazar DJ Workshop 1.000₺ + KDV. Üniversite öğrencilerine %50 indirim, kredi kartına 12 aya varan taksit. Kayseri ve Nevşehir'de pratik odaklı eğitim.",
+  alternates: { canonical: SITE_URL },
+  keywords: ["DJ eğitimi Kayseri", "DJ kursu", "DJ eğitimi fiyatları", "birebir DJ dersi", "DJ workshop", "müzik prodüksiyonu eğitimi", "NOQT DJ Akademi"],
+};
 
 const PROGRAMS = [
   {
@@ -25,7 +38,7 @@ const PROGRAMS = [
   {
     icon: Zap,
     label: "Workshoplar",
-    accent: "text-emerald-600 bg-emerald-50 border-emerald-100",
+    accent: "text-noqt-sky-ink bg-noqt-sky/15 border-noqt-sky/60",
     courses: ["Her Pazar 14.00 – 16.00", "Gruplar halinde · 60 dakika · Her hafta yeni mix challenge", "Tek seferlik 1.000₺ · Aylık 3.000₺ (+ KDV)"],
     desc: "Haftalık DJ Workshop'ta düzenli pratik yap.",
   },
@@ -83,27 +96,15 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-8 border-t border-border">
-            <a
-              href="https://labs.noqt.club/register"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-2.5 text-sm font-semibold text-background transition hover:opacity-90"
-            >
-              Detaylar için kaydol, seni arayalım
-              <ArrowRight className="size-4" aria-hidden />
-            </a>
-            <Link
-              href="/academy#fiyatlar"
-              className="shrink-0 inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
-            >
-              Fiyatları gör
-            </Link>
-            <p className="rounded-full bg-noqt-sky px-3 py-1 text-sm font-semibold text-black">Üniversite öğrencilerine %50 indirim</p>
-            <p className="rounded-full bg-noqt-lime px-3 py-1 text-sm font-semibold text-black">Kredi kartına 12 aya varan taksit</p>
-          </div>
         </div>
       </section>
+
+      {/* ── FİYATLAR (reklam linkleri: /#fiyatlar, eski /academy#fiyatlar da buraya yönlenir) ── */}
+      <div className="border-t border-border bg-background py-20 md:py-24">
+        <div className="container mx-auto max-w-6xl px-6">
+          <AcademyPricing />
+        </div>
+      </div>
 
       {/* ── INSTAGRAM ── */}
       <div className="border-t border-border bg-background py-20 md:py-24">
@@ -113,6 +114,37 @@ export default async function HomePage() {
       </div>
 
       <LabsShowcase />
+
+      {/* ── EĞİTMEN + SSS ── */}
+      <section className="bg-background py-20 md:py-24">
+        <div className="container mx-auto grid max-w-6xl gap-16 px-6">
+          <FurkanBioCard className="mx-auto max-w-3xl" variant="academy" />
+
+          <div aria-labelledby="faq-heading" className="mx-auto w-full max-w-3xl">
+            <h2 id="faq-heading" className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+              Sık sorulanlar
+            </h2>
+            <div className="mt-6 grid gap-2">
+              {ACADEMY_FAQ_ITEMS.map((item) => (
+                <details
+                  key={item.q}
+                  className="group rounded-2xl border border-border bg-card px-4 py-3 transition open:border-foreground/20 open:bg-muted/40 hover:border-foreground/15"
+                >
+                  <summary className="cursor-pointer list-none text-sm font-medium text-foreground [&::-webkit-details-marker]:hidden">
+                    <span className="flex items-center justify-between gap-3">
+                      {item.q}
+                      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-noqt-lime text-xs text-black transition group-open:rotate-45">
+                        +
+                      </span>
+                    </span>
+                  </summary>
+                  <p className="mt-3 border-t border-border pt-3 text-sm leading-relaxed text-muted-foreground">{item.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── noqt.events cross-link ── */}
       <section className="bg-muted/40 border-t border-border py-14">

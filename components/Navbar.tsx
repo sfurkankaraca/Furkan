@@ -281,8 +281,8 @@ export default function Navbar() {
   const { isLoggedIn } = useAuth();
 
   const mainNav = [
-    { href: "/academy", label: dict.nav.academy },
-    { href: "/academy/games", label: "Games" },
+    { href: "/#fiyatlar", label: "Fiyatlar" },
+    { href: "/games", label: "Games" },
     { href: "/events", label: dict.nav.events },
     { href: "/sanatcilar", label: "Sanatçılar" },
     { href: "/blog", label: "Journal" },
@@ -327,12 +327,6 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Button asChild variant="ghost" size="sm" className="ml-2 rounded-xl text-foreground/85">
-                <Link href="/login">Giriş</Link>
-              </Button>
-              <Button asChild size="sm" className="ml-1 rounded-xl">
-                <Link href="/register">Kayıt</Link>
-              </Button>
               <Button
                 variant="ghost"
                 size="sm"
@@ -390,16 +384,7 @@ export default function Navbar() {
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground px-3 pt-2 pb-1">Hesabım</p>
                     <MobileAccountLinks onNavigate={() => setOpen(false)} />
                   </div>
-                ) : (
-                  <div className="grid gap-2 pt-2 border-t border-border">
-                    <Button asChild variant="outline" className="rounded-xl border-border w-full">
-                      <Link href="/login" onClick={() => setOpen(false)}>Giriş</Link>
-                    </Button>
-                    <Button asChild className="rounded-xl w-full">
-                      <Link href="/register" onClick={() => setOpen(false)}>Kayıt</Link>
-                    </Button>
-                  </div>
-                )}
+                ) : null}
 
                 <Button
                   variant="ghost"

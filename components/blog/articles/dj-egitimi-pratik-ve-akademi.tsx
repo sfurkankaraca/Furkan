@@ -30,7 +30,7 @@ export function ArticleDjEgitimiPratikVeAkademi() {
           Games
         </Link>{" "}
         bölümüne de bakabilirsiniz. Güncel program ve başvuru için{" "}
-        <Link href="/academy" className="text-foreground underline-offset-4 hover:underline">
+        <Link href="/" className="text-foreground underline-offset-4 hover:underline">
           /academy
         </Link>{" "}
         ana sayfası en doğru kaynaktır.

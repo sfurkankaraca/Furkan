@@ -108,7 +108,7 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
               WhatsApp
             </a>
             <Link
-              href="/academy#fiyatlar"
+              href="/#fiyatlar"
               className="inline-flex items-center gap-2 rounded-full border border-white/30 lg:border-border bg-white/10 lg:bg-muted/50 px-7 py-3 text-sm font-medium text-white lg:text-foreground backdrop-blur-sm transition hover:bg-white/20 lg:hover:bg-muted"
             >
               Fiyatlar

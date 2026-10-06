@@ -79,7 +79,7 @@ export default async function FurkanKaracaPage() {
                   Booking
                 </Link>
                 <Link
-                  href="/academy"
+                  href="/"
                   className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/85 transition hover:border-white/30 hover:bg-white/10"
                 >
                   Academy

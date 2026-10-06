@@ -102,7 +102,7 @@ export default async function BizKimizPage() {
             description={
               <>
                 Elektronik müzik ve etkinlikler etrafında çalışan bir ekipiz. Gece düzenler,{" "}
-                <Link href="/academy" className="text-cyan-300/90 hover:text-cyan-200 underline-offset-4 hover:underline">
+                <Link href="/" className="text-cyan-300/90 hover:text-cyan-200 underline-offset-4 hover:underline">
                   Academy
                 </Link>{" "}
                 ile eğitim verir,{" "}
@@ -193,7 +193,7 @@ export default async function BizKimizPage() {
                 <p className="mt-2 text-sm text-white/70">
                   DJ ve prodüksiyon eğitimleri; pratik odaklı Labs ve Games ile pekiştirme.
                 </p>
-                <Link href="/academy" className="mt-2 inline-block text-xs text-cyan-300/90 hover:text-cyan-200">
+                <Link href="/" className="mt-2 inline-block text-xs text-cyan-300/90 hover:text-cyan-200">
                   Academy’ye git →
                 </Link>
               </div>

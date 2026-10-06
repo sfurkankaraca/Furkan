@@ -32,6 +32,11 @@ const nextConfig: NextConfig = {
       { source: "/kayseri-dj-booking",            destination: `${EVENTS}/planla`,             permanent: true },
       { source: "/kayseri-etkinlik-organizasyonu",destination: `${EVENTS}/planla`,             permanent: true },
       { source: "/booking",                       destination: `${EVENTS}/planla`,             permanent: true },
+      // Academy sayfası kaldırıldı; içerik ana sayfada. URL'deki #fiyatlar tarayıcıca korunur.
+      { source: "/academy",                       destination: "/",                            permanent: true },
+      { source: "/academy/labs",                  destination: "/#labs",                       permanent: true },
+      { source: "/academy/workshops",             destination: "/#fiyatlar",                   permanent: true },
+      { source: "/academy/games",                 destination: "/games",                       permanent: true },
     ];
   },
   async headers() {

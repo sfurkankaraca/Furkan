@@ -39,7 +39,7 @@ export function ArticleDjOlarakSahneyeCikmakIlkAdimlar() {
       <h2>Eğitimle destek</h2>
       <p>
         Pratik odaklı yol haritası için{" "}
-        <Link href="/academy" className="text-foreground underline-offset-4 hover:underline">
+        <Link href="/" className="text-foreground underline-offset-4 hover:underline">
           Academy
         </Link>{" "}
         ve Labs içeriklerine göz atın; teoriyi sahne disiplinine bağlamak sürdürülebilir gelişimin anahtarıdır.

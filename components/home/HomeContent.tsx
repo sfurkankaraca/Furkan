@@ -6,7 +6,7 @@ import { GraduationCap, Gamepad2, CalendarDays, ArrowRight } from "lucide-react"
 
 const PROGRAMS = [
   {
-    href: "/academy",
+    href: "/",
     icon: GraduationCap,
     title: "Academy",
     desc: "DJ ve müzik prodüksiyon eğitimi — birebir rehberlik, pratik odaklı müfredat.",
@@ -59,7 +59,7 @@ export function HomeContent() {
 
             <div className="flex flex-wrap gap-3 justify-center">
               <Link
-                href="/academy"
+                href="/"
                 className="inline-flex items-center gap-2 rounded-full bg-foreground px-7 py-3 text-sm font-semibold text-background transition hover:opacity-90"
               >
                 Programa başvur
@@ -116,7 +116,7 @@ export function HomeContent() {
               ekipmana geç. Kayseri merkezli, Nevşehir&apos;e ulaşan bir müzik topluluğu.
             </p>
             <Link
-              href="/academy"
+              href="/"
               className="inline-flex items-center gap-2 mt-6 rounded-full border border-border bg-background px-6 py-2.5 text-sm font-medium text-foreground transition hover:bg-muted"
             >
               Eğitim detayları →
