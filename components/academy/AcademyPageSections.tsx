@@ -152,7 +152,7 @@ export function AcademyPageSections({
           </a>
 
           <Link
-            href="/games"
+            href="https://labs.noqt.club/#oyunlar"
             className="group relative flex flex-col rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-background to-teal-50 p-6 transition duration-300 hover:border-emerald-300 hover:shadow-md md:p-7"
           >
             <Gamepad2 className="size-9 text-emerald-600" aria-hidden />

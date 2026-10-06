@@ -114,13 +114,6 @@ export default function HeroSection({ heroImages }: { heroImages: string[] }) {
               Fiyatlar
             </Link>
           </div>
-          <ul className="mt-8 flex flex-wrap gap-2 text-xs font-semibold">
-            <li className="rounded-full bg-white/90 px-3 py-1 text-black lg:bg-foreground lg:text-background">
-              1&apos;e 1 DJ Eğitimi · 12.000₺ + KDV&apos;den
-            </li>
-            <li className="rounded-full bg-noqt-sky px-3 py-1 text-black">Üniversite öğrencilerine %50</li>
-            <li className="rounded-full bg-noqt-lime px-3 py-1 text-black">12 aya varan taksit</li>
-          </ul>
         </div>
       </div>
     </section>

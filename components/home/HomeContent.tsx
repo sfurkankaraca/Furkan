@@ -21,7 +21,7 @@ const PROGRAMS = [
     external: "https://labs.noqt.club",
   },
   {
-    href: "/academy/games",
+    href: "https://labs.noqt.club/#oyunlar",
     icon: Gamepad2,
     title: "Games",
     desc: "Eğlenceli formatlarla müzik bilgini ve DJ becerilerini geliştir.",

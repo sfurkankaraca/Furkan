@@ -281,8 +281,6 @@ export default function Navbar() {
   const { isLoggedIn } = useAuth();
 
   const mainNav = [
-    { href: "/#fiyatlar", label: "Fiyatlar" },
-    { href: "/games", label: "Games" },
     { href: "/events", label: dict.nav.events },
     { href: "/sanatcilar", label: "Sanatçılar" },
     { href: "/blog", label: "Journal" },

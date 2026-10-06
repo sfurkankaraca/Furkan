@@ -17,7 +17,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
       { label: "Etkinlikler", href: "/events" },
       { label: "Sanatçılar", href: "/sanatcilar" },
       { label: "Journal", href: "/blog" },
-      { label: "Games", href: "/games" },
+      { label: "Oyunlar (Labs)", href: "https://labs.noqt.club/#oyunlar", external: true },
     ],
   },
   {
