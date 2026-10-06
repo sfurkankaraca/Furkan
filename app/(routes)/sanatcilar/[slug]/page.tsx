@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { artistBySlug, artistSlugs, BADGE_LABEL } from "@/lib/artists/registry";
+import { artistSlugs, BADGE_LABEL } from "@/lib/artists/registry";
+import { getArtistBySlug } from "@/lib/artists/noqt-events";
 import { SITE_URL } from "@/lib/site-url";
 
 type Props = { params: Promise<{ slug: string }> };
+
+export const revalidate = 21600;
 
 export function generateStaticParams() {
   return artistSlugs().map((slug) => ({ slug }));
@@ -12,12 +15,12 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const a = artistBySlug(slug);
+  const a = await getArtistBySlug(slug);
   if (!a) return { title: "Sanatçı bulunamadı" };
   return {
     title: `${a.name} — ${a.role} | noqta`,
     description: a.tagline,
-    alternates: { canonical: `/sanatcilar/${a.slug}` },
+    alternates: { canonical: a.canonicalUrl ?? `/sanatcilar/${a.slug}` },
     openGraph: {
       type: "profile",
       title: a.name,
@@ -38,7 +41,7 @@ function Monogram({ name }: { name: string }) {
 
 export default async function ArtistProfilePage({ params }: Props) {
   const { slug } = await params;
-  const a = artistBySlug(slug);
+  const a = await getArtistBySlug(slug);
   if (!a) notFound();
 
   const jsonLd = {
@@ -46,7 +49,8 @@ export default async function ArtistProfilePage({ params }: Props) {
     "@type": "Person",
     name: a.name,
     description: a.tagline,
-    url: `${SITE_URL}/sanatcilar/${a.slug}`,
+    url: a.canonicalUrl ?? `${SITE_URL}/sanatcilar/${a.slug}`,
+    ...(a.imageUrl ? { image: a.imageUrl } : {}),
     jobTitle: a.role,
     address: a.city,
     sameAs: a.links.filter((l) => l.href.startsWith("http")).map((l) => l.href),
@@ -109,7 +113,8 @@ export default async function ArtistProfilePage({ params }: Props) {
 
           {a.badges.includes("booking") ? (
             <Link
-              href="/booking"
+              href={a.bookingUrl ?? "/booking"}
+              {...(a.bookingUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background transition hover:opacity-90"
             >
               Booking talebi

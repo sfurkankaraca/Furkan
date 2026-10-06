@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ARTISTS, BADGE_LABEL, type ArtistProfile } from "@/lib/artists/registry";
+import { BADGE_LABEL, type ArtistProfile } from "@/lib/artists/registry";
+import { getAllArtists } from "@/lib/artists/noqt-events";
 import { SITE_URL } from "@/lib/site-url";
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ function ArtistCard({ a }: { a: ArtistProfile }) {
       <div className="relative overflow-hidden">
         {a.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={a.imageUrl} alt={a.name} className="aspect-square w-full object-cover" />
+          <img src={a.imageUrl} alt={a.name} loading="lazy" className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105" />
         ) : (
           <Monogram name={a.name} />
         )}
@@ -62,8 +63,10 @@ function ArtistCard({ a }: { a: ArtistProfile }) {
   );
 }
 
-export default function ArtistsPage() {
-  const artists = [...ARTISTS];
+export const revalidate = 21600;
+
+export default async function ArtistsPage() {
+  const artists = await getAllArtists();
 
   const jsonLd = {
     "@context": "https://schema.org",

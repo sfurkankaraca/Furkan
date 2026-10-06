@@ -33,6 +33,10 @@ export type ArtistProfile = {
   imageUrl?: string;
   /** noqt ekosistemiyle ilişkisi (kurucu, mezun, resident, partner) */
   affiliation?: string;
+  /** Booking butonunun gideceği adres — yoksa /booking */
+  bookingUrl?: string;
+  /** İçerik başka bir sitede asılsa (ör. noqt.events profili) kanonik adres orası olur */
+  canonicalUrl?: string;
 };
 
 export const BADGE_LABEL: Record<ArtistBadge, string> = {
