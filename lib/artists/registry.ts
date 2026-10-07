@@ -35,6 +35,8 @@ export type ArtistProfile = {
   affiliation?: string;
   /** Booking butonunun gideceği adres — yoksa /booking */
   bookingUrl?: string;
+  /** Profilde gösterilen videolar: yüklenmiş dosya ya da YouTube linki */
+  videos?: { kind: "file" | "youtube"; src: string }[];
   /** İçerik başka bir sitede asılsa (ör. noqt.events profili) kanonik adres orası olur */
   canonicalUrl?: string;
 };

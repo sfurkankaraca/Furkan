@@ -60,7 +60,17 @@ function parsePersonLd(html: string): PersonLd | null {
   return null;
 }
 
-function toArtist(id: string, p: PersonLd): ArtistProfile {
+/** Profil sayfasındaki videolar: noqt.events'e yüklenmiş dosyalar + gömülü YouTube videoları. */
+function parseVideos(html: string): NonNullable<ArtistProfile["videos"]> {
+  const files = [...new Set([...html.matchAll(/https:\/\/media\.noqt\.events\/[^"'\s\\]+?\.(?:mp4|webm|mov)/g)].map((m) => m[0]))];
+  const yt = [...new Set([...html.matchAll(/youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{11})/g)].map((m) => m[1]))];
+  return [
+    ...files.map((src) => ({ kind: "file" as const, src })),
+    ...yt.map((v) => ({ kind: "youtube" as const, src: `https://www.youtube.com/watch?v=${v}` })),
+  ];
+}
+
+function toArtist(id: string, p: PersonLd, videos: ArtistProfile["videos"] = []): ArtistProfile {
   const bio = (p.description ?? "")
     .split(/\r?\n\s*\r?\n/)
     .map((s) => s.replace(/\s+/g, " ").trim())
@@ -88,6 +98,7 @@ function toArtist(id: string, p: PersonLd): ArtistProfile {
     affiliation: "noqt.events kadrosu",
     bookingUrl: profileUrl,
     canonicalUrl: profileUrl,
+    videos,
   };
 }
 
@@ -98,8 +109,9 @@ export async function fetchNoqtEventsDjs(): Promise<ArtistProfile[]> {
     const profiles = await Promise.all(
       ids.map(async (id) => {
         try {
-          const p = parsePersonLd(await fetchText(`${EVENTS_BASE}/sanatcilar/${id}`));
-          return p ? toArtist(id, p) : null;
+          const html = await fetchText(`${EVENTS_BASE}/sanatcilar/${id}`);
+          const p = parsePersonLd(html);
+          return p ? toArtist(id, p, parseVideos(html)) : null;
         } catch {
           return null;
         }
@@ -129,6 +141,7 @@ export async function getAllArtists(): Promise<ArtistProfile[]> {
       imageUrl: a.imageUrl || match.imageUrl,
       links: eventsLink && !a.links.some((l) => l.href === eventsLink.href) ? [...a.links, eventsLink] : a.links,
       bookingUrl: a.bookingUrl ?? match.bookingUrl,
+      videos: a.videos?.length ? a.videos : match.videos,
     };
   });
 

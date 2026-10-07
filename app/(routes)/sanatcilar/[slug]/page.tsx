@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { artistSlugs, BADGE_LABEL } from "@/lib/artists/registry";
 import { getArtistBySlug } from "@/lib/artists/noqt-events";
+import { YouTubeLazyEmbed } from "@/components/social/YouTubeLazyEmbed";
 import { SITE_URL } from "@/lib/site-url";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -148,6 +149,28 @@ export default async function ArtistProfilePage({ params }: Props) {
               <p key={i}>{p}</p>
             ))}
           </div>
+
+          {a.videos?.length ? (
+            <section className="mt-10" aria-labelledby="videos-heading">
+              <h2 id="videos-heading" className="text-xl font-bold tracking-tight">Videolar</h2>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                {a.videos.map((v) =>
+                  v.kind === "file" ? (
+                    <video
+                      key={v.src}
+                      src={v.src}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="aspect-video w-full rounded-xl bg-black object-contain"
+                    />
+                  ) : (
+                    <YouTubeLazyEmbed key={v.src} url={v.src} title={`${a.name} — video`} className="rounded-xl" />
+                  ),
+                )}
+              </div>
+            </section>
+          ) : null}
 
           {a.embedUrl ? (
             <div className="mt-8 overflow-hidden rounded-xl">
