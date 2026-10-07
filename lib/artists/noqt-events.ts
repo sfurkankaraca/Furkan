@@ -5,10 +5,10 @@ import { ARTISTS, type ArtistLink, type ArtistProfile } from "./registry";
  * Gizli anahtar paylaşmamak için noqt.events'in herkese açık sayfalarından okunur:
  *   1) /sanatcilar (varsayılan DJ sekmesi) → profil id'leri, sitedeki sırasıyla
  *   2) /sanatcilar/<id> → Person JSON-LD (ad, bio, görsel, sosyal linkler)
- * 6 saat önbelleklenir; noqt.events'e ulaşılamazsa boş liste döner, sayfa yalnızca registry ile açılır.
+ * 5 dakika önbelleklenir; noqt.events'e ulaşılamazsa boş liste döner, sayfa yalnızca registry ile açılır.
  */
 const EVENTS_BASE = "https://www.noqt.events";
-const REVALIDATE_SECONDS = 21600;
+const REVALIDATE_SECONDS = 300; // noqt.events değişiklikleri en geç 5 dk içinde yansır
 
 type PersonLd = {
   "@type"?: string;
@@ -129,28 +129,27 @@ export async function fetchNoqtEventsDjs(): Promise<ArtistProfile[]> {
  */
 export async function getAllArtists(): Promise<ArtistProfile[]> {
   const events = await fetchNoqtEventsDjs();
-  const byName = new Map(events.map((e) => [nameKey(e.name), e]));
+  const curatedByName = new Map(ARTISTS.map((a) => [nameKey(a.name), a]));
 
-  const curated = ARTISTS.map((a) => {
-    const match = byName.get(nameKey(a.name));
-    if (!match) return a;
-    byName.delete(nameKey(a.name));
-    const eventsLink = match.links.find((l) => l.label === "noqt.events profili");
+  // Sıra noqt.events'teki sıradır; registry'de özel profili olan kişi kendi yerinde, zenginleştirilmiş haliyle gelir.
+  const merged = events.map((e) => {
+    const a = curatedByName.get(nameKey(e.name));
+    if (!a) return e;
+    curatedByName.delete(nameKey(e.name));
+    const eventsLink = e.links.find((l) => l.label === "noqt.events profili");
     return {
       ...a,
-      imageUrl: a.imageUrl || match.imageUrl,
+      imageUrl: a.imageUrl || e.imageUrl,
       links: eventsLink && !a.links.some((l) => l.href === eventsLink.href) ? [...a.links, eventsLink] : a.links,
-      bookingUrl: a.bookingUrl ?? match.bookingUrl,
-      videos: a.videos?.length ? a.videos : match.videos,
+      bookingUrl: a.bookingUrl ?? e.bookingUrl,
+      videos: a.videos?.length ? a.videos : e.videos,
     };
   });
 
-  const usedSlugs = new Set(curated.map((a) => a.slug));
-  const rest = events
-    .filter((e) => byName.has(nameKey(e.name)))
-    .map((e) => (usedSlugs.has(e.slug) ? { ...e, slug: `${e.slug}-dj` } : e));
-
-  return [...curated, ...rest];
+  // noqt.events'te olmayan registry profilleri başa; slug çakışması varsa noqt.events kaydına ek alır.
+  const onlyCurated = [...curatedByName.values()];
+  const usedSlugs = new Set(onlyCurated.map((a) => a.slug));
+  return [...onlyCurated, ...merged.map((e) => (usedSlugs.has(e.slug) ? { ...e, slug: `${e.slug}-dj` } : e))];
 }
 
 export async function getArtistBySlug(slug: string) {

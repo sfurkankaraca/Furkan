@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/site-url";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const revalidate = 21600;
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return artistSlugs().map((slug) => ({ slug }));

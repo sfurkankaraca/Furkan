@@ -63,7 +63,7 @@ function ArtistCard({ a }: { a: ArtistProfile }) {
   );
 }
 
-export const revalidate = 21600;
+export const revalidate = 300;
 
 export default async function ArtistsPage() {
   const artists = await getAllArtists();
