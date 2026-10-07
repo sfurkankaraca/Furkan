@@ -54,7 +54,6 @@ export default async function ArtistProfilePage({ params }: Props) {
     ...(a.imageUrl ? { image: a.imageUrl } : {}),
     jobTitle: a.role,
     address: a.city,
-    sameAs: a.links.filter((l) => l.href.startsWith("http")).map((l) => l.href),
   };
 
   return (
@@ -96,9 +95,10 @@ export default async function ArtistProfilePage({ params }: Props) {
             ))}
           </div>
 
-          {a.links.length > 0 ? (
+          {/* Sosyal bağlantı / iletişim gösterilmez — yalnız site içi linkler */}
+          {a.links.some((l) => l.href.startsWith("/")) ? (
             <ul className="mt-5 grid gap-2 text-sm">
-              {a.links.map((l) => (
+              {a.links.filter((l) => l.href.startsWith("/")).map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}

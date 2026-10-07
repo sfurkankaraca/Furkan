@@ -31,15 +31,6 @@ export function slugifyTr(s: string) {
 
 const nameKey = (s: string) => slugifyTr(s);
 
-function linkLabel(href: string) {
-  const h = href.toLowerCase();
-  if (h.includes("instagram.com")) return "Instagram";
-  if (h.includes("spotify.com")) return "Spotify";
-  if (h.includes("soundcloud.com")) return "SoundCloud";
-  if (h.includes("mixcloud.com")) return "Mixcloud";
-  if (h.includes("youtube.com") || h.includes("youtu.be")) return "YouTube";
-  return "Web sitesi";
-}
 
 async function fetchText(url: string) {
   const res = await fetch(url, { next: { revalidate: REVALIDATE_SECONDS } });
@@ -82,8 +73,8 @@ function toArtist(id: string, p: PersonLd, videos: ArtistProfile["videos"] = [])
     if (!bio[0]) bio.shift();
   }
   const profileUrl = `${EVENTS_BASE}/sanatcilar/${id}`;
-  const links: ArtistLink[] = (p.sameAs ?? []).map((href) => ({ label: linkLabel(href), href }));
-  links.push({ label: "noqt.events profili", href: profileUrl });
+  // Sosyal bağlantılar / iletişim adresleri bilinçli olarak alınmaz — booking noqt.events üzerinden.
+  const links: ArtistLink[] = [];
 
   return {
     slug: slugifyTr(p.name!),
@@ -136,11 +127,10 @@ export async function getAllArtists(): Promise<ArtistProfile[]> {
     const a = curatedByName.get(nameKey(e.name));
     if (!a) return e;
     curatedByName.delete(nameKey(e.name));
-    const eventsLink = e.links.find((l) => l.label === "noqt.events profili");
     return {
       ...a,
       imageUrl: a.imageUrl || e.imageUrl,
-      links: eventsLink && !a.links.some((l) => l.href === eventsLink.href) ? [...a.links, eventsLink] : a.links,
+      links: a.links,
       bookingUrl: a.bookingUrl ?? e.bookingUrl,
       videos: a.videos?.length ? a.videos : e.videos,
     };
