@@ -72,12 +72,12 @@ export default async function FurkanKaracaPage() {
                 Müzisyen, yapımcı, ses mühendisi, DJ, eğitmen, mentor ve A&R odaklı yaratıcı geliştirici.
               </p>
               <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
-                <Link
-                  href="/booking"
+                <a
+                  href="https://www.noqt.events/sanatcilar/51ca08a0-3fa6-47f5-ac83-d068e59c75bb"
                   className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/85 transition hover:border-white/30 hover:bg-white/10"
                 >
                   Booking
-                </Link>
+                </a>
                 <Link
                   href="/"
                   className="rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/85 transition hover:border-white/30 hover:bg-white/10"

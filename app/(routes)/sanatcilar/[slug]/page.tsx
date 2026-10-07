@@ -115,7 +115,6 @@ export default async function ArtistProfilePage({ params }: Props) {
           {a.badges.includes("booking") ? (
             <Link
               href={a.bookingUrl ?? "/booking"}
-              {...(a.bookingUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background transition hover:opacity-90"
             >
               Booking talebi
