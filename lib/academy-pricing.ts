@@ -39,8 +39,8 @@ export const INSTALLMENT_RATES = [
 ] as const;
 
 export const ACADEMY_CONTACT = {
-  phoneDisplay: "0541 733 55 14",
-  phoneHref: "tel:+905417335514",
+  phoneDisplay: "0544 733 55 14",
+  phoneHref: "tel:+905447335514",
   whatsappDisplay: "0541 799 79 73",
   whatsappNumber: "905417997973",
   instagramHandle: "noqtacademy",
