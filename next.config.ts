@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     const EVENTS = "https://www.noqt.events";
+    const ACADEMY = "https://academy.noqt.club";
     return [
       { source: "/kayseri-dj",                    destination: `${EVENTS}/sanatcilar?type=dj`, permanent: true },
       { source: "/nevsehir-dj",                   destination: `${EVENTS}/sanatcilar?type=dj`, permanent: true },
@@ -32,15 +33,15 @@ const nextConfig: NextConfig = {
       { source: "/kayseri-dj-booking",            destination: `${EVENTS}/planla`,             permanent: true },
       { source: "/kayseri-etkinlik-organizasyonu",destination: `${EVENTS}/planla`,             permanent: true },
       { source: "/booking",                       destination: `${EVENTS}/planla`,             permanent: true },
-      // Academy sayfası kaldırıldı; içerik ana sayfada. URL'deki #fiyatlar tarayıcıca korunur.
-      { source: "/academy",                       destination: "/",                            permanent: true },
-      { source: "/academy/labs",                  destination: "/#labs",                       permanent: true },
-      { source: "/academy/workshops",             destination: "/#fiyatlar",                   permanent: true },
-      { source: "/academy/games",                 destination: "https://academy.noqt.club/#oyunlar", permanent: true },
+      // Akademi vitrini academy.noqt.club'a taşındı (Faz 1, Kas 2026). Alt sayfalar (başvuru formları) şimdilik yerinde.
+      { source: "/academy",                       destination: ACADEMY,                        permanent: true },
+      { source: "/academy/labs",                  destination: `${ACADEMY}/#labs`,             permanent: true },
+      { source: "/academy/workshops",             destination: `${ACADEMY}/#fiyatlar`,         permanent: true },
+      { source: "/academy/games",                 destination: `${ACADEMY}/?gez=1#oyunlar`, permanent: true },
       // Oyunlar academy.noqt.club'a taşındı
       // Eski Labs sayfası → academy.noqt.club
       { source: "/labs",                          destination: "https://academy.noqt.club",   permanent: true },
-      { source: "/games",                         destination: "https://academy.noqt.club/#oyunlar", permanent: true },
+      { source: "/games",                         destination: `${ACADEMY}/?gez=1#oyunlar`, permanent: true },
     ];
   },
   async headers() {
