@@ -4,7 +4,7 @@ import { Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import { GoogleAdsGtag } from "@/components/GoogleAdsGtag";
-import Footer from "@/components/Footer";
+import ConditionalFooter from "@/components/club-radio/ConditionalFooter";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     areaServed: { "@type": "Country", name: "Türkiye" },
     sameAs: [
       "https://www.instagram.com/noqtclub",
-      "https://youtube.com/@noqtarecords",
+      "https://www.youtube.com/@noqtclubradio",
       "https://open.spotify.com/user/31jte7ldctopxvipofwgucvts5sm",
     ],
   };
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Analytics />
           <SpeedInsights />
-          <Footer />
+          <ConditionalFooter />
         </AuthProvider>
       </body>
     </html>

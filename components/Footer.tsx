@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { ACADEMY_CONTACT, academyWhatsappHref } from "@/lib/academy-pricing";
 
-const COLUMNS: { title: string; links: { label: string; href: string; external?: boolean }[] }[] = [
+const COLUMNS: { title: string; lang?: string; links: { label: string; href: string; external?: boolean }[] }[] = [
   {
-    title: "Academy",
+    title: "noqt club radio",
+    lang: "en",
     links: [
-      { label: "Eğitimler", href: "/#programs" },
-      { label: "Fiyatlar", href: "/#fiyatlar" },
-      { label: "Pazar DJ Workshop", href: "/#fiyatlar" },
-      { label: "academy.noqt.club", href: "https://academy.noqt.club", external: true },
+      { label: "Setler", href: "/#setler" },
+      { label: "Etkinlikler", href: "/events" },
+      { label: "DJ'ler için", href: "/djler-icin" },
+      { label: "İşbirlikleri", href: "/isbirlikleri" },
+      { label: "NOQT Academy", href: "https://academy.noqt.club", external: true },
     ],
   },
   {
@@ -17,7 +19,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
       { label: "Etkinlikler", href: "/events" },
       { label: "Sanatçılar", href: "/sanatcilar" },
       { label: "Journal", href: "/blog" },
-      { label: "Oyunlar (Academy)", href: "https://academy.noqt.club/#oyunlar", external: true },
+      { label: "Oyunlar (Academy)", href: "https://academy.noqt.club/?gez=1#oyunlar", external: true },
     ],
   },
   {
@@ -26,7 +28,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
       { label: "Instagram · @noqtacademy", href: ACADEMY_CONTACT.instagramHref.replace("ig.me/m/", "www.instagram.com/"), external: true },
       { label: "Instagram · @noqtclub", href: "https://www.instagram.com/noqtclub", external: true },
       { label: "Spotify", href: "https://open.spotify.com/user/31jte7ldctopxvipofwgucvts5sm?si=bf4008478d634b86", external: true },
-      { label: "YouTube", href: "https://youtube.com/@noqtarecords?si=FOd1tTTnyjG8l2NJ", external: true },
+      { label: "YouTube", href: "https://www.youtube.com/@noqtclubradio", external: true },
     ],
   },
 ];
@@ -40,11 +42,11 @@ export default function Footer() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/noqt-logo-transparent.png" alt="noqt" className="h-14 w-auto invert" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-              Kayseri ve Nevşehir&apos;de DJ ve müzik prodüksiyonu eğitimi, etkinlikler ve sanatçı ağı.
+              DJ setleri, playlistler ve noqt geceleri.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <a
-                href={academyWhatsappHref("Merhaba, NOQT Academy hakkında bilgi almak istiyorum.")}
+                href={academyWhatsappHref("Merhaba, noqt hakkında bilgi almak istiyorum.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full bg-noqt-lime px-4 py-2 text-sm font-semibold text-black transition hover:brightness-95"
@@ -62,7 +64,7 @@ export default function Footer() {
 
           {COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-noqt-lime">{col.title}</p>
+              <p lang={col.lang} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-noqt-lime">{col.title}</p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
@@ -85,6 +87,8 @@ export default function Footer() {
           <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Yasal">
             <Link href="/gizlilik-politikasi" className="transition hover:text-white">Gizlilik Politikası</Link>
             <Link href="/kullanim-kosullari" className="transition hover:text-white">Kullanım Koşulları</Link>
+            <Link href="/mesafeli-satis-sozlesmesi" className="transition hover:text-white">Mesafeli Satış</Link>
+            <Link href="/teslimat-ve-iade-sartlari" className="transition hover:text-white">Teslimat ve İade</Link>
             <a
               href="https://www.noqt.events"
               target="_blank"

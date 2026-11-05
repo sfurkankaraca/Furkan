@@ -583,3 +583,57 @@ export async function sendNewsletterWelcomeMail(input: { email: string; source?:
   });
   return { ok: res.ok };
 }
+
+// -----------------------
+// noqt club radio: DJ başvurusu / marka teklifi
+// -----------------------
+
+export async function sendClubRequestMail(input: {
+  kind: "dj" | "brand";
+  name: string;
+  email: string;
+  phone: string;
+  /** Okunur etiket/değer satırları */
+  rows: { label: string; value: string }[];
+}) {
+  const title = input.kind === "dj" ? "Yeni DJ başvurusu" : "Yeni marka işbirliği teklifi";
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[club-request]", { kind: input.kind, name: input.name, email: input.email });
+    return { ok: true };
+  }
+
+  const fromAddress = process.env.RESEND_FROM || "noqta <onboarding@resend.dev>";
+  const toPrimary = process.env.NOQTACLUB_TO?.trim() || "hi@noqt.club";
+  const subject = `[club radio] ${title} — ${input.name}`;
+
+  const all = [
+    { label: "Ad Soyad", value: input.name },
+    ...(input.email ? [{ label: "E-posta", value: input.email }] : []),
+    ...(input.phone ? [{ label: "Telefon", value: input.phone }] : []),
+    ...input.rows,
+  ];
+  const html = `
+    <h2>${escapeHtml(title)}</h2>
+    <table cellpadding="6" cellspacing="0" style="border-collapse:collapse">
+      ${all
+        .map((r) => `<tr><td><b>${escapeHtml(r.label)}</b></td><td>${escapeHtml(r.value).replaceAll("\n", "<br/>")}</td></tr>`)
+        .join("")}
+    </table>
+  `;
+  const text = [title, ...all.map((r) => `${r.label}: ${r.value}`)].join("\n");
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: fromAddress,
+      to: [toPrimary],
+      bcc: adminActivityBcc([toPrimary, input.email].filter(Boolean)),
+      subject,
+      html,
+      text,
+      ...(input.email ? { reply_to: [input.email] } : {}),
+    }),
+  });
+  return { ok: res.ok };
+}

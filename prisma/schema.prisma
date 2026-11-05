@@ -148,3 +148,34 @@ model RadioChatMessage {
 
   @@index([createdAt])
 }
+
+enum ClubRequestKind {
+  dj
+  brand
+}
+
+enum ClubRequestStatus {
+  new
+  contacted
+  done
+  rejected
+}
+
+/// noqt.club radio: DJ başvuruları (/djler-icin) ve marka işbirliği teklifleri (/isbirlikleri).
+model ClubRequest {
+  id        String            @id @default(cuid())
+  kind      ClubRequestKind
+  status    ClubRequestStatus @default(new)
+  name      String
+  email     String
+  phone     String
+  /// Forma özgü alanlar
+  payload   Json
+  adminNote String?
+  consentAt DateTime
+  ip        String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@index([kind, status, createdAt])
+}

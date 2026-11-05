@@ -16,6 +16,7 @@ const memStores = {
   clubApplyIp: new Map<string, MemEntry>(),
   clubApplyEmail: new Map<string, MemEntry>(),
   radioChatUser: new Map<string, MemEntry>(),
+  clubRequestIp: new Map<string, MemEntry>(),
 };
 
 function prune(map: Map<string, MemEntry>) {
@@ -63,6 +64,7 @@ let rlPayUser: Ratelimit | null | undefined;
 let rlIyziCb: Ratelimit | null | undefined;
 let rlClubApplyIp: Ratelimit | null | undefined;
 let rlClubApplyEmail: Ratelimit | null | undefined;
+let rlClubRequestIp: Ratelimit | null | undefined;
 
 function getRlLogin() {
   if (rlLogin !== undefined) return rlLogin;
@@ -176,6 +178,22 @@ function getRlClubApplyEmail() {
   return rlClubApplyEmail;
 }
 
+function getRlClubRequestIp() {
+  if (rlClubRequestIp !== undefined) return rlClubRequestIp;
+  const r = redisFromEnv();
+  if (!r) {
+    rlClubRequestIp = null;
+    return null;
+  }
+  rlClubRequestIp = new Ratelimit({
+    redis: r,
+    limiter: Ratelimit.slidingWindow(6, "1 h"),
+    prefix: "noqta:club:request:ip",
+    analytics: true,
+  });
+  return rlClubRequestIp;
+}
+
 async function upstashLimit(rl: Ratelimit, key: string): Promise<LimitResult> {
   const out = await rl.limit(key);
   if (out.success) return { success: true, retryAfterSec: 0 };
@@ -235,6 +253,13 @@ export async function rateLimitNoqtaClubApply(ip: string, email: string): Promis
   const a = memoryHit(memStores.clubApplyIp, ip, 5, 30 * 60 * 1000);
   if (!a.success) return a;
   return memoryHit(memStores.clubApplyEmail, email.toLowerCase().trim(), 2, 30 * 24 * 60 * 60 * 1000);
+}
+
+/** noqt club radio DJ başvurusu ve marka teklifi: IP başına 6 / saat */
+export async function rateLimitClubRequest(ip: string): Promise<LimitResult> {
+  const rl = getRlClubRequestIp();
+  if (rl) return upstashLimit(rl, ip);
+  return memoryHit(memStores.clubRequestIp, ip, 6, 60 * 60 * 1000);
 }
 
 /** Radyo sohbeti: kullanıcı başına kısa süreli flood önleme */

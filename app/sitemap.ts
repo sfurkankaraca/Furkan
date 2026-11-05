@@ -18,6 +18,8 @@ function cityDjSitemapEntry(slug: string): {
 /** Genel pazarlama ve SEO sayfaları — admin / auth hariç */
 const PATHS: { path: string; changeFrequency: MetadataRoute.ChangeFrequency; priority: number }[] = [
   { path: "", changeFrequency: "weekly", priority: 1 },
+  { path: "/djler-icin", changeFrequency: "monthly", priority: 0.85 },
+  { path: "/isbirlikleri", changeFrequency: "monthly", priority: 0.8 },
   { path: "/booking", changeFrequency: "weekly", priority: 0.9 },
   { path: "/b2b", changeFrequency: "weekly", priority: 0.85 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.82 },

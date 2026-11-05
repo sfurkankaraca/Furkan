@@ -25,6 +25,7 @@ const nav = [
   { href: "/admin/members", label: "Kulüp üyeleri", icon: "⭐" },
   { href: "/admin/subscribers", label: "Bülten aboneleri", icon: "✉" },
   { href: "/admin/forms", label: "Başvurular", icon: "📋" },
+  { href: "/admin/talepler", label: "Club talepleri", icon: "🎚" },
   { href: "/admin/club-applications", label: "Club başvuruları", icon: "🏷" },
   { href: "/admin/club-member-content", label: "Club içerikleri", icon: "📁" },
   { href: "/admin/club-packages", label: "Club paketleri", icon: "📦" },

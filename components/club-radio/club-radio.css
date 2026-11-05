@@ -1,0 +1,124 @@
+/* noqt club radio: yalnızca bu sayfaların sarmalayıcısında geçerli. Tailwind yardımcı sınıfları bu kuralların üstüne yazabilsin diye component katmanında. */
+@layer theme, base, components, utilities;
+
+@layer components {
+.cr-root {
+  --cr-bg: #0a0a0a;
+  --cr-ink: #f4f4ee;
+  --cr-lime: #ddf76a;
+  --cr-sky: #6ec0f3;
+  --cr-card: #161616;
+  --cr-border: #2a2a2a;
+  --cr-line: #262626;
+  --cr-muted: #a6a9a0;
+  --cr-soft: #c9cbc3;
+  --cr-softer: #d9dbd3;
+  background: var(--cr-bg);
+  color: var(--cr-ink);
+  font-family: var(--font-cr-geist), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+.cr-sec-link:hover, .cr-ul:hover { color: #fff; }
+.cr-root .cr-ul { text-decoration: underline; text-underline-offset: 3px; }
+.cr-root :focus-visible { outline: 2px solid var(--cr-lime); outline-offset: 3px; }
+.cr-root .cr-on-lime :focus-visible,
+.cr-root .cr-on-lime:focus-visible { outline-color: #0a0a0a; }
+
+.cr-display {
+  font-family: var(--font-cr-archivo), sans-serif;
+  font-weight: 900;
+  font-stretch: 118%;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.cr-mono { font-family: var(--font-cr-mono), ui-monospace, monospace; }
+.cr-bw { filter: grayscale(1) contrast(1.12); }
+.cr-eyebrow {
+  font-family: var(--font-cr-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.cr-wm { font-stretch: 125%; line-height: 0.86; letter-spacing: -2px; }
+.cr-sec-title { font-size: 34px; }
+.cr-step-num { font-size: 56px; }
+.cr-band-title { font-size: 48px; }
+.cr-stat { font-size: 40px; }
+.cr-wm-home { font-size: 44px; }
+.cr-wm-dj { font-size: clamp(44px, 14vw, 64px); line-height: 0.84; letter-spacing: -3px; }
+.cr-wm-brand { font-size: clamp(44px, 14vw, 60px); line-height: 0.84; letter-spacing: -3px; }
+@media (min-width: 901px) {
+  .cr-wm-home { font-size: 168px; }
+  .cr-wm-dj { font-size: 200px; }
+  .cr-wm-brand { font-size: 184px; }
+  .cr-sec-title { font-size: 56px; }
+  .cr-step-num { font-size: 96px; }
+  .cr-band-title { font-size: 120px; }
+  .cr-stat { font-size: 64px; }
+  .cr-g-wide { grid-column: span 2; }
+}
+
+.cr-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px 24px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.cr-pill-dark { background: #0a0a0a; color: var(--cr-ink) !important; }
+.cr-pill-line-dark { border: 1.5px solid #0a0a0a; color: #0a0a0a !important; }
+.cr-pill-line-light { border: 1.5px solid var(--cr-ink); }
+
+.cr-sec-link {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cr-input {
+  background: #0a0a0a;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  color: var(--cr-ink);
+  font: inherit;
+  padding: 12px 14px;
+  min-height: 48px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.cr-input::placeholder { color: #7d8077; }
+.cr-input[aria-invalid="true"] { border-color: #ff8a7a; }
+.cr-chip {
+  border: 1px solid #3a3a3a;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cr-ink);
+  font: inherit;
+  font-size: 15px;
+  padding: 9px 16px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.cr-chip[aria-pressed="true"] { background: var(--cr-lime); color: #0a0a0a; border-color: var(--cr-lime); }
+/* Taşmayı önle: flex-wrap satırlarındaki öğeler içeriklerinden dar olabilsin. */
+.cr-root .flex-wrap > * { min-width: 0; }
+.cr-err { color: #ff9d8f; font-size: 14px; margin: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cr-root a, .cr-root button { transition: background-color 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s; }
+}
+}
