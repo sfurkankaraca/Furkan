@@ -138,8 +138,8 @@ export function EventsSiteClient() {
               <span className="cr-display text-[28px] min-[901px]:text-[40px]">{t.events.soonTitle}</span>
               <p className="m-0 text-[17px] text-[#C9CBC3]">
                 {t.events.announce}{" "}
-                <a href="https://www.instagram.com/noqtclub" target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">
-                  @noqtclub ↗
+                <a href="https://www.instagram.com/noqtclubradio" target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">
+                  @noqtclubradio ↗
                 </a>
               </p>
               <Link href="/booking" className="mt-2 inline-flex min-h-11 items-center rounded-full bg-[#DDF76A] px-6 py-3 text-[14px] font-bold uppercase tracking-[0.5px] !text-[#0A0A0A] no-underline">

@@ -150,7 +150,7 @@ export const kayseriCityDj: CityDjContent = {
         hint: "Yakında — kurumsal etkinlik ve venue iş birlikleri",
       },
     ],
-    instagramUrl: "https://www.instagram.com/noqtclub",
+    instagramUrl: "https://www.instagram.com/noqtclubradio",
   },
   process: {
     title: "Nasıl ilerliyoruz?",

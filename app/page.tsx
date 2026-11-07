@@ -90,7 +90,7 @@ function EventsSection({ events, past, t, lang }: { events: PublicEvent[]; past:
           <p className="m-0 text-[17px] text-[#C9CBC3]">
             {t.home.announce}{" "}
             <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="cr-ul font-semibold">
-              @noqtclub ↗
+              @noqtclubradio ↗
             </a>
           </p>
         </div>

@@ -141,7 +141,7 @@ export const ankaraCityDj: CityDjContent = {
       { label: "DJ performans ve kısa video", hint: "Yakında" },
       { label: "Referans marka ve mekân", hint: "Yakında" },
     ],
-    instagramUrl: "https://www.instagram.com/noqtclub",
+    instagramUrl: "https://www.instagram.com/noqtclubradio",
   },
   process: {
     title: "Nasıl ilerliyoruz?",

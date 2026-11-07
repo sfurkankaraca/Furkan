@@ -54,7 +54,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       "Elektronik müzik kolektifi: DJ performansı, etkinlik kürasyonu, Academy eğitimleri, Radio playlistleri ve marka iş birlikleri. Türkiye genelinde hizmet; operasyon merkezi Kayseri.",
     areaServed: { "@type": "Country", name: "Türkiye" },
     sameAs: [
-      "https://www.instagram.com/noqtclub",
+      "https://www.instagram.com/noqtclubradio",
       "https://www.youtube.com/@noqtclubradio",
       "https://open.spotify.com/user/31jte7ldctopxvipofwgucvts5sm",
     ],

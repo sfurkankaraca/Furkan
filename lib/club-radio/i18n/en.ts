@@ -106,7 +106,7 @@ export const en: Dict = {
     nextEvent: "Next meetup",
     soonTitle: "New meetups soon.",
     announce: "We announce dates on Instagram first.",
-    announceShort: "Follow @noqtclub for news ↗",
+    announceShort: "Follow @noqtclubradio for news ↗",
     viewOnSocial: "See it on noqt social ↗",
     ticketSuffix: " · Tickets",
     buyTicketArrow: "Get tickets →",

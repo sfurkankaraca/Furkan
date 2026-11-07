@@ -1,6 +1,6 @@
 // noqt club radio: sabit içerik ve yapılandırma. Boş (null / []) değerler, bağlı bölümü ya da bağlantıyı gizler.
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@noqtclubradio";
-export const INSTAGRAM_URL = "https://www.instagram.com/noqtclub";
+export const INSTAGRAM_URL = "https://www.instagram.com/noqtclubradio";
 export const CONTACT_EMAIL = "hi@noqt.club";
 
 /** Kurucudan gelecek: dolunca ilgili bağlantı/bölüm görünür. */

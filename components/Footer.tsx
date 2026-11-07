@@ -26,7 +26,7 @@ const COLUMNS: { title: string; lang?: string; links: { label: string; href: str
     title: "Takip et",
     links: [
       { label: "Instagram · @noqtacademy", href: ACADEMY_CONTACT.instagramHref.replace("ig.me/m/", "www.instagram.com/"), external: true },
-      { label: "Instagram · @noqtclub", href: "https://www.instagram.com/noqtclub", external: true },
+      { label: "Instagram · @noqtclubradio", href: "https://www.instagram.com/noqtclubradio", external: true },
       { label: "Spotify", href: "https://open.spotify.com/user/31jte7ldctopxvipofwgucvts5sm?si=bf4008478d634b86", external: true },
       { label: "YouTube", href: "https://www.youtube.com/@noqtclubradio", external: true },
     ],

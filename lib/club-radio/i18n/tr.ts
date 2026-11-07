@@ -107,7 +107,7 @@ export const tr = {
     nextEvent: "Sıradaki buluşma",
     soonTitle: "Yeni buluşmalar yakında.",
     announce: "Tarihler açıklandığında ilk Instagram'da duyuruyoruz.",
-    announceShort: "Duyurular için @noqtclub ↗",
+    announceShort: "Duyurular için @noqtclubradio ↗",
     viewOnSocial: "[[noqt social]]'da gör ↗",
     ticketSuffix: " · Bilet",
     buyTicketArrow: "Bilet al →",
