@@ -20,6 +20,7 @@ const nav = [
   { href: "/admin/orders", label: "Siparişler", icon: "🧾" },
   { href: "/admin/events", label: "Etkinlikler", icon: "🎉" },
   { href: "/admin/events/new", label: "Yeni etkinlik", icon: "＋" },
+  { href: "/admin/social-events", label: "noqt social etkinlikleri", icon: "📲" },
   { href: "/admin/playlists", label: "Playlistler", icon: "♪" },
   { href: "/admin/radio-live", label: "Canlı radyo", icon: "📻" },
   { href: "/admin/members", label: "Kulüp üyeleri", icon: "⭐" },

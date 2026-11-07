@@ -4,8 +4,11 @@ import { notFound } from "next/navigation";
 /** Blob’daki yeni etkinlikler anında görünsün; önbellekte 404 kalmasın */
 export const dynamic = "force-dynamic";
 import type { PublicEvent } from "@/lib/event-types";
-import { getEventById } from "@/lib/server/events-store";
+import { getPublicEventById } from "@/lib/server/public-events";
 import EventDetailClient from "./EventDetailClient";
+import { getDict } from "@/lib/club-radio/i18n/server";
+import type { Dict } from "@/lib/club-radio/i18n/dict";
+import { getAllArtists, slugifyTr } from "@/lib/artists/noqt-events";
 
 const SITE = "https://noqt.club";
 
@@ -17,9 +20,9 @@ function metaTitle(e: PublicEvent): string {
   return core + suffix;
 }
 
-function metaDescription(e: PublicEvent): string {
+function metaDescription(e: PublicEvent, t: Dict): string {
   const raw = (e.subtitle || e.description || "").replace(/\s+/g, " ").trim();
-  const fallback = `${e.title}: elektronik müzik ve DJ performansı${e.city ? ` — ${e.city}` : ""}. Noqta etkinlik detayı.`;
+  const fallback = t.meta.eventFallbackDescription(e.title, e.city);
   const snippet = raw.length >= 80 ? raw : fallback;
   if (snippet.length <= 160) return snippet;
   return `${snippet.slice(0, 157)}…`;
@@ -32,17 +35,18 @@ function absUrl(pathOrUrl: string): string {
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const event = await getEventById(id);
+  const { t } = await getDict();
+  const event = await getPublicEventById(id);
   if (!event) {
-    return { title: "Etkinlik bulunamadı", description: "Aradığınız etkinlik bulunamadı veya kaldırılmış olabilir." };
+    return { title: t.meta.eventNotFoundTitle, description: t.meta.eventNotFoundDescription };
   }
   return {
     title: metaTitle(event),
-    description: metaDescription(event),
+    description: metaDescription(event, t),
     alternates: { canonical: `/events/${id}` },
     openGraph: {
       title: metaTitle(event),
-      description: metaDescription(event),
+      description: metaDescription(event, t),
       url: `/events/${id}`,
       images: event.image ? [{ url: absUrl(event.image) }] : undefined,
     },
@@ -51,8 +55,19 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const event = await getEventById(id);
+  const event = await getPublicEventById(id);
   if (!event) notFound();
+
+  // Line-up'taki adlar sanatçı listesindeki biriyle eşleşirse ana türleri gösterilir (eşleşme: slugifyTr(ad)).
+  const lineupGenres: Record<string, string[]> = {};
+  if (event.lineup?.length) {
+    const artists = await getAllArtists().catch(() => []);
+    for (const l of event.lineup) {
+      const key = slugifyTr(l.name);
+      const a = artists.find((x) => x.slug === key || x.slug === `${key}-dj`);
+      if (a && a.genres.length > 0) lineupGenres[l.name] = a.genres.slice(0, 3);
+    }
+  }
 
   const eventJsonLd = {
     "@context": "https://schema.org",
@@ -79,7 +94,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }} />
-      <EventDetailClient />
+      <EventDetailClient lineupGenres={lineupGenres} />
     </>
   );
 }

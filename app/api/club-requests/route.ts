@@ -9,6 +9,8 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  let en = false;
+  const m = (tr: string, enText: string) => (en ? enText : tr);
   try {
     const ip = getClientIp(req);
     let body: unknown;
@@ -17,6 +19,7 @@ export async function POST(req: Request) {
     } catch {
       return NextResponse.json({ ok: false, error: "Geçersiz istek." }, { status: 400 });
     }
+    en = (body as { lang?: unknown } | null)?.lang === "en";
 
     // Honeypot: bot doldurmuşsa sessizce başarılı say, kaydetme.
     const honeypot = (body as { website?: unknown } | null)?.website;
@@ -24,18 +27,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: true });
     }
 
-    const parsed = parseClubRequest(body);
+    const parsed = parseClubRequest(body, en ? "en" : "tr");
     if (!parsed.ok) {
       return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
     }
     if ((body as { consent?: unknown }).consent !== true) {
-      return NextResponse.json({ ok: false, error: "Devam etmek için KVKK aydınlatma metnini onaylaman gerekiyor." }, { status: 400 });
+      return NextResponse.json({ ok: false, error: m("Devam etmek için KVKK aydınlatma metnini onaylaman gerekiyor.", "You need to accept the KVKK privacy notice to continue.") }, { status: 400 });
     }
 
     const rl = await rateLimitClubRequest(ip);
     if (!rl.success) {
       return NextResponse.json(
-        { ok: false, error: "Kısa sürede çok fazla deneme yapıldı. Biraz sonra tekrar dene." },
+        { ok: false, error: m("Kısa sürede çok fazla deneme yapıldı. Biraz sonra tekrar dene.", "Too many attempts in a short time. Please try again in a bit.") },
         { status: 429, headers: { "retry-after": String(rl.retryAfterSec) } },
       );
     }
@@ -43,7 +46,7 @@ export async function POST(req: Request) {
     const prisma = getPrisma();
     if (!prisma) {
       return NextResponse.json(
-        { ok: false, error: "Şu an talebini kaydedemiyoruz. Lütfen WhatsApp üzerinden bize ulaş." },
+        { ok: false, error: m("Şu an talebini kaydedemiyoruz. Lütfen WhatsApp üzerinden bize ulaş.", "We can't save your request right now. Please reach us on WhatsApp.") },
         { status: 503 },
       );
     }
@@ -77,6 +80,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[club-requests]", error);
-    return NextResponse.json({ ok: false, error: "Sunucu hatası. Lütfen biraz sonra tekrar dene." }, { status: 500 });
+    return NextResponse.json({ ok: false, error: m("Sunucu hatası. Lütfen biraz sonra tekrar dene.", "Server error. Please try again shortly.") }, { status: 500 });
   }
 }

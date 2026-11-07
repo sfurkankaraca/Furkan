@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
 import { getPrisma } from "@/lib/prisma";
 import { getClubAccessForUser } from "@/lib/club-subscription/access";
-import { readEventsJson } from "@/lib/server/events-store";
+import { listPublicEvents } from "@/lib/server/public-events";
 import { readClubMemberPosts, sortClubMemberPosts } from "@/lib/server/club-posts-store";
 import type { PublicEvent } from "@/lib/event-types";
 
@@ -21,7 +21,7 @@ export async function GET() {
     return NextResponse.json({ error: "Kulüp aboneliği gerekli" }, { status: 403 });
   }
 
-  const all = await readEventsJson();
+  const all = await listPublicEvents();
   const memberEvents: PublicEvent[] = all.filter((e) => e.membersOnly === true);
   const posts = sortClubMemberPosts(await readClubMemberPosts());
 

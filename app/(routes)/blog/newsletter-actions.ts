@@ -11,17 +11,19 @@ export async function subscribeNewsletter(_prev: SubscribeResult | null, formDat
   const email = String(formData.get("email") || "").trim();
   const source = String(formData.get("source") || "journal");
   // Basit bot tuzağı: doldurulmuşsa sessizce başarı dön.
+  const en = String(formData.get("lang") || "") === "en";
+  const m = (tr: string, enText: string) => (en ? enText : tr);
   const honeypot = String(formData.get("company") || "");
-  if (honeypot) return { ok: true, message: "Teşekkürler!" };
+  if (honeypot) return { ok: true, message: m("Teşekkürler!", "Thanks!") };
 
   if (!EMAIL_RE.test(email)) {
-    return { ok: false, message: "Geçerli bir e-posta adresi gir." };
+    return { ok: false, message: m("Geçerli bir e-posta adresi gir.", "Enter a valid email address.") };
   }
 
   try {
     const result = await addSubscriber(email, source);
     if (result === "already") {
-      return { ok: true, message: "Zaten kayıtlısın — teşekkürler!" };
+      return { ok: true, message: m("Zaten kayıtlısın — teşekkürler!", "You're already subscribed — thanks!") };
     }
     // Mail hatası aboneliği bozmasın.
     try {
@@ -29,8 +31,8 @@ export async function subscribeNewsletter(_prev: SubscribeResult | null, formDat
     } catch {
       /* yut */
     }
-    return { ok: true, message: "Kaydolundu! Gelen kutunu kontrol et." };
+    return { ok: true, message: m("Kaydolundu! Gelen kutunu kontrol et.", "You're in! Check your inbox.") };
   } catch {
-    return { ok: false, message: "Bir şeyler ters gitti, tekrar dener misin?" };
+    return { ok: false, message: m("Bir şeyler ters gitti, tekrar dener misin?", "Something went wrong, please try again.") };
   }
 }

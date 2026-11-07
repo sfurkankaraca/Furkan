@@ -6,3 +6,8 @@ const raw = typeof process.env.NEXT_PUBLIC_SITE_URL === "string" ? process.env.N
 export const SITE_URL = (
   raw && /^https?:\/\//i.test(raw) ? raw.replace(/\/$/, "") : "https://noqt.club"
 ) as string;
+
+/** Ödeme ve OAuth dönüş adresleri için kök URL (sonunda eğik çizgi yok). */
+export function getSiteUrl(): string {
+  return SITE_URL;
+}

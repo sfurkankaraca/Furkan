@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-07T10:00:00.000Z",
+  "_not": "ÖRNEK VERİ — yalnız yerel geliştirmede kullanılır (NOQT_SOCIAL_EVENTS_FEED_URL=fixture:scripts/dev/noqt-social-feed.fixture.json). Afişler örnek: ilk ikisi noqt.club görseli, üçüncüsü bilerek afişsiz (yedek afişi göstermek için).",
+  "events": [
+    {
+      "id": "ornekGece2611A",
+      "title": "noqt club gecesi",
+      "startAt": "2026-11-28T18:00:00.000Z",
+      "endAt": "2026-11-28T22:00:00.000Z",
+      "city": "Kayseri",
+      "district": "Talas",
+      "venueName": "Örnek Mekan",
+      "placeText": null,
+      "description": "ÖRNEK: House ve disco ağırlıklı, sabaha kadar dans edilen bir noqt gecesi.\nKapı 21:00'de açılır.",
+      "genres": [
+        "house",
+        "disco"
+      ],
+      "eventKind": "dj",
+      "imageUrl": "https://www.noqt.club/club-radio/gece-kirmizi.jpg",
+      "priceText": "₺500",
+      "artistNames": [
+        "DJ Örnek",
+        "Deneme B2B Test"
+      ],
+      "ticketUrl": null,
+      "socialUrl": "https://link.noqt.social/etkinlik/ornekGece2611A"
+    },
+    {
+      "id": "ornekGece2612B",
+      "title": "noqt club yılbaşı gecesi",
+      "startAt": "2026-12-31T19:00:00.000Z",
+      "endAt": null,
+      "city": "Nevşehir",
+      "district": null,
+      "venueName": null,
+      "placeText": "Örnek Teras",
+      "description": "ÖRNEK: Yılı birlikte kapatıyoruz.",
+      "genres": [
+        "techno"
+      ],
+      "eventKind": "theme_night",
+      "imageUrl": "https://www.noqt.club/club-radio/gece-dj-masasi.jpg",
+      "priceText": null,
+      "artistNames": [
+        "DJ Örnek"
+      ],
+      "ticketUrl": null,
+      "socialUrl": "https://link.noqt.social/etkinlik/ornekGece2612B"
+    },
+    {
+      "id": "ornekGece2610C",
+      "title": "noqt club cumartesi (geçmiş örnek)",
+      "startAt": "2026-10-10T18:00:00.000Z",
+      "endAt": "2026-10-10T22:00:00.000Z",
+      "city": "Kayseri",
+      "district": "Melikgazi",
+      "venueName": "Örnek Mekan",
+      "placeText": null,
+      "description": null,
+      "genres": [
+        "house"
+      ],
+      "eventKind": "dj",
+      "imageUrl": null,
+      "priceText": null,
+      "artistNames": [],
+      "ticketUrl": null,
+      "socialUrl": "https://link.noqt.social/etkinlik/ornekGece2610C"
+    }
+  ]
+}

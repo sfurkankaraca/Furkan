@@ -25,22 +25,43 @@ export type SetVideo = {
   image: string;
 };
 
-export const SET_VIDEOS: SetVideo[] = [
-  {
+/** Bilinen videolar: başlık, sanatçılar ve yerel küçük resim. Bilinmeyen kimlikler için başlık YouTube oEmbed'den çekilir. */
+export const KNOWN_SET_VIDEOS: Record<string, SetVideo> = {
+  _HhoBgmEHPs: {
+    id: "_HhoBgmEHPs",
+    kind: "noqt club meeting",
+    artists: "Furkan Karaca · YSEIKO · ASLOUND · Erdal Coşkun",
+    title: "NoqtClub Meeting 4.0",
+    image: "/club-radio/yt-meeting-4.jpg",
+  },
+  "4CyGEtQNvWo": {
+    id: "4CyGEtQNvWo",
+    kind: "House set",
+    artists: "Mahmut Can · Furkan Karaca · YSEİKO · Aslound · Erdal Coşkun",
+    title: "Nostalgic House Set",
+    image: "/club-radio/yt-nostalgic-house.jpg",
+  },
+  Jv4LONVJgW8: {
     id: "Jv4LONVJgW8",
     kind: "House mix · noqt stüdyo",
     artists: "YSEIKO · Furkan Karaca · Aslound",
     title: "House Mix at noqtastudio",
     image: "/club-radio/yt-house-mix.jpg",
   },
-  {
+  P4bYVZOm22w: {
     id: "P4bYVZOm22w",
     kind: "Halloween · nu disco",
     artists: "YSEİKO · Furkan Karaca · Mahmut Can",
     title: "Halloween Nu Disco Mix at Alley's Nail Studio",
     image: "/club-radio/yt-halloween.jpg",
   },
-];
+};
+
+/** Site yapılandırması okunamazsa kullanılan sıra; _HhoBgmEHPs (Meeting 4.0) her zaman başta. */
+export const DEFAULT_SET_IDS = ["_HhoBgmEHPs", "4CyGEtQNvWo", "Jv4LONVJgW8", "P4bYVZOm22w"] as const;
+
+/** Geriye dönük uyumluluk: varsayılan sırada bilinen videolar. */
+export const SET_VIDEOS: SetVideo[] = DEFAULT_SET_IDS.map((id) => KNOWN_SET_VIDEOS[id]);
 
 export const DJ_GENRES = ["House", "Tech house", "Techno", "Hardgroove", "Afro house", "Nu disco", "Breaks", "R&B", "Hip hop"] as const;
 

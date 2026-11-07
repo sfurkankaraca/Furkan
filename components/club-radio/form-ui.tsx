@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useT } from "@/lib/club-radio/i18n/client";
+import { dictFor } from "@/lib/club-radio/i18n/dict";
+import type { Lang } from "@/lib/club-radio/i18n/lang";
 
 export function Field({
   id,
@@ -42,7 +45,9 @@ export function ChipGroup({
   error,
   errorId,
   firstId,
+  labels,
 }: {
+  labels?: Record<string, string>;
   legend: string;
   options: readonly string[];
   value: string[];
@@ -66,7 +71,7 @@ export function ChipGroup({
               aria-pressed={on}
               onClick={() => onChange(on ? value.filter((v) => v !== o) : [...value, o])}
             >
-              {o}
+              {labels?.[o] ?? o}
             </button>
           );
         })}
@@ -82,10 +87,11 @@ export function ChipGroup({
 
 /** Botların dolduracağı gizli alan; dolarsa istek sessizce atılır. */
 export function Honeypot({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const t = useT();
   return (
     <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", width: 1, height: 1, overflow: "hidden" }}>
       <label>
-        Web sitesi
+        {t.forms.honeypot}
         <input type="text" name="website" tabIndex={-1} autoComplete="off" value={value} onChange={(e) => onChange(e.target.value)} />
       </label>
     </div>
@@ -103,6 +109,7 @@ export function Consent({
   error?: string;
   text: string;
 }) {
+  const t = useT();
   return (
     <div className="flex flex-col gap-2">
       <label className="flex cursor-pointer items-start gap-3 text-[14px] text-[#C9CBC3]">
@@ -120,7 +127,7 @@ export function Consent({
         <span id="cr-consent-label">
           {text}{" "}
           <Link href="/kvkk-aydinlatma" target="_blank" className="underline underline-offset-2">
-            Aydınlatma metni
+            {t.forms.privacy}
           </Link>
         </span>
       </label>
@@ -134,13 +141,14 @@ export function Consent({
 }
 
 export function SubmitButton({ pending, children }: { pending: boolean; children: ReactNode }) {
+  const t = useT();
   return (
     <button
       type="submit"
       disabled={pending}
       className="min-h-[52px] cursor-pointer self-start rounded-full border-0 bg-[#DDF76A] px-7 py-4 text-[16px] font-bold uppercase tracking-[0.5px] text-[#0A0A0A] disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {pending ? "Gönderiliyor…" : children}
+      {pending ? t.forms.sending : children}
     </button>
   );
 }
@@ -158,18 +166,19 @@ export function FormMessage({ tone, children }: { tone: "error" | "success"; chi
   );
 }
 
-export async function postClubRequest(body: Record<string, unknown>): Promise<{ ok: true } | { ok: false; error: string }> {
+export async function postClubRequest(body: Record<string, unknown>, lang: Lang = "tr"): Promise<{ ok: true } | { ok: false; error: string }> {
+  const t = dictFor(lang);
   try {
     const res = await fetch("/api/club-requests", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      body: JSON.stringify({ ...body, lang }),
     });
     const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
     if (res.ok && data.ok) return { ok: true };
-    return { ok: false, error: data.error || "Gönderilemedi. Lütfen tekrar dene." };
+    return { ok: false, error: data.error || t.forms.sendFailed };
   } catch {
-    return { ok: false, error: "Bağlantı kurulamadı. İnternetini kontrol edip tekrar dene." };
+    return { ok: false, error: t.forms.noConnection };
   }
 }
 

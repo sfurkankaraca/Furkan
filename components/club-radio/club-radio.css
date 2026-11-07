@@ -18,16 +18,22 @@
   font-family: var(--font-cr-geist), system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  min-height: 100vh;
   overflow-x: clip;
 }
+/* Global üst/alt bilgi: .cr-root dışında da aynı renk ve yazı tipleri */
+.cr-chrome {
+  background: #0a0a0a;
+  color: #f4f4ee;
+  font-family: var(--font-cr-geist), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.cr-chrome :focus-visible { outline: 2px solid #ddf76a; outline-offset: 3px; }
 .cr-sec-link:hover, .cr-ul:hover { color: #fff; }
 .cr-root .cr-ul { text-decoration: underline; text-underline-offset: 3px; }
 .cr-root :focus-visible { outline: 2px solid var(--cr-lime); outline-offset: 3px; }
-.cr-root .cr-on-lime :focus-visible,
-.cr-root .cr-on-lime:focus-visible { outline-color: #0a0a0a; }
 
-.cr-display {
+.cr-display, .cr-chrome .cr-display {
   font-family: var(--font-cr-archivo), sans-serif;
   font-weight: 900;
   font-stretch: 118%;
@@ -76,8 +82,8 @@
   text-decoration: none;
   cursor: pointer;
 }
-.cr-pill-dark { background: #0a0a0a; color: var(--cr-ink) !important; }
-.cr-pill-line-dark { border: 1.5px solid #0a0a0a; color: #0a0a0a !important; }
+.cr-pill-lime { background: var(--cr-lime); color: #0a0a0a !important; }
+.cr-pill-line-lime { border: 1.5px solid var(--cr-lime); color: var(--cr-lime); }
 .cr-pill-line-light { border: 1.5px solid var(--cr-ink); }
 
 .cr-sec-link {
@@ -122,3 +128,41 @@
   .cr-root a, .cr-root button { transition: background-color 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s; }
 }
 }
+
+/* Yeniden tasarlanan sayfalar (etkinlikler, sanatçılar, Journal): kabuk token'ları koyu club radio paletine eşlenir. */
+.cr-theme.dark {
+  --background: #0a0a0a;
+  --foreground: #f4f4ee;
+  --card: #161616;
+  --card-foreground: #f4f4ee;
+  --popover: #161616;
+  --popover-foreground: #f4f4ee;
+  --primary: #ddf76a;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1c1c1c;
+  --secondary-foreground: #f4f4ee;
+  --muted: #161616;
+  --muted-foreground: #a6a9a0;
+  --accent: #1f1f1f;
+  --accent-foreground: #f4f4ee;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #ddf76a;
+  background: #0a0a0a;
+  color: #f4f4ee;
+  font-family: var(--font-cr-geist), system-ui, sans-serif;
+  min-height: 60vh;
+  overflow-x: clip;
+}
+.cr-theme.dark :where(h1, h2) {
+  font-family: var(--font-cr-archivo), sans-serif;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+}
+.cr-theme.dark h1 { text-transform: uppercase; overflow-wrap: anywhere; }
+.cr-theme.dark h1.cr-sentence { text-transform: none; }
+.cr-theme.dark :focus-visible { outline: 2px solid #ddf76a; outline-offset: 3px; }
+.cr-theme.dark a { text-underline-offset: 3px; }
+/* Açık zemin için yazılmış uyarı tonları koyu zeminde okunur kalsın */
+.cr-theme.dark .text-amber-800, .cr-theme.dark .text-amber-700 { color: #fcd34d; }
+.cr-theme.dark .text-noqt-lime-ink { color: #ddf76a; }

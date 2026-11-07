@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { getPrisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth/session";
-import { getEventById } from "@/lib/server/events-store";
+import { getPublicEventById } from "@/lib/server/public-events";
 import { CLUB_SUBSCRIPTION_EVENT_ID } from "@/lib/club-subscription/constants";
 import { checkoutFormInitialize } from "@/lib/iyzico";
 import { getSiteUrl } from "@/lib/site-url";
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Kulüp aboneliği için /api/pay/club-subscription kullanın" }, { status: 400 });
   }
 
-  const event = await getEventById(eventId);
+  const event = await getPublicEventById(eventId);
   if (!event?.ticketing?.enabled || event.ticketing.priceTry <= 0) {
     return NextResponse.json({ error: "Bu etkinlik için bilet satışı yok" }, { status: 400 });
   }

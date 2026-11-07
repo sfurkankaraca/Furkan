@@ -1,19 +1,22 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Calendar, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import type { PublicEvent } from "@/lib/event-types";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useLang } from "@/lib/club-radio/i18n/client";
+import { intlLocale, SITE_TZ } from "@/lib/club-radio/i18n/lang";
+import { EventPoster } from "@/components/events/EventPoster";
+import { GenreChips } from "@/components/artists/GenreChips";
 import { useAuth } from "@/lib/auth-context";
+import { NoqtSocialBlock } from "@/components/club-radio/NoqtSocialBlock";
 
 function mapsHref(q: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 }
 
-export default function PastEventDetail({ event }: { event: PublicEvent }) {
-  const { locale } = useI18n();
+export default function PastEventDetail({ event, lineupGenres = {} }: { event: PublicEvent; lineupGenres?: Record<string, string[]> }) {
+  const { lang: locale, t } = useLang();
   const { isLoggedIn } = useAuth();
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [showMemoryForm, setShowMemoryForm] = useState(false);
@@ -27,7 +30,8 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
   }[];
 
   const dateLabel = event.date
-    ? new Date(event.date).toLocaleString(locale === "en" ? "en-US" : "tr-TR", {
+    ? new Date(event.date).toLocaleString(intlLocale(locale), {
+        timeZone: SITE_TZ,
         weekday: "long",
         year: "numeric",
         month: "long",
@@ -57,7 +61,7 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
       setShowMemoryForm(false);
       window.location.reload();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Hata");
+      alert(err instanceof Error ? err.message : "Error");
     }
   }
 
@@ -68,36 +72,36 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
         {/* Back */}
         <Link href="/events" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ChevronLeft className="size-4" />
-          {locale === "en" ? "All events" : "Tüm etkinlikler"}
+          {t.detail.allEvents}
         </Link>
 
         {/* Hero card */}
         <div className="rounded-3xl border border-border bg-card overflow-hidden">
           {event.image ? (
-            <div className="relative aspect-[16/7] w-full overflow-hidden">
-              <Image
-                src={event.image}
-                alt={`${event.title} kapak görseli`}
-                fill
-                className="object-cover"
-                priority
+            <div className="relative aspect-[16/7] w-full overflow-hidden bg-[#141414]">
+              <EventPoster
+                image={event.image}
+                title={event.title}
+                alt={t.detail.posterAlt(event.title, event.city)}
+                showFallbackTitle={false}
+                eager
                 sizes="(max-width: 896px) 100vw, 896px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <span className="inline-block rounded-md bg-white/15 backdrop-blur-sm border border-white/20 text-white text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 mb-3">
-                  {locale === "en" ? "Past event" : "Geçmiş etkinlik"}
+                  {t.detail.pastEvent}
                 </span>
-                <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">{event.title}</h1>
+                <h1 className="cr-sentence text-3xl md:text-4xl font-bold text-white tracking-tight">{event.title}</h1>
                 {event.subtitle ? <p className="mt-2 text-white/80 text-sm md:text-base max-w-2xl">{event.subtitle}</p> : null}
               </div>
             </div>
           ) : (
             <div className="p-6 md:p-8 border-b border-border">
               <span className="inline-block rounded-md bg-muted text-muted-foreground text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 mb-3">
-                {locale === "en" ? "Past event" : "Geçmiş etkinlik"}
+                {t.detail.pastEvent}
               </span>
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">{event.title}</h1>
+              <h1 className="cr-sentence text-3xl md:text-4xl font-bold text-foreground tracking-tight">{event.title}</h1>
               {event.subtitle ? <p className="mt-2 text-muted-foreground text-sm md:text-base">{event.subtitle}</p> : null}
             </div>
           )}
@@ -117,17 +121,19 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
               </div>
             ) : null}
             {event.membersOnly ? (
-              <span className="rounded-md border border-amber-400/45 bg-amber-50 text-amber-700 text-xs font-medium px-2.5 py-1">
-                Kulüp etkinliği
+              <span className="rounded-md border border-amber-400/45 bg-amber-500/10 text-amber-700 text-xs font-medium px-2.5 py-1">
+                {t.detail.clubEvent}
               </span>
             ) : null}
           </div>
         </div>
 
+        <NoqtSocialBlock socialUrl={event.socialUrl} />
+
         {/* About */}
         {event.description ? (
           <section className="rounded-2xl border border-border bg-card p-6 md:p-8">
-            <h2 className="text-base font-semibold text-foreground mb-4">{locale === "en" ? "About" : "Etkinlik hakkında"}</h2>
+            <h2 className="text-base font-semibold text-foreground mb-4">{t.detail.aboutPast}</h2>
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">{event.description}</p>
           </section>
         ) : null}
@@ -162,6 +168,9 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
                     </div>
                     {a.slot ? <div className="text-[10px] text-noqt-lime-ink uppercase tracking-wide mb-0.5">{a.slot}</div> : null}
                     <div className="text-xs font-medium text-foreground line-clamp-2">{a.name}</div>
+                    {lineupGenres[a.name]?.length ? (
+                      <GenreChips genres={lineupGenres[a.name]} label={t.detail.mainGenres} className="mt-1.5 justify-center" chipClassName="border-border text-muted-foreground text-[10px]" />
+                    ) : null}
                   </div>
                 );
                 return (
@@ -194,7 +203,7 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={p.url}
-                        alt={`${event.title} fotoğraf ${i + 1}`}
+                        alt={t.detail.photoAlt(event.title, i + 1)}
                         className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </button>
@@ -269,7 +278,7 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
         ) : null}
 
         {/* Memory upload */}
-        {isLoggedIn ? (
+        {isLoggedIn && event.source !== "noqt_social" ? (
           <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
             <h2 className="text-sm font-semibold text-foreground mb-3">{locale === "en" ? "Leave a memory" : "Anı bırak"}</h2>
             {!showMemoryForm ? (
@@ -328,7 +337,7 @@ export default function PastEventDetail({ event }: { event: PublicEvent }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={photos[lightboxIdx]!.url}
-              alt={`${event.title} fotoğraf`}
+              alt={t.detail.photoAltSimple(event.title)}
               className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-xl"
             />
             <button type="button" onClick={() => setLightboxIdx(null)} className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white text-black grid place-items-center text-sm font-bold">×</button>

@@ -11,11 +11,16 @@ import { PageHeroVideo } from "@/components/layout/PageHeroVideo";
 import { resolveRandomHeroSources } from "@/lib/page-hero-videos";
 import PaymentComplianceNote from "@/components/payments/PaymentComplianceNote";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/club-radio/i18n/client";
+import { formatDate, intlLocale, SITE_TZ, type Lang } from "@/lib/club-radio/i18n/lang";
+import { EventPoster } from "@/components/events/EventPoster";
 
-function formatEventWhen(ev: PublicEvent): string {
+function formatEventWhen(ev: PublicEvent, lang: Lang): string {
+  const loc = intlLocale(lang);
   try {
     const start = new Date(ev.date);
     const fmt: Intl.DateTimeFormatOptions = {
+      timeZone: SITE_TZ,
       weekday: "long",
       day: "numeric",
       month: "long",
@@ -23,32 +28,33 @@ function formatEventWhen(ev: PublicEvent): string {
     };
     if (ev.endDate) {
       const end = new Date(ev.endDate);
-      return `${start.toLocaleDateString("tr-TR", fmt)} – ${end.toLocaleDateString("tr-TR", {
+      return `${start.toLocaleDateString(loc, fmt)} – ${end.toLocaleDateString(loc, {
+        timeZone: SITE_TZ,
         day: "numeric",
         month: "long",
         year: "numeric",
       })}`;
     }
-    const withTime =
-      start.getHours() !== 0 || start.getMinutes() !== 0 || start.getSeconds() !== 0;
+    const withTime = /T\d{2}:\d{2}/.test(ev.date) && formatDate(start, lang, { hour: "2-digit", minute: "2-digit", hour12: false }) !== "00:00";
     if (withTime) {
-      return start.toLocaleString("tr-TR", {
+      return start.toLocaleString(loc, {
         ...fmt,
         hour: "2-digit",
         minute: "2-digit",
       });
     }
-    return start.toLocaleDateString("tr-TR", fmt);
+    return start.toLocaleDateString(loc, fmt);
   } catch {
     return ev.date;
   }
 }
 
 function TicketShell({ children }: { children: React.ReactNode }) {
+  const { t } = useLang();
   return (
     <PageHeroVideo
       sources={resolveRandomHeroSources("/events/bilet")}
-      posterAlt="Noqta bilet ve ödeme arka plan görseli"
+      posterAlt={t.ticket.bgAlt}
     >
       <PageShell withGlow={false}>
         <ContentCard className="mx-auto max-w-4xl overflow-hidden p-0 md:p-0">{children}</ContentCard>
@@ -60,6 +66,8 @@ function TicketShell({ children }: { children: React.ReactNode }) {
 export default function EventTicketPage() {
   const params = useParams();
   const router = useRouter();
+  const { lang, t: dict } = useLang();
+  const tt = dict.ticket;
   const id = String(params?.id || "");
   const { isLoggedIn, needsOnboarding, loading: authLoading, club } = useAuth();
   const [event, setEvent] = useState<PublicEvent | null>(null);
@@ -118,7 +126,7 @@ export default function EventTicketPage() {
     return (
       <TicketShell>
         <div className="flex min-h-[12rem] items-center justify-center p-8 text-sm text-white/60">
-          Yükleniyor…
+          {tt.loading}
         </div>
       </TicketShell>
     );
@@ -128,9 +136,9 @@ export default function EventTicketPage() {
     return (
       <TicketShell>
         <div className="grid gap-4 p-6 md:p-8">
-          <p className="text-white/80">Etkinlik bulunamadı.</p>
+          <p className="text-white/80">{tt.notFound}</p>
           <Button asChild variant="outline" className="w-fit rounded-xl border-white/25">
-            <Link href="/events">Etkinliklere dön</Link>
+            <Link href="/events">{tt.backToEvents}</Link>
           </Button>
         </div>
       </TicketShell>
@@ -145,10 +153,10 @@ export default function EventTicketPage() {
       <TicketShell>
         <div className="grid gap-4 p-6 md:p-8">
           <p className="text-white/75">
-            Bu etkinlik için çevrimiçi bilet satışı yok veya etkinlik sona erdi.
+            {tt.notAvailable}
           </p>
           <Button asChild variant="outline" className="w-fit rounded-xl border-white/25">
-            <Link href={`/events/${id}`}>Etkinlik sayfası</Link>
+            <Link href={`/events/${id}`}>{tt.eventPage}</Link>
           </Button>
         </div>
       </TicketShell>
@@ -158,7 +166,7 @@ export default function EventTicketPage() {
   if (needsOnboarding) {
     return (
       <TicketShell>
-        <div className="p-8 text-sm text-white/60">Yönlendiriliyor…</div>
+        <div className="p-8 text-sm text-white/60">{tt.redirecting}</div>
       </TicketShell>
     );
   }
@@ -169,18 +177,18 @@ export default function EventTicketPage() {
         <div className="grid gap-5 p-6 md:p-8">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-wider text-noqt-lime/90">
-              Bilet
+              {tt.eyebrow}
             </p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight">{event.title}</h1>
-            <p className="mt-2 text-sm text-white/65">Ödeme için önce giriş yapmalısınız.</p>
+            <p className="mt-2 text-sm text-white/65">{tt.mustSignIn}</p>
             {event.membersOnly ? (
               <p className="mt-2 text-sm text-amber-200/90">
-                Bu etkinlik kulüp üyelerine özeldir; girişten sonra onaylı başvuru ve aktif Noqta Club aboneliği gerekir.
+                {tt.membersNote}
               </p>
             ) : null}
           </div>
           <Button asChild className="w-full rounded-xl sm:w-fit">
-            <Link href={`/login?next=/events/${id}/bilet`}>Giriş yap</Link>
+            <Link href={`/login?next=/events/${id}/bilet`}>{tt.signIn}</Link>
           </Button>
         </div>
       </TicketShell>
@@ -192,10 +200,10 @@ export default function EventTicketPage() {
       <TicketShell>
         <div className="grid gap-5 p-6 md:p-8">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-wider text-amber-300/90">Kulüp etkinliği</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-amber-300/90">{tt.clubEvent}</p>
             <h1 className="mt-1 text-2xl font-semibold tracking-tight">{event.title}</h1>
             <p className="mt-2 text-sm text-white/70">
-              Bu etkinlik için bilet almak üzere onaylı Noqta Club başvurunuz ve aktif aylık aboneliğiniz olmalıdır.
+              {tt.clubNeeded}
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -203,7 +211,7 @@ export default function EventTicketPage() {
               <Link href="/account/club">Noqta Club</Link>
             </Button>
             <Button asChild variant="outline" className="rounded-xl border-white/25">
-              <Link href={`/events/${id}`}>Etkinlik sayfası</Link>
+              <Link href={`/events/${id}`}>{tt.eventPage}</Link>
             </Button>
           </div>
         </div>
@@ -214,7 +222,7 @@ export default function EventTicketPage() {
   const maxPer = t.maxPerOrder ?? 8;
   const unit = t.priceTry ?? 0;
   const subtotal = unit > 0 ? unit * qty : 0;
-  const whenLabel = formatEventWhen(event);
+  const whenLabel = formatEventWhen(event, lang);
   const placeLine = [event.venue, event.city].filter(Boolean).join(" · ") || event.city;
 
   function bump(delta: number) {
@@ -226,12 +234,12 @@ export default function EventTicketPage() {
     setError("");
     try {
       if (!(unit > 0)) {
-        setError("Birim fiyat tanımlanmadı. Lütfen yönetimden fiyatın güncellenmesini isteyin.");
+        setError(tt.noPrice);
         setBusy(false);
         return;
       }
       if (!acceptedDistanceContract) {
-        setError("Devam etmek için mesafeli satış sözleşmesini onaylamanız gerekir.");
+        setError(tt.mustAccept);
         setBusy(false);
         return;
       }
@@ -243,7 +251,7 @@ export default function EventTicketPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data?.error || "Ödeme başlatılamadı");
+        setError(data?.error || tt.payFailed);
         setBusy(false);
         return;
       }
@@ -265,9 +273,9 @@ export default function EventTicketPage() {
         setBusy(false);
         return;
       }
-      setError("Ödeme formu alınamadı");
+      setError(tt.noForm);
     } catch {
-      setError("Bağlantı hatası");
+      setError(tt.connError);
     }
     setBusy(false);
   }
@@ -283,13 +291,13 @@ export default function EventTicketPage() {
             href={`/events/${id}`}
             className="inline-flex items-center gap-1 text-xs text-white/50 transition hover:text-white/80"
           >
-            <span aria-hidden>←</span> Etkinlik detayı
+            <span aria-hidden>←</span> {tt.back}
           </Link>
 
           <div className="mt-5 grid gap-5">
             <div>
               <p className="text-[11px] font-medium uppercase tracking-wider text-noqt-lime/90">
-                Sipariş özeti
+                {tt.summary}
               </p>
               <h1 className="mt-1 text-xl font-semibold leading-snug tracking-tight md:text-2xl">
                 {event.title}
@@ -299,24 +307,17 @@ export default function EventTicketPage() {
               ) : null}
             </div>
 
-            {event.image ? (
-              <div className="overflow-hidden rounded-xl border border-white/10 bg-black/40">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={event.image}
-                  alt=""
-                  className="aspect-[16/9] w-full object-cover"
-                />
-              </div>
-            ) : null}
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-white/10 bg-black/40">
+              <EventPoster image={event.image} title={event.title} alt={dict.detail.posterAlt(event.title, event.city)} showFallbackTitle={false} sizes="(max-width: 900px) 100vw, 900px" />
+            </div>
 
             <dl className="grid gap-3 text-sm">
               <div className="flex gap-3 justify-between border-t border-white/10 pt-3">
-                <dt className="text-white/50">Tarih</dt>
+                <dt className="text-white/50">{tt.date}</dt>
                 <dd className="text-right text-white/90">{whenLabel}</dd>
               </div>
               <div className="flex gap-3 justify-between border-t border-white/10 pt-3">
-                <dt className="text-white/50">Yer</dt>
+                <dt className="text-white/50">{tt.place}</dt>
                 <dd className="text-right text-white/90">{placeLine}</dd>
               </div>
               {t.note ? (
@@ -329,7 +330,7 @@ export default function EventTicketPage() {
 
           <div className="mt-6">
             <Button className="h-11 rounded-xl px-5" onClick={() => setPayPanelOpen(true)}>
-              Bilet al
+              {tt.buy}
             </Button>
           </div>
         </div>
@@ -338,7 +339,7 @@ export default function EventTicketPage() {
       {payPanelOpen ? (
         <button
           type="button"
-          aria-label="Ödeme panelini kapat"
+          aria-label={tt.closePanel}
           onClick={() => setPayPanelOpen(false)}
           className="fixed inset-0 z-40 bg-black/70 backdrop-blur-[2px]"
         />
@@ -349,27 +350,27 @@ export default function EventTicketPage() {
           "fixed inset-y-0 right-0 z-50 w-full max-w-md overflow-y-auto border-l border-white/10 bg-zinc-950 p-6 shadow-2xl transition-transform duration-300 md:p-8",
           payPanelOpen ? "translate-x-0" : "translate-x-full",
         )}
-        aria-label="Ödeme paneli"
+        aria-label={tt.panelLabel}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Ödeme</h2>
+          <h2 className="text-lg font-semibold text-white">{tt.payment}</h2>
           <button
             type="button"
             onClick={() => setPayPanelOpen(false)}
             className="rounded-lg border border-white/15 px-2 py-1 text-sm text-white/75 transition hover:text-white"
           >
-            Kapat
+            {tt.close}
           </button>
         </div>
 
         <div className="flex flex-col gap-6">
           <div>
-            <p className="mt-1 text-xs text-white/50">Bilet adedi ve toplam tutar</p>
+            <p className="mt-1 text-xs text-white/50">{tt.qtyTotal}</p>
           </div>
 
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
             <div className="flex items-center justify-between gap-3">
-              <span className="text-sm text-white/80">Adet</span>
+              <span className="text-sm text-white/80">{tt.qty}</span>
               <div className="flex items-center gap-1">
                 <Button
                   type="button"
@@ -378,7 +379,7 @@ export default function EventTicketPage() {
                   className="h-9 w-9 shrink-0 rounded-lg border-white/20"
                   onClick={() => bump(-1)}
                   disabled={qty <= 1 || busy}
-                  aria-label="Adedi azalt"
+                  aria-label={tt.decrease}
                 >
                   −
                 </Button>
@@ -392,21 +393,21 @@ export default function EventTicketPage() {
                   className="h-9 w-9 shrink-0 rounded-lg border-white/20"
                   onClick={() => bump(1)}
                   disabled={qty >= maxPer || busy}
-                  aria-label="Adedi artır"
+                  aria-label={tt.increase}
                 >
                   +
                 </Button>
               </div>
             </div>
-            <p className="mt-2 text-[11px] text-white/45">En fazla {maxPer} bilet / sipariş</p>
+            <p className="mt-2 text-[11px] text-white/45">{tt.maxPer(maxPer)}</p>
 
             <div className="mt-4 space-y-2 border-t border-white/10 pt-4 text-sm">
               <div className="flex justify-between gap-4 text-white/70">
                 <span>
-                  Bilet × {qty}
+                  {tt.ticketTimes(qty)}
                   <span className="text-white/45">
                     {" "}
-                    ({unit > 0 ? `${unit.toFixed(2)} ₺` : "—"} / adet)
+                    ({unit > 0 ? `${unit.toFixed(2)} ₺` : "—"} {tt.perUnit})
                   </span>
                 </span>
                 <span className="tabular-nums text-white/90">
@@ -414,7 +415,7 @@ export default function EventTicketPage() {
                 </span>
               </div>
               <div className="flex justify-between gap-4 border-t border-white/10 pt-3 text-base font-semibold text-white">
-                <span>Toplam</span>
+                <span>{tt.total}</span>
                 <span className="tabular-nums">{unit > 0 ? `${subtotal.toFixed(2)} ₺` : "—"}</span>
               </div>
             </div>
@@ -437,24 +438,25 @@ export default function EventTicketPage() {
               className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/30 bg-black accent-noqt-lime"
             />
             <span className="text-xs leading-relaxed text-white/70">
+              {tt.contractPre}
               <Link
                 href="/mesafeli-satis-sozlesmesi"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-noqt-lime/95 underline-offset-2 hover:underline"
               >
-                Mesafeli Satış Sözleşmesi
+                {tt.contractA}
               </Link>
-              &apos;ni,{" "}
+              {tt.contractMid}
               <Link
                 href="/teslimat-ve-iade-sartlari"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-noqt-lime/95 underline-offset-2 hover:underline"
               >
-                teslimat ve iade şartlarını
-              </Link>{" "}
-              okudum ve onaylıyorum.
+                {tt.contractB}
+              </Link>
+              {tt.contractEnd}
             </span>
           </label>
 
@@ -473,10 +475,10 @@ export default function EventTicketPage() {
               disabled={payDisabled}
               onClick={() => void pay()}
             >
-              {busy ? "Yönlendiriliyor…" : "Güvenli ödemeye geç"}
+              {busy ? tt.redirectingBtn : tt.securePay}
             </Button>
             <p className="text-center text-[11px] text-white/40">
-              Devam ettiğinizde iyzico ödeme sayfasına yönlendirilirsiniz.
+              {tt.iyzicoNote}
             </p>
           </div>
 

@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { getPrisma } from "@/lib/prisma";
 import { ContentCard, PageShell } from "@/components/layout/PageShell";
+import { NoqtSocialBlock } from "@/components/club-radio/NoqtSocialBlock";
+import { parseSocialPublicId } from "@/lib/server/public-events";
 
 export const metadata = { title: "Biletlerim" };
 
@@ -50,6 +52,14 @@ export default async function BiletlerimPage({
         <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
           Ödeme tamamlandı. Biletleriniz aşağıda listelenir.
         </div>
+      ) : null}
+      {pay === "ok" ? (
+        <NoqtSocialBlock
+          socialUrl={(() => {
+            const socialId = tickets[0] ? parseSocialPublicId(tickets[0].eventId) : null;
+            return socialId ? `https://link.noqt.social/etkinlik/${socialId}` : null;
+          })()}
+        />
       ) : null}
       {pay === "fail" ? (
         <div className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">

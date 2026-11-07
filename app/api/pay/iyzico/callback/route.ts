@@ -7,7 +7,7 @@ import { getClientIp } from "@/lib/security/client-ip";
 import { rateLimitIyzicoCallback } from "@/lib/security/rate-limit";
 import { CLUB_SUBSCRIPTION_EVENT_ID } from "@/lib/club-subscription/constants";
 import { extendClubSubscriptionPeriod } from "@/lib/club-subscription/extend-subscription";
-import { getEventById } from "@/lib/server/events-store";
+import { getPublicEventById } from "@/lib/server/public-events";
 import { sendTicketPurchasedMail } from "@/lib/mail/send";
 
 export const runtime = "nodejs";
@@ -128,7 +128,7 @@ async function handleToken(req: Request, token: string) {
         where: { orderId: pendingOrder.id },
         select: { code: true },
       });
-      const event = await getEventById(pendingOrder.eventId);
+      const event = await getPublicEventById(pendingOrder.eventId);
       if (user?.email && tickets.length > 0) {
         await sendTicketPurchasedMail({
           to: user.email,

@@ -1,18 +1,21 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/lib/auth-context";
-import { useI18n } from "@/lib/i18n/useI18n";
+import { useLang } from "@/lib/club-radio/i18n/client";
+import { intlLocale, SITE_TZ } from "@/lib/club-radio/i18n/lang";
+import { EventPoster } from "@/components/events/EventPoster";
+import { GenreChips } from "@/components/artists/GenreChips";
 import type { PublicEvent } from "@/lib/event-types";
 import { PageShell } from "@/components/layout/PageShell";
 import { PageHeroVideo } from "@/components/layout/PageHeroVideo";
 import PastEventDetail from "./PastEventDetail";
+import { NoqtSocialBlock } from "@/components/club-radio/NoqtSocialBlock";
 
 function formatTry(price: number, locale: string) {
-  return new Intl.NumberFormat(locale === "en" ? "en-US" : "tr-TR", {
+  return new Intl.NumberFormat(locale === "en" ? "en-GB" : "tr-TR", {
     style: "currency",
     currency: "TRY",
     maximumFractionDigits: 2,
@@ -23,11 +26,11 @@ function mapsHref(query: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-export default function EventDetailClient() {
+export default function EventDetailClient({ lineupGenres = {} }: { lineupGenres?: Record<string, string[]> }) {
   const params = useParams();
   const id = String(params.id || "");
   const { isLoggedIn, club } = useAuth();
-  const { locale } = useI18n();
+  const { lang: locale, t } = useLang();
   const [event, setEvent] = useState<PublicEvent | null>(null);
   const [loading, setLoading] = useState(true);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -74,22 +77,22 @@ export default function EventDetailClient() {
 
   if (loading)
     return (
-      <PageHeroVideo sources={[]} posterAlt="Noqta etkinlik detayı — arka plan görseli">
+      <PageHeroVideo sources={[]} posterAlt={t.detail.heroAlt}>
         <PageShell withGlow={false}>
-          <div>Yükleniyor...</div>
+          <div>{t.detail.loading}</div>
         </PageShell>
       </PageHeroVideo>
     );
   if (!event)
     return (
-      <PageHeroVideo sources={[]} posterAlt="Noqta etkinlik detayı — arka plan görseli">
+      <PageHeroVideo sources={[]} posterAlt={t.detail.heroAlt}>
         <PageShell withGlow={false}>
-          <div>Etkinlik bulunamadı.</div>
+          <div>{t.detail.notFound}</div>
         </PageShell>
       </PageHeroVideo>
     );
 
-  const loc = locale === "en" ? "en-US" : "tr-TR";
+  const loc = intlLocale(locale);
   const start = event.date ? new Date(event.date) : null;
   const end = event.endDate ? new Date(event.endDate) : null;
   const now = new Date();
@@ -98,6 +101,7 @@ export default function EventDetailClient() {
 
   const fmtFull = (d: Date) =>
     d.toLocaleString(loc, {
+      timeZone: SITE_TZ,
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -110,7 +114,7 @@ export default function EventDetailClient() {
   if (start && end && !Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime())) {
     const sameCalDay = start.toDateString() === end.toDateString();
     if (sameCalDay) {
-      dateLabel = `${fmtFull(start)} — ${end.toLocaleTimeString(loc, { hour: "2-digit", minute: "2-digit" })}`;
+      dateLabel = `${fmtFull(start)} — ${end.toLocaleTimeString(loc, { timeZone: SITE_TZ, hour: "2-digit", minute: "2-digit" })}`;
     } else {
       dateLabel = `${fmtFull(start)} — ${fmtFull(end)}`;
     }
@@ -131,9 +135,7 @@ export default function EventDetailClient() {
   const canBuyTicketWithClub = !membersOnly || club?.fullMember;
   const priceLabel =
     ticketEnabled && (event.ticketing?.priceTry ?? 0) > 0
-      ? locale === "en"
-        ? `From ${formatTry(event.ticketing!.priceTry, locale)}`
-        : `${formatTry(event.ticketing!.priceTry, locale)} başlayan fiyatlar`
+      ? t.detail.priceFrom(formatTry(event.ticketing!.priceTry, locale))
       : null;
 
   async function submitMemberPhoto(formData: FormData) {
@@ -141,7 +143,7 @@ export default function EventDetailClient() {
     const file = (formData.get("file") as File) || null;
     const note = String(formData.get("note") || "").trim();
     if (!file) {
-      alert(locale === "en" ? "Photo required" : "Fotoğraf zorunlu");
+      alert(t.detail.photoRequired);
       return;
     }
     try {
@@ -205,14 +207,14 @@ export default function EventDetailClient() {
   );
 
   if (isPastEvent) {
-    return <PastEventDetail event={event} />;
+    return <PastEventDetail event={event} lineupGenres={lineupGenres} />;
   }
 
   return (
     <PageHeroVideo
       sources={[]}
-      poster={event.image || "/og.png"}
-      posterAlt="Noqta etkinlik detayı — arka plan görseli"
+      poster={event.image || "/club-radio/gece-kirmizi.jpg"}
+      posterAlt={t.detail.heroAlt}
       overlayClassName="bg-black/50"
     >
       <PageShell withGlow={false}>
@@ -221,20 +223,14 @@ export default function EventDetailClient() {
       <div className="grid md:grid-cols-[minmax(0,220px),1fr] gap-6 items-start">
         {/* Kapak (sol, 4:5) */}
         <div className="relative w-full max-w-[200px] md:max-w-[220px] aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-white/5 self-start">
-          {event.image ? (
-            <>
-              <Image
-                src={event.image}
-                alt={`${event.title} etkinliği kapak görseli${event.city ? ` — ${event.city}` : ""}`}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-            </>
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-noqt-lime/10 via-zinc-950 to-noqt-sky/10" />
-          )}
+          <EventPoster
+            image={event.image}
+            title={event.title}
+            dateLabel={dateLabel}
+            alt={t.detail.posterAlt(event.title, event.city)}
+            eager
+            sizes="220px"
+          />
         </div>
 
         {/* Bilgiler (sağ) */}
@@ -255,7 +251,7 @@ export default function EventDetailClient() {
             </div>
 
             <div>
-              <h1 className="text-2xl md:text-4xl font-semibold tracking-tight text-white">{event.title}</h1>
+              <h1 className="cr-sentence text-2xl md:text-4xl font-semibold tracking-tight text-white">{event.title}</h1>
               {event.subtitle ? (
                 <p className="mt-2 text-white/80 text-sm md:text-base max-w-2xl whitespace-pre-wrap">{event.subtitle}</p>
               ) : null}
@@ -299,6 +295,8 @@ export default function EventDetailClient() {
           {primaryCta}
         </div>
       </div>
+
+      <NoqtSocialBlock socialUrl={event.socialUrl} />
 
       {mapQuery ? (
         <a
@@ -352,7 +350,7 @@ export default function EventDetailClient() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={a.imageUrl}
-                        alt={`${a.name} — ${event.title} etkinliği line-up görseli`}
+                        alt={t.detail.lineupAlt(a.name, event.title)}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -361,6 +359,14 @@ export default function EventDetailClient() {
                   </div>
                   {a.slot ? <div className="text-[10px] md:text-xs text-noqt-lime/80 mt-2 uppercase tracking-wide">{a.slot}</div> : null}
                   <div className="text-sm font-medium text-white mt-1 line-clamp-2">{a.name}</div>
+                  {lineupGenres[a.name]?.length ? (
+                    <GenreChips
+                      genres={lineupGenres[a.name]}
+                      label={t.detail.mainGenres}
+                      className="mt-2 justify-center"
+                      chipClassName="border-white/20 text-white/75 text-[10px]"
+                    />
+                  ) : null}
                 </>
               );
               return (
@@ -392,7 +398,7 @@ export default function EventDetailClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={event.organizer.imageUrl}
-                    alt={`${event.organizer?.name || "Organizatör"} — ${event.title} etkinliği`}
+                    alt={`${event.organizer?.name || t.detail.organizer} — ${event.title}`}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -456,11 +462,13 @@ export default function EventDetailClient() {
                 onClick={() => setLightboxIdx(i)}
                 className="aspect-square relative rounded-xl overflow-hidden border border-white/10 group"
               >
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={p.url}
-                  alt={`${event.title} etkinliği fotoğrafı ${i + 1}${event.city ? ` — ${event.city}` : ""}`}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  alt={t.detail.photoAlt(event.title, i + 1, event.city)}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 size-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </button>
             ))}
@@ -526,7 +534,7 @@ export default function EventDetailClient() {
         </Link>
       </section>
 
-      {isLoggedIn ? (
+      {isLoggedIn && event.source !== "noqt_social" ? (
         <div className="grid place-items-center pt-2">
           {!showMemoryForm ? (
             <button
@@ -564,7 +572,7 @@ export default function EventDetailClient() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={photos[lightboxIdx].url}
-              alt={`${event.title} etkinlik fotoğrafı${event.city ? ` — ${event.city}` : ""}`}
+              alt={t.detail.photoAlt(event.title, lightboxIdx + 1, event.city)}
               className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-xl border border-white/10"
             />
             <button type="button" onClick={() => setLightboxIdx(null)} className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white text-black grid place-items-center text-sm">

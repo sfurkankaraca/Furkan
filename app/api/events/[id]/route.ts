@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getEventById } from "@/lib/server/events-store";
+import { getPublicEventById } from "@/lib/server/public-events";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
   try {
-    const event = await getEventById(id);
+    const event = await getPublicEventById(id);
     if (!event) {
       return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
     }

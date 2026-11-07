@@ -85,10 +85,26 @@ function pickFrom(raw: unknown, allowed: readonly string[]): string[] | null {
   return out;
 }
 
-export function parseClubRequest(body: unknown): Parsed {
+const LABEL_EN: Record<string, string> = {
+  "Ad soyad": "Full name",
+  "E-posta": "Email",
+  Telefon: "Phone",
+  "Sahne adı": "Stage name",
+  Şehir: "City",
+  "Set bağlantısı": "Set link",
+  Instagram: "Instagram",
+  "Deneyim alanı": "Experience field",
+  "Marka adı": "Brand name",
+  Tarih: "Date",
+  Mesaj: "Message",
+};
+
+/** `lang` yalnız hata metnini belirler ("en" → İngilizce); doğrulama mantığı aynıdır. */
+export function parseClubRequest(body: unknown, lang: "tr" | "en" = "tr"): Parsed {
+  const m = (tr: string, en: string) => (lang === "en" ? en : tr);
   const b = (body && typeof body === "object" ? body : {}) as Record<string, unknown>;
   const kind = b.kind;
-  if (kind !== "dj" && kind !== "brand") return { ok: false, error: "Geçersiz istek." };
+  if (kind !== "dj" && kind !== "brand") return { ok: false, error: m("Geçersiz istek.", "Invalid request.") };
 
   const limits: [unknown, number, string][] = [
     [b.fullName, 100, "Ad soyad"],
@@ -104,31 +120,31 @@ export function parseClubRequest(body: unknown): Parsed {
     [b.message, 2000, "Mesaj"],
   ];
   for (const [v, max, label] of limits) {
-    if (tooLong(v, max)) return { ok: false, error: `${label} çok uzun.` };
+    if (tooLong(v, max)) return { ok: false, error: m(`${label} çok uzun.`, `${LABEL_EN[label] ?? label} is too long.`) };
   }
 
   const name = str(b.fullName, 100);
-  if (name.length < 2) return { ok: false, error: "Lütfen adını ve soyadını yaz." };
+  if (name.length < 2) return { ok: false, error: m("Lütfen adını ve soyadını yaz.", "Please enter your first and last name.") };
   const phone = str(b.phone, 30);
 
   if (kind === "dj") {
     const stageName = str(b.stageName, 100);
     const city = str(b.city, 80);
-    if (!stageName) return { ok: false, error: "Sahne adını yaz." };
-    if (!phone) return { ok: false, error: "WhatsApp telefon numaranı yaz." };
-    if (!isValidPhone(phone)) return { ok: false, error: "Telefon numarası geçerli görünmüyor." };
-    if (!city) return { ok: false, error: "Şehrini yaz." };
+    if (!stageName) return { ok: false, error: m("Sahne adını yaz.", "Enter your stage name.") };
+    if (!phone) return { ok: false, error: m("WhatsApp telefon numaranı yaz.", "Enter your WhatsApp phone number.") };
+    if (!isValidPhone(phone)) return { ok: false, error: m("Telefon numarası geçerli görünmüyor.", "That phone number doesn't look valid.") };
+    if (!city) return { ok: false, error: m("Şehrini yaz.", "Enter your city.") };
 
     const genres = pickFrom(b.genres, DJ_GENRES);
-    if (genres === null) return { ok: false, error: "Seçilen türlerden biri geçerli değil." };
-    if (genres.length === 0) return { ok: false, error: "En az bir tür seç." };
+    if (genres === null) return { ok: false, error: m("Seçilen türlerden biri geçerli değil.", "One of the selected genres isn't valid.") };
+    if (genres.length === 0) return { ok: false, error: m("En az bir tür seç.", "Pick at least one genre.") };
 
     const setUrl = str(b.setUrl, 500);
-    if (!setUrl) return { ok: false, error: "Set bağlantını ekle." };
-    if (!isHttpUrl(setUrl)) return { ok: false, error: "Set bağlantısı http:// ya da https:// ile başlamalı." };
+    if (!setUrl) return { ok: false, error: m("Set bağlantını ekle.", "Add your set link.") };
+    if (!isHttpUrl(setUrl)) return { ok: false, error: m("Set bağlantısı http:// ya da https:// ile başlamalı.", "The set link must start with http:// or https://.") };
 
     const instagram = str(b.instagram, 100);
-    if (instagram && !isValidInstagram(instagram)) return { ok: false, error: "Instagram hesabı geçerli görünmüyor." };
+    if (instagram && !isValidInstagram(instagram)) return { ok: false, error: m("Instagram hesabı geçerli görünmüyor.", "That Instagram account doesn't look valid.") };
 
     return {
       ok: true,
@@ -145,21 +161,21 @@ export function parseClubRequest(body: unknown): Parsed {
   // Marka teklifi
   const email = str(b.email, 200);
   const brand = str(b.brand, 150);
-  if (!brand) return { ok: false, error: "Marka ya da şirket adını yaz." };
-  if (!EMAIL_RE.test(email)) return { ok: false, error: "E-posta adresi geçerli görünmüyor." };
-  if (phone && !isValidPhone(phone)) return { ok: false, error: "Telefon numarası geçerli görünmüyor." };
+  if (!brand) return { ok: false, error: m("Marka ya da şirket adını yaz.", "Enter the brand or company name.") };
+  if (!EMAIL_RE.test(email)) return { ok: false, error: m("E-posta adresi geçerli görünmüyor.", "That email address doesn't look valid.") };
+  if (phone && !isValidPhone(phone)) return { ok: false, error: m("Telefon numarası geçerli görünmüyor.", "That phone number doesn't look valid.") };
 
   const kinds = pickFrom(b.kinds, BRAND_KINDS);
-  if (kinds === null) return { ok: false, error: "Seçilen işbirliği türlerinden biri geçerli değil." };
-  if (kinds.length === 0) return { ok: false, error: "En az bir işbirliği türü seç." };
+  if (kinds === null) return { ok: false, error: m("Seçilen işbirliği türlerinden biri geçerli değil.", "One of the selected collaboration types isn't valid.") };
+  if (kinds.length === 0) return { ok: false, error: m("En az bir işbirliği türü seç.", "Pick at least one collaboration type.") };
 
   const budget = str(b.budget, 60);
   if (budget && !(BRAND_BUDGET_OPTIONS as readonly string[]).includes(budget)) {
-    return { ok: false, error: "Seçilen bütçe aralığı geçerli değil." };
+    return { ok: false, error: m("Seçilen bütçe aralığı geçerli değil.", "The selected budget range isn't valid.") };
   }
 
   const message = str(b.message, 2000);
-  if (message.length < 5) return { ok: false, error: "Fikrini kısaca anlat." };
+  if (message.length < 5) return { ok: false, error: m("Fikrini kısaca anlat.", "Tell us your idea in brief.") };
 
   return {
     ok: true,

@@ -1,28 +1,86 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SOUNDCLOUD_URL } from "@/lib/club-radio/content";
+import { useAuth } from "@/lib/auth-context";
+import { useLang } from "@/lib/club-radio/i18n/client";
+import { LANG_COOKIE, type Lang } from "@/lib/club-radio/i18n/lang";
+import type { Dict } from "@/lib/club-radio/i18n/dict";
 
-export type ClubRadioPage = "home" | "djler" | "isbirlikleri";
+type NavItem = { href: string; label: string; prefixes?: string[]; en?: boolean };
 
-const NAV: { href: string; label: string; page?: ClubRadioPage }[] = [
-  { href: "/#setler", label: "Setler" },
-  { href: "/#playlistler", label: "Playlistler" },
-  { href: "/#etkinlikler", label: "Etkinlikler" },
-  { href: "/djler-icin", label: "DJ'ler için", page: "djler" },
-  { href: "/isbirlikleri", label: "İşbirlikleri", page: "isbirlikleri" },
-];
+function navFor(t: Dict): NavItem[] {
+  return [
+    { href: "/events", label: t.nav.events, prefixes: ["/events"] },
+    { href: "/#setler", label: t.nav.sets },
+    { href: "/sanatcilar", label: t.nav.artists, prefixes: ["/sanatcilar"] },
+    { href: "/blog", label: t.nav.journal, prefixes: ["/blog"], en: true },
+    { href: "/djler-icin", label: t.nav.forDjs, prefixes: ["/djler-icin"] },
+    { href: "/isbirlikleri", label: t.nav.collabs, prefixes: ["/isbirlikleri"] },
+  ];
+}
 
-const CTA: Record<ClubRadioPage, { href: string; label: string }> = {
-  home: { href: "/#etkinlikler", label: "Bilet al" },
-  djler: { href: "#basvuru", label: "Set gönder" },
-  isbirlikleri: { href: "#teklif", label: "Teklif gönder" },
-};
+function isCurrent(pathname: string | null, item: NavItem): boolean {
+  if (!pathname || !item.prefixes) return false;
+  return item.prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
 
-export function ClubRadioHeader({ current }: { current: ClubRadioPage }) {
+function ctaFor(pathname: string | null, t: Dict): { href: string; label: string } {
+  if (pathname === "/djler-icin") return { href: "#basvuru", label: t.nav.ctaSendSet };
+  if (pathname === "/isbirlikleri") return { href: "#teklif", label: t.nav.ctaSendProposal };
+  return { href: "/events", label: t.nav.ctaTickets };
+}
+
+/** TR / EN düğmesi: çerezi yazar ve sunucu bileşenlerini yeniler. */
+function LangToggle({ className = "" }: { className?: string }) {
+  const { lang, t } = useLang();
+  const router = useRouter();
+  const choose = (next: Lang) => {
+    if (next === lang) return;
+    try {
+      document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; SameSite=Lax`;
+    } catch {
+      /* çerez yazılamazsa sessizce geç */
+    }
+    router.refresh();
+  };
+  const btn = (code: Lang, label: string, aria: string) => (
+    <button
+      type="button"
+      lang={code}
+      aria-pressed={lang === code}
+      aria-label={aria}
+      onClick={() => choose(code)}
+      className={`flex min-h-11 min-w-11 cursor-pointer items-center justify-center border-0 bg-transparent px-2 text-[13px] font-bold tracking-[0.5px] ${
+        lang === code ? "text-[#DDF76A]" : "text-[#A6A9A0] hover:text-[#F4F4EE]"
+      }`}
+    >
+      {label}
+    </button>
+  );
+  return (
+    <div role="group" aria-label={t.nav.langAria} className={`flex items-center ${className}`}>
+      {btn("tr", "TR", t.nav.switchToTr)}
+      <span aria-hidden="true" className="text-[#3A3A3A]">/</span>
+      {btn("en", "EN", t.nav.switchToEn)}
+    </div>
+  );
+}
+
+/** Tüm herkese açık sayfalarda kullanılan global üst bilgi: noqt logosu + "club radio". */
+export function ClubRadioHeader() {
+  const pathname = usePathname();
+  const { isLoggedIn } = useAuth();
+  const { t } = useLang();
+  const NAV = navFor(t);
   const [open, setOpen] = useState(false);
-  const cta = CTA[current];
+  const cta = ctaFor(pathname, t);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -33,56 +91,42 @@ export function ClubRadioHeader({ current }: { current: ClubRadioPage }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const linkClass = (page?: ClubRadioPage) =>
-    `cr-keep no-underline text-[#0A0A0A] ${
-      page && page === current ? "underline decoration-2 underline-offset-[6px]" : ""
+  const linkClass = (item: NavItem) =>
+    `no-underline text-[#F4F4EE] hover:text-[#DDF76A] ${
+      isCurrent(pathname, item) ? "underline decoration-[#DDF76A] decoration-2 underline-offset-[8px]" : ""
     }`;
 
   return (
-    <header className="cr-on-lime bg-[#DDF76A] text-[#0A0A0A]">
-      <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-3 px-6 py-5">
-        <Link
-          lang="en"
-          href="/"
-          className="cr-display cr-keep flex-none whitespace-nowrap text-[18px] min-[420px]:text-[20px] leading-none tracking-[-0.2px] text-[#0A0A0A] no-underline"
-          style={{ fontStretch: "112%" }}
-        >
-          noqt club
-          <br />
-          radio
+    <header className="cr-chrome border-b border-[#1F1F1F]">
+      <div className="mx-auto flex max-w-[1360px] items-center justify-between gap-2 px-4 py-4 min-[420px]:gap-3 min-[420px]:px-6">
+        <Link href="/" className="flex min-w-0 flex-none items-center gap-2.5 text-[#F4F4EE] no-underline min-[420px]:gap-3">
+          <Image src="/club-radio/noqt-logo-white.png" alt="noqt" width={1031} height={301} sizes="200px" priority className="h-5 w-auto min-[420px]:h-6" />
+          <span lang="en" className="cr-display whitespace-nowrap text-[13px] leading-none tracking-[0.5px] min-[420px]:text-[15px]" style={{ fontStretch: "125%" }}>
+            club radio
+          </span>
         </Link>
 
-        <nav
-          aria-label="Ana menü"
-          className="hidden items-center gap-7 text-[15px] font-semibold uppercase tracking-[0.5px] min-[901px]:flex"
-        >
+        <nav aria-label={t.nav.mainNav} className="hidden items-center gap-6 text-[14px] font-semibold uppercase tracking-[0.5px] min-[1100px]:flex">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} aria-current={n.page && n.page === current ? "page" : undefined} className={linkClass(n.page)}>
-              {n.label}
+            <Link key={n.href} href={n.href} aria-current={isCurrent(pathname, n) ? "page" : undefined} className={linkClass(n)}>
+              {n.en ? <span lang="en">{n.label}</span> : n.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2.5">
-          {current === "home" && SOUNDCLOUD_URL ? (
-            <a
-              href={SOUNDCLOUD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="SoundCloud"
-              className="cr-keep hidden size-11 items-center justify-center rounded-full border-[1.5px] border-[#0A0A0A] text-[#0A0A0A] min-[420px]:flex"
+        <div className="flex items-center gap-2 min-[420px]:gap-2.5">
+          <LangToggle className="hidden min-[1100px]:flex" />
+          {isLoggedIn ? (
+            <Link
+              href="/account/profil"
+              className="hidden min-h-11 items-center px-2 text-[13px] font-semibold uppercase tracking-[0.5px] text-[#C9CBC3] no-underline hover:text-[#DDF76A] min-[1100px]:inline-flex"
             >
-              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M3 14v3" />
-                <path d="M6 11v6" />
-                <path d="M9 9v8" />
-                <path d="M12 7v10h6a3 3 0 0 0 0-6 5 5 0 0 0-6-4z" />
-              </svg>
-            </a>
+              {t.nav.account}
+            </Link>
           ) : null}
           <Link
             href={cta.href}
-            className="cr-keep inline-flex min-h-11 items-center whitespace-nowrap rounded-full bg-[#0A0A0A] px-3.5 py-3 text-[13px] min-[420px]:px-4 min-[420px]:text-[14px] font-bold uppercase tracking-[0.5px] !text-[#DDF76A] no-underline min-[901px]:px-5 min-[901px]:text-[15px]"
+            className="inline-flex min-h-11 items-center whitespace-nowrap rounded-full bg-[#DDF76A] px-3.5 py-3 text-[13px] font-bold uppercase tracking-[0.5px] !text-[#0A0A0A] no-underline min-[420px]:text-[14px] min-[1100px]:px-5"
           >
             {cta.label}
           </Link>
@@ -90,9 +134,9 @@ export function ClubRadioHeader({ current }: { current: ClubRadioPage }) {
             type="button"
             aria-expanded={open}
             aria-controls="cr-mobil-menu"
-            aria-label={open ? "Menüyü kapat" : "Menüyü aç"}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             onClick={() => setOpen((v) => !v)}
-            className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-[#0A0A0A] bg-transparent text-[#0A0A0A] min-[901px]:hidden"
+            className="flex size-11 cursor-pointer items-center justify-center rounded-full border-[1.5px] border-[#3A3A3A] bg-transparent text-[#F4F4EE] min-[1100px]:hidden"
           >
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
               {open ? (
@@ -113,20 +157,30 @@ export function ClubRadioHeader({ current }: { current: ClubRadioPage }) {
       </div>
 
       {open ? (
-        <nav id="cr-mobil-menu" aria-label="Mobil menü" className="border-t border-[#0A0A0A]/20 min-[901px]:hidden">
-          <ul className="mx-auto flex max-w-[1360px] list-none flex-col px-6 pb-4 pt-2">
+        <nav id="cr-mobil-menu" aria-label={t.nav.mobileNav} className="border-t border-[#1F1F1F] min-[1100px]:hidden">
+          <ul className="mx-auto m-0 flex max-w-[1360px] list-none flex-col px-6 pb-4 pt-2">
             {NAV.map((n) => (
-              <li key={n.href} className="border-b border-[#0A0A0A]/15 last:border-b-0">
+              <li key={n.href} className="border-b border-[#1F1F1F]">
                 <Link
                   href={n.href}
                   onClick={() => setOpen(false)}
-                  aria-current={n.page && n.page === current ? "page" : undefined}
-                  className={`${linkClass(n.page)} block py-3.5 text-[17px] font-semibold uppercase tracking-[0.5px]`}
+                  aria-current={isCurrent(pathname, n) ? "page" : undefined}
+                  className={`${linkClass(n)} block py-3.5 text-[17px] font-semibold uppercase tracking-[0.5px]`}
                 >
-                  {n.label}
+                  {n.en ? <span lang="en">{n.label}</span> : n.label}
                 </Link>
               </li>
             ))}
+            {isLoggedIn ? (
+              <li>
+                <Link href="/account/profil" onClick={() => setOpen(false)} className="block py-3.5 text-[17px] font-semibold uppercase tracking-[0.5px] text-[#C9CBC3] no-underline">
+                  {t.nav.account}
+                </Link>
+              </li>
+            ) : null}
+            <li className="pt-2">
+              <LangToggle />
+            </li>
           </ul>
         </nav>
       ) : null}

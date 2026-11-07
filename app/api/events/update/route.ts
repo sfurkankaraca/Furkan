@@ -13,6 +13,10 @@ export async function POST(request: Request) {
     if (!eventId) {
       return NextResponse.json({ error: "Missing eventId" }, { status: 400 });
     }
+    // noqt social etkinlikleri (ns-…) blob'da tutulmaz; anı/fotoğraf yüklemesi bunlara yapılamaz.
+    if (String(eventId).startsWith("ns-")) {
+      return NextResponse.json({ error: "Bu etkinlik düzenlenemez" }, { status: 400 });
+    }
 
     const currentEvents = await readEventsJson();
     const idx = currentEvents.findIndex((e) => e.id === eventId);

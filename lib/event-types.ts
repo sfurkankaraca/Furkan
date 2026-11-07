@@ -53,4 +53,10 @@ export type PublicEvent = {
   rules?: string;
   /** true ise kulüp etkinliği: herkese listelenir; bilet için onaylı başvuru + aktif kulüp aboneliği gerekir */
   membersOnly?: boolean;
+  /** Etkinliğin geldiği yer: site yönetimi ya da noqt social uygulaması */
+  source?: "site" | "noqt_social";
+  /** noqt social etkinlik kimliği (Firestore supplyEvents); `id` = `ns-<socialEventId>` */
+  socialEventId?: string;
+  /** noqt social'daki etkinlik bağlantısı (link.noqt.social/etkinlik/…) */
+  socialUrl?: string;
 };

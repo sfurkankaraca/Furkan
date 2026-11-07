@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { LANG_COOKIE, isLang } from "@/lib/club-radio/i18n/lang";
 
 /** Sık taranan yollar — anında 404, uygulama mantığına sokulmaz. */
 const BLOCKED_PATH_PREFIXES = [
@@ -32,6 +33,16 @@ export function middleware(request: NextRequest) {
     if (seg === "..") {
       return new NextResponse(null, { status: 400 });
     }
+  }
+
+  // ?lang=en|tr → noqt_lang çerezi yaz, parametresiz aynı adrese yönlendir (yalnız sayfa GET istekleri).
+  const langParam = request.nextUrl.searchParams.get("lang");
+  if (isLang(langParam) && (request.method === "GET" || request.method === "HEAD") && !request.nextUrl.pathname.startsWith("/api/")) {
+    const url = request.nextUrl.clone();
+    url.searchParams.delete("lang");
+    const redirect = NextResponse.redirect(url);
+    redirect.cookies.set(LANG_COOKIE, langParam, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+    return redirect;
   }
 
   const requestHeaders = new Headers(request.headers);

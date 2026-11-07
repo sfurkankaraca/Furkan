@@ -5,48 +5,41 @@ import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
 import { NewsletterSignup } from "@/components/blog/NewsletterSignup";
 import { SERIES, SERIES_ORDER, postsInSeries } from "@/lib/blog/series";
 import { SITE_URL } from "@/lib/site-url";
+import { getDict } from "@/lib/club-radio/i18n/server";
+import { formatDate, type Lang } from "@/lib/club-radio/i18n/lang";
+import { rich } from "@/lib/club-radio/i18n/rich";
 
-const BLOG_INDEX_DESCRIPTION =
-  "Elektronik müzik dergisi: haberler ve duyurular, türün efsaneleri, sahne ve kültür yazıları, DJ'lik ve prodüksiyon rehberleri.";
-
-export const metadata: Metadata = {
-  title: "Journal — Elektronik müzik dergisi | noqta",
-  description: BLOG_INDEX_DESCRIPTION,
-  alternates: { canonical: "/blog" },
-  openGraph: {
-    title: "noqta journal — elektronik müzik dergisi",
-    description: "Elektronik müzik dünyasından haberler, efsane portreleri, sahne yazıları ve rehberler.",
-    url: "/blog",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  return {
+    title: t.meta.blogTitle,
+    description: t.meta.blogDescription,
+    alternates: { canonical: "/blog" },
+    openGraph: {
+      title: t.meta.blogOgTitle,
+      description: t.meta.blogOgDescription,
+      url: "/blog",
+    },
+  };
+}
 
 const ORDER: BlogCategory[] = ["haber", "efsaneler", "sahne", "dj", "produksiyon", "booking", "egitim", "b2b"];
 
-const LABEL: Record<BlogCategory, string> = {
-  haber: "Haberler & duyurular",
-  efsaneler: "Efsaneler",
-  sahne: "Sahne & kültür",
-  dj: "DJ & performans",
-  produksiyon: "Prodüksiyon",
-  booking: "Booking & etkinlik",
-  egitim: "Eğitim",
-  b2b: "İş birlikleri",
-};
-
-const fmtDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
 
 function byDateDesc(a: BlogPostMeta, b: BlogPostMeta) {
   return a.publishedAt < b.publishedAt ? 1 : a.publishedAt > b.publishedAt ? -1 : 0;
 }
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage() {
+  const { lang, t } = await getDict();
+  const fmtDate = (iso: string) => formatDate(iso, lang as Lang, { day: "numeric", month: "long", year: "numeric" });
+  const catLabel = (c: BlogCategory, fallback: string) => t.blog.categories[c] ?? fallback;
   const all = [...BLOG_POSTS].sort(byDateDesc);
   const [lead, ...others] = all;
   const secondary = others.slice(0, 4);
   const grouped = ORDER.map((cat) => ({
     cat,
-    label: LABEL[cat],
+    label: t.blog.categories[cat] ?? cat,
     posts: all.filter((p) => p.category === cat),
   })).filter((g) => g.posts.length > 0);
 
@@ -54,7 +47,7 @@ export default function BlogIndexPage() {
     "@context": "https://schema.org",
     "@type": "Blog",
     name: "noqta journal",
-    description: BLOG_INDEX_DESCRIPTION,
+    description: t.meta.blogDescription,
     url: `${SITE_URL}/blog`,
     blogPost: BLOG_POSTS.map((p) => ({
       "@type": "BlogPosting",
@@ -67,18 +60,17 @@ export default function BlogIndexPage() {
   return (
     <main className="container mx-auto max-w-7xl px-4 pb-20">
       {/* Masthead */}
-      <header className="border-b border-foreground/15 pt-10 pb-6 md:pt-14">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-          Online elektronik müzik dergisi
-        </p>
-        <h1 className="mt-3 text-5xl font-black leading-[0.9] tracking-[-0.04em] md:text-8xl">Journal</h1>
+      <header className="border-b border-border pt-10 pb-8 md:pt-16">
+        <p className="cr-eyebrow m-0 text-noqt-lime">{rich(t.blog.eyebrowA)}</p>
+        <h1 lang="en" className="mt-3 text-5xl font-black leading-[0.9] tracking-[-0.02em] md:text-8xl" style={{ fontStretch: "125%" }}>Journal</h1>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          Haberler ve duyurular, türün efsaneleri, sahne ve kültür yazıları, DJ&apos;lik ve prodüksiyon rehberleri.
+          {t.blog.intro}
         </p>
+        {t.blog.turkishNote ? <p className="mt-3 text-sm text-muted-foreground">{t.blog.turkishNote}</p> : null}
       </header>
 
       {/* Kategori şeridi */}
-      <nav aria-label="Bölümler" className="flex flex-wrap gap-x-5 gap-y-2 border-b border-foreground/10 py-3">
+      <nav aria-label={t.blog.sections} className="flex flex-wrap gap-x-5 gap-y-2 border-b border-border py-3">
         {grouped.map((g) => (
           <a
             key={g.cat}
@@ -93,27 +85,27 @@ export default function BlogIndexPage() {
 
       {/* Manşet */}
       {lead ? (
-        <section className="grid gap-8 border-b border-foreground/10 py-10 md:grid-cols-12 md:py-14">
+        <section className="grid gap-8 border-b border-border py-10 md:grid-cols-12 md:py-14">
           <Link href={`/blog/${lead.slug}`} className="group md:col-span-7">
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-muted">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-card">
               <BlogCoverArt post={lead} priority sizes="(min-width: 768px) 58vw, 100vw" />
             </div>
           </Link>
           <div className="flex flex-col justify-center md:col-span-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              {lead.categoryLabel} · {fmtDate(lead.publishedAt)}
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-noqt-lime">
+              {catLabel(lead.category, lead.categoryLabel)} · {fmtDate(lead.publishedAt)}
             </p>
-            <h2 className="mt-3 text-3xl font-bold leading-[1.05] tracking-[-0.03em] md:text-5xl">
-              <Link href={`/blog/${lead.slug}`} className="transition hover:opacity-70">
+            <h2 className="mt-3 text-3xl font-black leading-[1.05] tracking-[-0.01em] md:text-5xl">
+              <Link href={`/blog/${lead.slug}`} className="transition hover:text-noqt-lime">
                 {lead.title}
               </Link>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">{lead.description}</p>
             <Link
               href={`/blog/${lead.slug}`}
-              className="mt-6 w-fit border-b-2 border-foreground pb-0.5 text-sm font-semibold transition hover:opacity-60"
+              className="mt-6 w-fit border-b-2 border-noqt-lime pb-0.5 text-sm font-bold uppercase tracking-wide text-noqt-lime transition hover:text-noqt-lime"
             >
-              Yazıyı oku
+              {t.blog.readPost}
             </Link>
           </div>
         </section>
@@ -121,7 +113,7 @@ export default function BlogIndexPage() {
 
       {/* İkincil ızgara */}
       {secondary.length > 0 ? (
-        <section className="grid gap-x-6 gap-y-10 border-b border-foreground/10 py-10 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="grid gap-x-6 gap-y-10 border-b border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
           {secondary.map((p) => (
             <article key={p.slug} className="group">
               <Link href={`/blog/${p.slug}`}>
@@ -130,10 +122,10 @@ export default function BlogIndexPage() {
                 </div>
               </Link>
               <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                {p.categoryLabel}
+                {catLabel(p.category, p.categoryLabel)}
               </p>
               <h3 className="mt-1.5 text-lg font-bold leading-snug tracking-[-0.02em]">
-                <Link href={`/blog/${p.slug}`} className="transition hover:opacity-70">
+                <Link href={`/blog/${p.slug}`} className="transition hover:text-noqt-lime">
                   {p.title}
                 </Link>
               </h3>
@@ -144,17 +136,17 @@ export default function BlogIndexPage() {
       ) : null}
 
       {/* Bülten */}
-      <div className="border-b border-foreground/10 py-10">
+      <div className="border-b border-border py-10">
         <NewsletterSignup source="journal-index" />
       </div>
 
       {/* Devam eden diziler */}
-      <section aria-labelledby="diziler" className="border-b border-foreground/10 py-10">
-        <div className="flex items-baseline justify-between border-b-2 border-foreground pb-2">
+      <section aria-labelledby="diziler" className="border-b border-border py-10">
+        <div className="flex items-baseline justify-between border-b-2 border-noqt-lime pb-2">
           <h2 id="diziler" className="text-xl font-black uppercase tracking-[-0.01em] md:text-2xl">
-            Devam eden diziler
+            {t.blog.ongoing}
           </h2>
-          <span className="text-xs text-muted-foreground">düzenli yayın</span>
+          <span className="text-xs text-muted-foreground">{t.blog.regular}</span>
         </div>
         <div className="grid gap-x-6 gap-y-8 pt-6 sm:grid-cols-2 lg:grid-cols-3">
           {SERIES_ORDER.map((id) => {
@@ -172,16 +164,16 @@ export default function BlogIndexPage() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{meta.tagline}</p>
                 {latest ? (
                   <p className="mt-3 text-sm">
-                    <span className="text-muted-foreground">Son bölüm: </span>
+                    <span className="text-muted-foreground">{t.blog.lastEpisode}</span>
                     <Link href={`/blog/${latest.slug}`} className="font-medium underline-offset-4 hover:underline">
                       {latest.title}
                     </Link>
                   </p>
                 ) : (
-                  <p className="mt-3 text-sm text-muted-foreground">İlk bölüm yakında.</p>
+                  <p className="mt-3 text-sm text-muted-foreground">{t.blog.firstSoon}</p>
                 )}
                 <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {posts.length} bölüm
+                  {t.blog.episodes(posts.length)}
                 </p>
               </article>
             );
@@ -193,14 +185,14 @@ export default function BlogIndexPage() {
       <div className="grid gap-14 py-12">
         {grouped.map(({ cat, label, posts }) => (
           <section key={cat} id={`bolum-${cat}`} aria-labelledby={`baslik-${cat}`} className="scroll-mt-24">
-            <div className="flex items-baseline justify-between border-b-2 border-foreground pb-2">
+            <div className="flex items-baseline justify-between border-b-2 border-noqt-lime pb-2">
               <h2 id={`baslik-${cat}`} className="text-xl font-black uppercase tracking-[-0.01em] md:text-2xl">
                 {label}
               </h2>
-              <span className="text-xs tabular-nums text-muted-foreground">{posts.length} yazı</span>
+              <span className="text-xs tabular-nums text-muted-foreground">{t.blog.posts(posts.length)}</span>
             </div>
 
-            <ul className="divide-y divide-foreground/10">
+            <ul className="divide-y divide-border">
               {posts.map((p, i) => (
                 <li key={p.slug}>
                   <Link
@@ -214,7 +206,7 @@ export default function BlogIndexPage() {
                       <BlogCoverArt post={p} sizes="9rem" />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-lg font-bold leading-snug tracking-[-0.02em] transition group-hover:opacity-70 md:text-xl">
+                      <h3 className="text-lg font-bold leading-snug tracking-[-0.02em] transition group-hover:text-noqt-lime md:text-xl">
                         {p.title}
                       </h3>
                       <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">

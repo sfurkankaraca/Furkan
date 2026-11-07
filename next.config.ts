@@ -53,6 +53,24 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.public.blob.vercel-storage.com",
       },
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+      },
+      // noqt.events sanatçı fotoğrafları (Supabase Storage)
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+      },
+      // noqt social (Firebase Storage) etkinlik afişleri
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+      },
     ],
   },
 };

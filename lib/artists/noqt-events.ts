@@ -1,4 +1,5 @@
 import { ARTISTS, type ArtistLink, type ArtistProfile } from "./registry";
+import { parseListGenres } from "./genres";
 
 /**
  * noqt.events kadrosundaki DJ'ler — tek kaynak noqt.events (Supabase dj_profiles, onaylı + aktif).
@@ -61,7 +62,7 @@ function parseVideos(html: string): NonNullable<ArtistProfile["videos"]> {
   ];
 }
 
-function toArtist(id: string, p: PersonLd, videos: ArtistProfile["videos"] = []): ArtistProfile {
+function toArtist(id: string, p: PersonLd, videos: ArtistProfile["videos"] = [], genres: string[] = []): ArtistProfile {
   const bio = (p.description ?? "")
     .split(/\r?\n\s*\r?\n/)
     .map((s) => s.replace(/\s+/g, " ").trim())
@@ -80,7 +81,7 @@ function toArtist(id: string, p: PersonLd, videos: ArtistProfile["videos"] = [])
     slug: slugifyTr(p.name!),
     name: p.name!,
     role: "DJ",
-    genres: [],
+    genres,
     badges: ["booking"],
     tagline: firstSentence || `${p.name} noqt.events kadrosunda yer alan bir DJ.`,
     bio,
@@ -97,12 +98,14 @@ export async function fetchNoqtEventsDjs(): Promise<ArtistProfile[]> {
   try {
     const listHtml = await fetchText(`${EVENTS_BASE}/sanatcilar`);
     const ids = [...new Set([...listHtml.matchAll(/href="\/sanatcilar\/([0-9a-f-]{36})"/g)].map((m) => m[1]))];
+    // Ana türler: liste sayfasının gömülü verisinden (hata → tür yok).
+    const genresById = parseListGenres(listHtml);
     const profiles = await Promise.all(
       ids.map(async (id) => {
         try {
           const html = await fetchText(`${EVENTS_BASE}/sanatcilar/${id}`);
           const p = parsePersonLd(html);
-          return p ? toArtist(id, p, parseVideos(html)) : null;
+          return p ? toArtist(id, p, parseVideos(html), genresById.get(id) ?? []) : null;
         } catch {
           return null;
         }
@@ -130,6 +133,7 @@ export async function getAllArtists(): Promise<ArtistProfile[]> {
     return {
       ...a,
       imageUrl: a.imageUrl || e.imageUrl,
+      genres: a.genres.length > 0 ? a.genres : e.genres,
       links: a.links,
       bookingUrl: a.bookingUrl ?? e.bookingUrl,
       videos: a.videos?.length ? a.videos : e.videos,

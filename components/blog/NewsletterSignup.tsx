@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useLang } from "@/lib/club-radio/i18n/client";
 import { subscribeNewsletter, type SubscribeResult } from "@/app/(routes)/blog/newsletter-actions";
 
 export function NewsletterSignup({
@@ -10,6 +11,8 @@ export function NewsletterSignup({
   source?: string;
   variant?: "block" | "compact";
 }) {
+  const { t: dict, lang } = useLang();
+  const t = dict.blog.newsletter;
   const [state, formAction, pending] = useActionState<SubscribeResult | null, FormData>(
     subscribeNewsletter,
     null
@@ -21,19 +24,19 @@ export function NewsletterSignup({
     <section
       className={
         variant === "block"
-          ? "rounded-2xl border border-foreground/15 bg-foreground/[0.03] p-6 md:p-8"
+          ? "rounded-2xl border border-border bg-card p-6 md:p-8"
           : ""
       }
       aria-labelledby="newsletter-baslik"
     >
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-        Bülten
+      <p className="cr-eyebrow m-0 text-noqt-lime">
+        {t.eyebrow}
       </p>
       <h2 id="newsletter-baslik" className="mt-2 text-2xl font-black tracking-[-0.02em] md:text-3xl">
-        Sahneyi kaçırma
+        {t.title}
       </h2>
       <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
-        Yeni yazılar, sahne raporları ve duyurular doğrudan gelen kutuna. Spam yok, istediğin an çık.
+        {t.text}
       </p>
 
       {done ? (
@@ -43,6 +46,7 @@ export function NewsletterSignup({
       ) : (
         <form action={formAction} className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-start">
           <input type="hidden" name="source" value={source} />
+          <input type="hidden" name="lang" value={lang} />
           {/* honeypot — görünmez, botlar için */}
           <input
             type="text"
@@ -54,18 +58,18 @@ export function NewsletterSignup({
           />
           <div className="flex-1">
             <label htmlFor="newsletter-email" className="sr-only">
-              E-posta adresi
+              {t.emailLabel}
             </label>
             <input
               id="newsletter-email"
               type="email"
               name="email"
               required
-              placeholder="e-posta adresin"
-              className="w-full rounded-xl border border-foreground/20 bg-background px-4 py-3 text-sm outline-none transition focus:border-foreground"
+              placeholder={t.placeholder}
+              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-noqt-lime"
             />
             {state && !state.ok ? (
-              <p className="mt-2 text-xs text-red-600" role="alert">
+              <p className="mt-2 text-xs text-red-400" role="alert">
                 {state.message}
               </p>
             ) : null}
@@ -73,9 +77,9 @@ export function NewsletterSignup({
           <button
             type="submit"
             disabled={pending}
-            className="rounded-xl bg-foreground px-6 py-3 text-sm font-semibold text-background transition hover:opacity-90 disabled:opacity-50"
+            className="min-h-11 rounded-full bg-noqt-lime px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#0A0A0A] transition hover:brightness-95 disabled:opacity-50"
           >
-            {pending ? "Gönderiliyor…" : "Abone ol"}
+            {pending ? t.sending : t.submit}
           </button>
         </form>
       )}

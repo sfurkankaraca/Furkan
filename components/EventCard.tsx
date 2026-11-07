@@ -16,6 +16,8 @@ export type EventItem = {
   ticketing?: { enabled: boolean; priceTry: number };
   /** Kulüp etkinliği — bilet için Noqta Club üyeliği gerekir */
   membersOnly?: boolean;
+  /** noqt social etkinlik bağlantısı (varsa kartta ikincil bağlantı gösterilir) */
+  socialUrl?: string;
 };
 
 function eventImageAlt(e: EventItem): string {

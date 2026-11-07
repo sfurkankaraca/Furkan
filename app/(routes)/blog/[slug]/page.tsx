@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { blogPostBySlug, blogSlugs } from "@/lib/blog/registry";
 import { BlogArticleLayout } from "@/components/blog/BlogArticleLayout";
 import { BLOG_ARTICLE_BODIES } from "@/components/blog/article-bodies";
+import { getDict } from "@/lib/club-radio/i18n/server";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -13,7 +14,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPostBySlug(slug);
-  if (!post) return { title: "Yazı bulunamadı" };
+  if (!post) return { title: (await getDict()).t.meta.articleNotFound };
   return {
     title: `${post.title} | noqta blog`,
     description: post.description,
