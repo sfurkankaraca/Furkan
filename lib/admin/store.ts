@@ -88,6 +88,9 @@ export type NoqtaClubApplication = {
   musicInterest: string;
   consentKvkk: boolean;
   consentMarketing?: boolean;
+  /** Ticari ileti onayının zamanı ve metin sürümü (6563) — yalnız onay verildiyse. */
+  consentMarketingAt?: string;
+  consentMarketingVersion?: string;
   status: NoqtaClubStatus;
   tier?: string;
   reviewedAt?: string;
@@ -239,19 +242,41 @@ export type Subscriber = {
   /** Nereden abone oldu: journal, footer, vb. */
   source?: string;
   createdAt: string;
+  /** Ticari ileti onayı (6563). Bu alan olmayan eski kayıtlara tanıtım gönderilmez. */
+  marketingConsent?: boolean;
+  marketingConsentAt?: string;
+  marketingConsentVersion?: string;
 };
 
 export async function readSubscribers(): Promise<Subscriber[]> {
   return readJson<Subscriber>(subscribersFile, "subscribers.json", tmpSubscribersFile);
 }
 
-/** Bültene ekler. Zaten kayıtlıysa "already" döner, yeni ise "added". */
-export async function addSubscriber(email: string, source?: string): Promise<"added" | "already"> {
+/**
+ * Bültene ekler. Zaten kayıtlıysa "already" döner, yeni ise "added".
+ * Onay bilgisi (zaman + metin sürümü) her iki durumda da kayda yazılır —
+ * eski, onaysız bir aboneliğe sonradan verilen onay da saklanır.
+ */
+export async function addSubscriber(
+  email: string,
+  source?: string,
+  consent?: { at: string; version: string },
+): Promise<"added" | "already"> {
   const clean = email.trim().toLowerCase();
   const rows = await readSubscribers();
-  if (rows.some((s) => s.email === clean)) return "already";
+  const consentFields = consent
+    ? { marketingConsent: true, marketingConsentAt: consent.at, marketingConsentVersion: consent.version }
+    : {};
+  const idx = rows.findIndex((s) => s.email === clean);
+  if (idx >= 0) {
+    if (consent) {
+      rows[idx] = { ...rows[idx], ...consentFields };
+      await writeJson(subscribersFile, rows, "subscribers.json", tmpSubscribersFile);
+    }
+    return "already";
+  }
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  rows.unshift({ id, email: clean, source, createdAt: new Date().toISOString() });
+  rows.unshift({ id, email: clean, source, createdAt: new Date().toISOString(), ...consentFields });
   await writeJson(subscribersFile, rows, "subscribers.json", tmpSubscribersFile);
   return "added";
 }

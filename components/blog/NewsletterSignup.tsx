@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { useLang } from "@/lib/club-radio/i18n/client";
 import { subscribeNewsletter, type SubscribeResult } from "@/app/(routes)/blog/newsletter-actions";
+import { MARKETING_CONSENT_TEXT_EN, MARKETING_CONSENT_TEXT_TR } from "@/lib/marketing/consent";
 
 export function NewsletterSignup({
   source = "journal",
@@ -68,6 +69,20 @@ export function NewsletterSignup({
               placeholder={t.placeholder}
               className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-noqt-lime"
             />
+            <label className="mt-3 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+              <input
+                type="checkbox"
+                name="marketingConsent"
+                required
+                className="mt-0.5 accent-[#C6F432]"
+              />
+              <span>
+                {lang === "en" ? MARKETING_CONSENT_TEXT_EN : MARKETING_CONSENT_TEXT_TR}{" "}
+                <a href="/kvkk/noqta-club" className="underline">
+                  {lang === "en" ? "Privacy notice" : "Aydınlatma metni"}
+                </a>
+              </span>
+            </label>
             {state && !state.ok ? (
               <p className="mt-2 text-xs text-red-400" role="alert">
                 {state.message}

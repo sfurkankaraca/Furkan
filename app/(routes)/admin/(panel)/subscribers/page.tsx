@@ -1,14 +1,22 @@
-import { readSubscribers } from "@/lib/admin/store";
+import { readSubscribers, type Subscriber } from "@/lib/admin/store";
 import { ContentCard } from "@/components/layout/PageShell";
 
 export const metadata = { title: "Admin — Bülten aboneleri | noqta" };
 
 export const dynamic = "force-dynamic";
 
-function toCsv(rows: { email: string; source?: string; createdAt: string }[]): string {
-  const head = "email,source,createdAt";
+// Onay sütunları (6563): onayı olmayan eski abonelere tanıtım gönderilmez.
+function toCsv(rows: Subscriber[]): string {
+  const head = "email,source,createdAt,marketingConsent,marketingConsentAt,marketingConsentVersion";
   const body = rows
-    .map((r) => [r.email, r.source ?? "", r.createdAt].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
+    .map((r) => [
+      r.email,
+      r.source ?? "",
+      r.createdAt,
+      r.marketingConsent ? "evet" : "hayır",
+      r.marketingConsentAt ?? "",
+      r.marketingConsentVersion ?? "",
+    ].map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
     .join("\n");
   return `${head}\n${body}`;
 }
@@ -20,6 +28,7 @@ export default async function AdminSubscribersPage() {
 
   const aWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   const last7 = subscribers.filter((s) => new Date(s.createdAt).getTime() >= aWeekAgo).length;
+  const consented = subscribers.filter((s) => s.marketingConsent === true).length;
 
   return (
     <ContentCard className="p-6 md:p-8">
@@ -42,6 +51,9 @@ export default async function AdminSubscribersPage() {
           <span>
             Son 7 gün: <b className="text-foreground">{last7}</b>
           </span>
+          <span title="Ticari ileti onayı (6563). Tanıtım e-postası yalnız bunlara gider.">
+            Onaylı: <b className="text-foreground">{consented}</b>
+          </span>
         </div>
 
         {subscribers.length === 0 ? (
@@ -54,6 +66,7 @@ export default async function AdminSubscribersPage() {
                   <th className="px-4 py-3 font-medium">E-posta</th>
                   <th className="px-4 py-3 font-medium">Kaynak</th>
                   <th className="px-4 py-3 font-medium">Tarih</th>
+                  <th className="px-4 py-3 font-medium">Ticari onay</th>
                 </tr>
               </thead>
               <tbody>
@@ -67,6 +80,9 @@ export default async function AdminSubscribersPage() {
                         month: "short",
                         year: "numeric",
                       })}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {s.marketingConsent ? `Evet · ${s.marketingConsentVersion ?? ""}` : "Yok"}
                     </td>
                   </tr>
                 ))}

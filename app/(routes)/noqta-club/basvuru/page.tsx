@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { MARKETING_CONSENT_TEXT_TR } from "@/lib/marketing/consent";
 import { ContentCard, PageShell } from "@/components/layout/PageShell";
 import {
   NOQTA_CLUB_MAIN_REASON_OPTIONS,
@@ -353,7 +354,7 @@ export default function NoqtaClubApplyPage() {
                   className="mt-1 accent-black"
                 />
                 <span className="text-sm leading-relaxed">
-                  Tarafıma e-posta/SMS ile bilgilendirme yapılmasını kabul ediyorum. (opsiyonel)
+                  (İsteğe bağlı) {MARKETING_CONSENT_TEXT_TR}
                 </span>
               </label>
             </div>

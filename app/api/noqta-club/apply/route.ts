@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { MARKETING_CONSENT_VERSION, syncMarketingConsent } from "@/lib/marketing/consent";
 import { getClientIp } from "@/lib/security/client-ip";
 import { rateLimitNoqtaClubApply } from "@/lib/security/rate-limit";
 import {
@@ -50,6 +51,7 @@ export async function POST(req: Request) {
     const musicOther = String(body?.musicInterestOther || "").trim();
     const consentKvkk = body?.consentKvkk === true;
     const consentMarketing = body?.consentMarketing === true;
+    const consentAt = new Date().toISOString();
 
     if (!name || !email || !city || !birthDateRaw || !instagram || !referrer || !referralSourceRaw) {
       return NextResponse.json({ ok: false, error: "Lütfen zorunlu alanları doldurun" }, { status: 400 });
@@ -115,8 +117,21 @@ export async function POST(req: Request) {
       musicInterest,
       consentKvkk,
       consentMarketing: consentMarketing || undefined,
+      consentMarketingAt: consentMarketing ? consentAt : undefined,
+      consentMarketingVersion: consentMarketing ? MARKETING_CONSENT_VERSION : undefined,
       tier: "standard",
     });
+    // Onay noqt social'a eşitlenir (etkinlik e-postaları oradan gider).
+    // İşaretlenmediyse hiçbir şey gönderilmez: boş kutu başka kanaldan
+    // verilmiş bir onayı silmez.
+    if (consentMarketing) {
+      await syncMarketingConsent({
+        email,
+        consent: true,
+        consentAt,
+        source: "noqt.club/club-application",
+      });
+    }
 
     // Admin'e bildirim (opsiyonel; RESEND yoksa otomatik devre dışı)
     await sendNoqtaClubApplicationMail({
